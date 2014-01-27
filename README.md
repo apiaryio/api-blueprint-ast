@@ -5,7 +5,7 @@
 
 This document defines serialization formats of [API Blueprint](http://apiblueprint.org) abstract syntax tree, or AST for short. 
 
-API Blueprint AST is a machine-friendly face of [API Blueprint](http://apiblueprint.org) suitable for use in [tools](http://apiblueprint.org/#tooling) consuming (or producing) API Blueprint. 
+API Blueprint AST is a machine-friendly face of API Blueprint suitable for use in [tools](http://apiblueprint.org/#tooling) consuming (or producing) API Blueprint. 
 
 Converting API Blueprint to AST and its serialization is the task of API Blueprint Parser – [Snow Crash](https://github.com/apiaryio/snowcrash) or one of its [bindings](https://github.com/apiaryio/snowcrash#bindings). Reverse process from AST (serialization) to API Blueprint is also possible thanks to the [Matter Compiler](https://github.com/apiaryio/matter_compiler).
 
