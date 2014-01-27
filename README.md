@@ -1,13 +1,13 @@
 ![logo](https://raw.github.com/apiaryio/api-blueprint/gh-pages/assets/logo_apiblueprint.png) 
 
 # API Blueprint AST Serialization Media Types
-### API design for machines
+### API Blueprint's contract with machines
 
 This document defines serialization formats of [API Blueprint](http://apiblueprint.org) abstract syntax tree, or AST for short. 
 
-API Blueprint AST is a machine-friendly face of [API Blueprint](http://apiblueprint.org) suitable for use in [tools](http://apiblueprint.org/#tooling) consuming (or producing) API Blueprint. API Blueprint AST is a product of the API Blueprint Parser – [Snow Crash](https://github.com/apiaryio/snowcrash) or one of its [bindings](https://github.com/apiaryio/snowcrash#bindings).
+API Blueprint AST is a machine-friendly face of [API Blueprint](http://apiblueprint.org) suitable for use in [tools](http://apiblueprint.org/#tooling) consuming (or producing) API Blueprint. 
 
-Reverse process from API Blueprint AST to API Blueprint is also possible thanks to the [Matter Compiler](https://github.com/apiaryio/matter_compiler).
+Converting API Blueprint to AST and its serialization is the task of API Blueprint Parser – [Snow Crash](https://github.com/apiaryio/snowcrash) or one of its [bindings](https://github.com/apiaryio/snowcrash#bindings). Reverse process from AST (serialization) to API Blueprint is also possible thanks to the [Matter Compiler](https://github.com/apiaryio/matter_compiler).
 
 ## What?
 
@@ -33,12 +33,14 @@ Reverse process from API Blueprint AST to API Blueprint is also possible thanks 
 
 ## Media Types
 
-The `vnd.apiblueprint.ast` is the base media type for API Blueprint AST. An API Blueprint AST with raw Markdown descriptions has the `.raw` suffix whereas version with Markdown descriptions rendered into HTML has the `.html` suffix. 
+The `vnd.apiblueprint.ast` is the base media type for API Blueprint AST. An API Blueprint AST with raw Markdown descriptions has the `.raw` suffix whereas version with Markdown descriptions rendered into HTML has the `.html` suffix. The base media type serialization format is specified in the `+<serialization format>` appendix.
 
 ### Serialization formats
 
-+ **JSON**-based: `vnd.apiblueprint.ast.raw+json; version=1.0`
-+ **YAML**-based: `vnd.apiblueprint.ast.raw+yaml; version=1.0`
+Two supported, feature-equal serialization formats are JSON and YAML:
+
++ `vnd.apiblueprint.ast.raw+json` and `vnd.apiblueprint.ast.html+json`
++ `vnd.apiblueprint.ast.raw+yaml` and `vnd.apiblueprint.ast.html+yaml`
 
 ### JSON Serialization
 
