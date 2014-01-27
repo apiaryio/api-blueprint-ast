@@ -325,8 +325,8 @@ An HTTP transaction example with expected HTTP message request and response payl
 
 + `name` ... Name of the Transaction Example
 + `description` ... Description of the Transaction Example (`.raw` or `.html`)
-+ `request` ... An array of example transaction request [payloads](#payload-section)
-+ `request` ... An array of example transaction response [payloads](#payload-section)
++ `requests` ... An array of example transaction request [payloads](#payload-section)
++ `requests` ... An array of example transaction response [payloads](#payload-section)
 
 ## Serialization in Snow Crash
 
