@@ -91,12 +91,6 @@ Two supported, feature-equal serialization formats are JSON and YAML:
               ]
             }
           ],
-          "headers": [
-            {
-              "name": "<HTTP header field name>",
-              "value": "<HTTP header field value>"
-            }
-          ],
           "actions": [
             {
               "name": "<action name>",
@@ -113,12 +107,6 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                   "values": [
                     "<element>"
                   ]
-                }
-              ],
-              "headers": [
-                {
-                  "name": "<HTTP header field name>",
-                  "value": "<HTTP header field value>"
                 }
               ],
               "examples": [
@@ -208,10 +196,6 @@ resourceGroups:
         values: 
           - "<element>"
 
-    headers: 
-      - name: "<HTTP header field name>"
-        value: "<HTTP header field value>"
-
     actions:
     - name: "<action name>"
       description: "<action description>"
@@ -225,11 +209,7 @@ resourceGroups:
           default: "<default value>"
           example: "<example value>"
           values: 
-            - "<element>"    
-
-      headers: 
-        - name: "<HTTP header field name>"
-          value: "<HTTP header field value>"
+            - "<element>"
 
       examples:
       - name: "<transaction example name>"
@@ -287,7 +267,6 @@ Description of one resource, or a cluster of resources defined by its URI templa
 + `uriTemplate` ... URI Template as defined in [RFC6570](http://tools.ietf.org/html/rfc6570)
 + `model` ... [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection), a reusable [payload](#payload-section) representing the resource
 + `parameters` ... Ordered array of URI [parameters](#parameter-section) description sections
-+ `headers` ... Ordered array of HTTP headers that are expected to be send and received with every HTTP message bound to this resource
 + `actions` ... Ordered array of actions available on the resource each defining at least one complete HTTP transaction
 
 ### Action Section 
@@ -296,7 +275,6 @@ Description of one resource, or a cluster of resources defined by its URI templa
 + `description` ... Description of the Action (`.raw` or `.html`)
 + `method` ... HTTP request method defining the action
 + `parameters` ... Ordered array of resource's URI [parameters](#parameter-section) description sections specific to this action
-+ `headers` ... Ordered array of HTTP headers that are expected to be send and received with every HTTP message bound to this resource with the same HTTP request method
 + `examples` ... Ordered array of HTTP transaction [examples](#example-section) for the relevant HTTP request method
 
 ### Payload Section
