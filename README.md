@@ -15,9 +15,9 @@ Converting API Blueprint to AST and its serialization is the task of API Bluepri
 
 ## Version
 
-+ **Version**: 1.0
++ **Version**: 2.0
 + **Created**: 2013-08-30
-+ **Updated**: 2014-01-27
++ **Updated**: 2014-02-20
 
 ---
 
@@ -44,16 +44,17 @@ Two supported, feature-equal serialization formats are JSON and YAML:
 
 ### JSON Serialization
 
-`vnd.apiblueprint.ast.raw+json; version=1.0`
+`vnd.apiblueprint.ast.raw+json; version=2.0`
 
 ```json
 {
   "_version": "<AST version>",
-  "metadata": {
-    "<key>": {
-      "value": "<value>"
+  "metadata": [
+    {
+      "name": "<metadata key name>",
+      "value": "<metadata value>"
     }
-  },
+  ],
   "name": "<API name>",
   "description": "<API description>",
   "resourceGroups": [
@@ -68,53 +69,50 @@ Two supported, feature-equal serialization formats are JSON and YAML:
           "model": {
             "name": "<resource model name>",
             "description": "<resource model description>",
-            "headers": {
-              "<header>": {
-                "value": "<header value>"
+            "headers": [
+              {
+                "name": "<HTTP header field name>",
+                "value": "<HTTP header field value>"
               }
-            },
+            ],
             "body": "<resource model body>",
             "schema": "<resource model schema>"
           },
-          "parameters": {
-            "<parameter>": {
+          "parameters": [
+            {
+              "name": "<name>",
               "description": "<description>",
               "type": "<type>",
               "required": "<required parameter flag>",
               "default": "<default value>",
               "example": "<example value>",
               "values": [
-                "<element>"
+                {
+                  "value": "<enum element>"
+                }
               ]
             }
-          },
-          "headers": {
-            "<header>": {
-              "value": "<header value>"
-            }
-          },
+          ],
           "actions": [
             {
               "name": "<action name>",
               "description": "<action description>",
               "method": "<action HTTP request method>",
-              "parameters": {
-                "<parameter>": {
+              "parameters": [
+                {
+                  "name": "<name>",
                   "description": "<description>",
                   "type": "<type>",
                   "required": "<required parameter flag>",
                   "default": "<default value>",
                   "example": "<example value>",
                   "values": [
-                    "<element>"
+                    {
+                      "value": "<enum element>"
+                    }
                   ]
                 }
-              },
-              "headers": {
-                "<header>": {
-                  "value": "<header value>"
-                }
-              },
+              ],
               "examples": [
                 {
                   "name": "<transaction example name>",
@@ -123,11 +121,12 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                     {
                       "name": "<request name>",
                       "description": "<request description>",
-                      "headers": {
-                        "<header>": {
-                          "value": "<header value>"
+                      "headers": [
+                        {
+                          "name": "<HTTP header field name>",
+                          "value": "<HTTP header field value>"
                         }
-                      },
+                      ],
                       "body": "<request body>",
                       "schema": "<request schema>"
                     }
@@ -136,11 +135,12 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                     {
                       "name": "<response HTTP status code>",
                       "description": "<response description>",
-                      "headers": {
-                        "<header>": {
-                          "value": "<header value>"
+                      "headers": [
+                        {
+                          "name": "<HTTP header field name>",
+                          "value": "<HTTP header field value>"
                         }
-                      },
+                      ],
                       "body": "<response body>",
                       "schema": "<response schema>"
                     }
@@ -158,96 +158,88 @@ Two supported, feature-equal serialization formats are JSON and YAML:
 
 ### YAML Serialization
 
-`vnd.apiblueprint.ast.raw+yaml; version=1.0`
+`vnd.apiblueprint.ast.raw+yaml; version=2.0`
 
 ```yaml
 _version: <AST version>
 
-metadata:
-  <key>:
-    value: <value>
+metadata: 
+  - name: "<metadata key name>"
+    value: "<metadata value>"
 
-name: <API name>
-description: <API description>
+name: "<API name>"
+description: "<API description>"
 
 resourceGroups:
-- name: <resource group name>
-  description: <resource group description>
+- name: "<resource group name>"
+  description: "<resource group description>"
 
   resources:
-  - name: <resource name>
-    description: <resource description>
-    uriTemplate: <resource URI template>
+  - name: "<resource name>"
+    description: "<resource description>"
+    uriTemplate: "<resource URI template>"
 
     model:
-      name: <resource model name>
-      description: <resource model description>
+      name: "<resource model name>"
+      description: "<resource model description>"
 
-      headers:
-        <header>:
-          value: <header value>
+      headers: 
+        - name: "<HTTP header field name>"
+          value: "<HTTP header field value>"          
 
-      body: <resource model body>
-      schema: <resource model schema>
+      body: "<resource model body>"
+      schema: "<resource model schema>"
 
-    parameters:
-      <parameter>:
-        description: <description>
-        type: <type>
-        required: <required parameter flag>
-        default: <default value>
-        example: <example value>
-        values:
-          - <element>
-
-    headers:
-      <header>:
-        value: <header value>
+    parameters: 
+      - name: "<name>"
+        description: "<description>"
+        type: "<type>"
+        required: "<required parameter flag>"
+        default: "<default value>"
+        example: "<example value>"
+        values: 
+          - value: "<enum element>"
 
     actions:
-    - name: <action name>
-      description: <action description>
-      method: <action HTTP request method>
+    - name: "<action name>"
+      description: "<action description>"
+      method: "<action HTTP request method>"
 
-      parameters:
-        <parameter>:
-          description: <description>
-          type: <type>
-          required: <required parameter flag>
-          default: <default value>
-          example: <example value>
-          values:
-            - <element>      
-
-      headers:
-        <header>:
-          value: <header value>
+      parameters: 
+        - name: "<name>"
+          description: "<description>"
+          type: "<type>"
+          required: "<required parameter flag>"
+          default: "<default value>"
+          example: "<example value>"
+          values: 
+            - value: "<enum element>"
 
       examples:
-      - name: <transaction example name>
-        description: <transaction example name>
+      - name: "<transaction example name>"
+        description: "<transaction example name>"
 
         requests:
-        - name: <request name>
-          description: <request description>
+        - name: "<request name>"
+          description: "<request description>"
 
-          headers:
-            <header>:
-              value: <header value>
+          headers: 
+            - name: "<HTTP header field name>"
+              value: "<HTTP header field value>"
 
-          body: <request body>
-          schema: <request schema>
+          body: "<request body>"
+          schema: "<request schema>"
 
         responses:
-        - name: <response HTTP status code>
-          description: <response description>
+        - name: "<response HTTP status code>"
+          description: "<response description>"
 
-          headers:
-            <header>:
-              value: <header value>
+          headers: 
+            - name: "<HTTP header field name>"
+              value: "<HTTP header field value>"
 
-          body: <response body>
-          schema: <response schema>
+          body: "<response body>"
+          schema: "<response schema>"
 ```
 
 ## Keys Description
@@ -257,10 +249,10 @@ Most of the keys corresponds to their counter parts in API Blueprint Specificati
 ### Blueprint Section 
 
 + `_version` ... Version of the AST Serialization as [defined](#version) in this document
-+ `metadata` ... A hash of API Blueprint [metadata](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#MetadataSection)
++ `metadata` ... Ordered array of API Blueprint [metadata](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#MetadataSection)
 + `name` ... Name of the API
 + `description` ... Top-level description of the API in Markdown (`.raw`) or HTML (`.html`)
-+ `resourceGroups` ... Array of [resources groups](#resource-group-section)
++ `resourceGroups` ... Ordered array of [resources groups](#resource-group-section)
 
 ### Resource Group Section
 
@@ -268,7 +260,7 @@ Logical group of resources.
 
 + `name` ... Name of the Resource Group
 + `description` ... Description of the Resource Group (`.raw` or `.html`)
-+ `resources` ... An array of the respective [resources](#resource-section) belonging to the Resource Group
++ `resources` ... Ordered array of the respective [resources](#resource-section) belonging to the Resource Group
 
 ### Resource Section
 
@@ -278,18 +270,16 @@ Description of one resource, or a cluster of resources defined by its URI templa
 + `description` ... Description of the Resource (`.raw` or `.html`)
 + `uriTemplate` ... URI Template as defined in [RFC6570](http://tools.ietf.org/html/rfc6570)
 + `model` ... [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection), a reusable [payload](#payload-section) representing the resource
-+ `parameters` ... Hash of URI [parameters](#parameter-section) description sections
-+ `headers` ... A hash of HTTP headers that are expected to be send and received with every HTTP message bound to this resource
-+ `actions` ... An array of actions available on the resource each defining at least one complete HTTP transaction
++ `parameters` ... Ordered array of URI [parameters](#parameter-section) description sections
++ `actions` ... Ordered array of actions available on the resource each defining at least one complete HTTP transaction
 
 ### Action Section 
 
 + `name` ... Name of the Action
 + `description` ... Description of the Action (`.raw` or `.html`)
 + `method` ... HTTP request method defining the action
-+ `parameters` ... Hash of parent resource's URI [parameters](#parameter-section) description sections specific to this action
-+ `headers` ... A hash of HTTP headers that are expected to be send and received with every HTTP message bound to this resource with the same HTTP request method
-+ `examples` ... An array of HTTP transaction [examples](#example-section) for the relevant HTTP request method
++ `parameters` ... Ordered array of resource's URI [parameters](#parameter-section) description sections specific to this action
++ `examples` ... Ordered array of HTTP transaction [examples](#example-section) for the relevant HTTP request method
 
 ### Payload Section
 
@@ -304,7 +294,7 @@ An [API Blueprint payload](https://github.com/apiaryio/api-blueprint/blob/master
     + **response** payload: HTTP status code
 
 + `description` ... Description of the payload (`.raw` or `.html`)
-+ `headers` ... A hash of HTTP headers that are expected to be transferred with HTTP message represented by this payload
++ `headers` ... Ordered array of HTTP headers that are expected to be transferred with HTTP message represented by this payload
 + `body` ... An entity body to be transferred with HTTP message represented by this payload
 + `schema` ... A validation schema for the entity body as defined in `body`
 
@@ -317,7 +307,7 @@ Description of one URI template parameter.
 - `required` ... Boolean flag denoting whether the parameter is required (true) or not (false)
 - `default` ... A default value of the parameter (a value assumed when the parameter is not specified)
 - `example` ... An example value of the parameter
-- `values` ... An array enumerating possible parameter values
+- `values` ... An array enumerating possible parameter values. Array item is an hash with the "value" key denoting the enumerated value.
 
 ### Example Section
 
@@ -325,8 +315,8 @@ An HTTP transaction example with expected HTTP message request and response payl
 
 + `name` ... Name of the Transaction Example
 + `description` ... Description of the Transaction Example (`.raw` or `.html`)
-+ `requests` ... An array of example transaction request [payloads](#payload-section)
-+ `requests` ... An array of example transaction response [payloads](#payload-section)
++ `requests` ... Ordered array of example transaction request [payloads](#payload-section)
++ `requests` ... Ordered array of example transaction response [payloads](#payload-section)
 
 ## Serialization in Snow Crash
 
