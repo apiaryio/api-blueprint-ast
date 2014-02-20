@@ -87,7 +87,9 @@ Two supported, feature-equal serialization formats are JSON and YAML:
               "default": "<default value>",
               "example": "<example value>",
               "values": [
-                "<element>"
+                {
+                  "value": "<enum element>"
+                }
               ]
             }
           ],
@@ -105,7 +107,9 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                   "default": "<default value>",
                   "example": "<example value>",
                   "values": [
-                    "<element>"
+                    {
+                      "value": "<enum element>"
+                    }
                   ]
                 }
               ],
@@ -194,7 +198,7 @@ resourceGroups:
         default: "<default value>"
         example: "<example value>"
         values: 
-          - "<element>"
+          - value: "<enum element>"
 
     actions:
     - name: "<action name>"
@@ -209,7 +213,7 @@ resourceGroups:
           default: "<default value>"
           example: "<example value>"
           values: 
-            - "<element>"
+            - value: "<enum element>"
 
       examples:
       - name: "<transaction example name>"
@@ -303,7 +307,7 @@ Description of one URI template parameter.
 - `required` ... Boolean flag denoting whether the parameter is required (true) or not (false)
 - `default` ... A default value of the parameter (a value assumed when the parameter is not specified)
 - `example` ... An example value of the parameter
-- `values` ... An array enumerating possible parameter values
+- `values` ... An array enumerating possible parameter values. Array item is an hash with the "value" key denoting the enumerated value.
 
 ### Example Section
 
