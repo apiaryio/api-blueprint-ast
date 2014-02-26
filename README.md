@@ -164,8 +164,8 @@ Two supported, feature-equal serialization formats are JSON and YAML:
 _version: <AST version>
 
 metadata: 
-  - name: "<metadata key name>"
-    value: "<metadata value>"
+- name: "<metadata key name>"
+  value: "<metadata value>"
 
 name: "<API name>"
 description: "<API description>"
@@ -184,21 +184,21 @@ resourceGroups:
       description: "<resource model description>"
 
       headers: 
-        - name: "<HTTP header field name>"
-          value: "<HTTP header field value>"          
+      - name: "<HTTP header field name>"
+        value: "<HTTP header field value>"          
 
       body: "<resource model body>"
       schema: "<resource model schema>"
 
     parameters: 
-      - name: "<name>"
-        description: "<description>"
-        type: "<type>"
-        required: "<required parameter flag>"
-        default: "<default value>"
-        example: "<example value>"
-        values: 
-          - value: "<enum element>"
+    - name: "<name>"
+      description: "<description>"
+      type: "<type>"
+      required: "<required parameter flag>"
+      default: "<default value>"
+      example: "<example value>"
+      values: 
+      - value: "<enum element>"
 
     actions:
     - name: "<action name>"
@@ -206,14 +206,14 @@ resourceGroups:
       method: "<action HTTP request method>"
 
       parameters: 
-        - name: "<name>"
-          description: "<description>"
-          type: "<type>"
-          required: "<required parameter flag>"
-          default: "<default value>"
-          example: "<example value>"
-          values: 
-            - value: "<enum element>"
+      - name: "<name>"
+        description: "<description>"
+        type: "<type>"
+        required: "<required parameter flag>"
+        default: "<default value>"
+        example: "<example value>"
+        values: 
+        - value: "<enum element>"
 
       examples:
       - name: "<transaction example name>"
@@ -224,8 +224,8 @@ resourceGroups:
           description: "<request description>"
 
           headers: 
-            - name: "<HTTP header field name>"
-              value: "<HTTP header field value>"
+          - name: "<HTTP header field name>"
+            value: "<HTTP header field value>"
 
           body: "<request body>"
           schema: "<request schema>"
@@ -235,8 +235,8 @@ resourceGroups:
           description: "<response description>"
 
           headers: 
-            - name: "<HTTP header field name>"
-              value: "<HTTP header field value>"
+          - name: "<HTTP header field name>"
+            value: "<HTTP header field value>"
 
           body: "<response body>"
           schema: "<response schema>"
