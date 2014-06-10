@@ -17,7 +17,7 @@ Converting API Blueprint to AST and its serialization is the task of API Bluepri
 
 + **Version**: 2.0
 + **Created**: 2013-08-30
-+ **Updated**: 2014-02-20
++ **Updated**: 2014-06-09
 
 ---
 
@@ -28,6 +28,7 @@ Converting API Blueprint to AST and its serialization is the task of API Bluepri
 + [YAML serialization](#yaml-serialization)
 + [Keys description](#keys-description)
 + [Serialization in Snow Crash](#serialization-in-snow-crash)
++ [Serialized Parsing Result Media Types][parsing media types] 
 
 ---
 
@@ -322,6 +323,13 @@ An HTTP transaction example with expected HTTP message request and response payl
 
 The `snowcrash` [command-line tool](https://github.com/apiaryio/snowcrash#snow-crash-command-line-tool) supports serialization of [API Blueprint AST](https://github.com/apiaryio/snowcrash/blob/master/src/Blueprint.h) via the `--format` option.
 
+## Related Media Types
+
+- [**Serialized Parsing Result Media Types**][parsing media types] - Media types for the serialization of complete parsing results (including warnigns and errors)
+
 ## License
 
 MIT License. See the [LICENSE](LICENSE) file.
+
+
+[parsing media types]: Parse%20Result.md
