@@ -1,4 +1,4 @@
-![logo](https://raw.github.com/apiaryio/api-blueprint/gh-pages/assets/logo_apiblueprint.png) 
+![logo](https://raw.github.com/apiaryio/api-blueprint/master/assets/logo_apiblueprint.png)
 
 # API Blueprint AST Serialization Media Types
 ### API Blueprint's contract with machines
