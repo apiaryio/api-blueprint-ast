@@ -5,7 +5,7 @@ This document describes API Blueprint Serialized Parse Result Media Types – th
 
 ## Media Types
 
-The base media type for API Blueprint Parsing result is `vnd.apiblueprint.parseresult`. A Parser Result with raw Markdown descriptions in API Blueprint AST has the `.raw` suffix whereas version with Markdown descriptions rendered into HTML has the `.html`.
+The base media type for API Blueprint Parsing result is `application/vnd.apiblueprint.parseresult`. A Parser Result with raw Markdown descriptions in API Blueprint AST has the `.raw` suffix whereas version with Markdown descriptions rendered into HTML has the `.html`.
 
 The base media type serialization format is specified in the `+<serialization format>` appendix.
 
@@ -31,17 +31,17 @@ The base media type serialization format is specified in the `+<serialization fo
 
 Two supported, feature-equal serialization formats are JSON and YAML:
 
-+ `vnd.apiblueprint.parseresult.raw+json` and `vnd.apiblueprint.parseresult.html+json`
-+ `vnd.apiblueprint.parseresult.raw+yaml` and `vnd.apiblueprint.parseresult.html+yaml`
++ `application/vnd.apiblueprint.parseresult.raw+json` and `application/vnd.apiblueprint.parseresult.html+json`
++ `application/vnd.apiblueprint.parseresult.raw+yaml` and `application/vnd.apiblueprint.parseresult.html+yaml`
 
 Parser Result Media Types inherit from the respective [AST Serialization Type](README.md):
 
-+ [`vnd.apiblueprint.ast.*+json`](#json-serialization)
-+ [`vnd.apiblueprint.ast.*+yaml`](#yaml-serialization)
++ [`application/vnd.apiblueprint.ast.*+json`](#json-serialization)
++ [`application/vnd.apiblueprint.ast.*+yaml`](#yaml-serialization)
 
 ### JSON Serialization
 
-`vnd.apiblueprint.parseresult.*+json; version=1.0`
+`application/vnd.apiblueprint.parseresult.*+json; version=1.0`
 
 ```json
 {
@@ -79,7 +79,7 @@ Parser Result Media Types inherit from the respective [AST Serialization Type](R
 
 ### YAML Serialization
 
-`vnd.apiblueprint.parseresult.*+yaml; version=1.0`
+`application/vnd.apiblueprint.parseresult.*+yaml; version=1.0`
 
 ```yaml
 _version: "1.0"
@@ -113,7 +113,7 @@ warnings:
 
 #### `ast`
 
-The structure under this key is defined by the [AST Blueprint serialization Media Type v2.0](https://github.com/apiaryio/api-blueprint-ast#json-serialization) – `vnd.apiblueprint.ast.raw+json; version=2.0`.
+The structure under this key is defined by the [AST Blueprint serialization Media Type v2.0](https://github.com/apiaryio/api-blueprint-ast#json-serialization) – `application/vnd.apiblueprint.ast.raw+json; version=2.0`.
 
 #### `error`
 

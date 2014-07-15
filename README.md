@@ -3,15 +3,15 @@
 # API Blueprint AST Serialization Media Types
 ### API Blueprint's contract with machines
 
-This document defines serialization formats of [API Blueprint](http://apiblueprint.org) abstract syntax tree, or AST for short. 
+This document defines serialization formats of [API Blueprint](http://apiblueprint.org) abstract syntax tree, or AST for short.
 
-API Blueprint AST is a machine-friendly face of API Blueprint suitable for use in [tools](http://apiblueprint.org/#tooling) consuming (or producing) API Blueprint. 
+API Blueprint AST is a machine-friendly face of API Blueprint suitable for use in [tools](http://apiblueprint.org/#tooling) consuming (or producing) API Blueprint.
 
 Converting API Blueprint to AST and its serialization is the task of API Blueprint Parser – [Snow Crash](https://github.com/apiaryio/snowcrash) or one of its [bindings](https://github.com/apiaryio/snowcrash#bindings). Reverse process from AST (serialization) to API Blueprint is also possible thanks to the [Matter Compiler](https://github.com/apiaryio/matter_compiler).
 
 ## What?
 
-**This document is intended for authors of tools using API Blueprint**. If you are looking for a way to describe your Web API proceed directly to [API Blueprint](https://github.com/apiaryio/api-blueprint). 
+**This document is intended for authors of tools using API Blueprint**. If you are looking for a way to describe your Web API proceed directly to [API Blueprint](https://github.com/apiaryio/api-blueprint).
 
 ## Version
 
@@ -28,24 +28,24 @@ Converting API Blueprint to AST and its serialization is the task of API Bluepri
 + [YAML serialization](#yaml-serialization)
 + [Keys description](#keys-description)
 + [Serialization in Snow Crash](#serialization-in-snow-crash)
-+ [Serialized Parsing Result Media Types][parsing media types] 
++ [Serialized Parsing Result Media Types][parsing media types]
 
 ---
 
 ## Media Types
 
-The `vnd.apiblueprint.ast` is the base media type for API Blueprint AST. An API Blueprint AST with raw Markdown descriptions has the `.raw` suffix whereas version with Markdown descriptions rendered into HTML has the `.html` suffix. The base media type serialization format is specified in the `+<serialization format>` appendix.
+The `application/vnd.apiblueprint.ast` is the base media type for API Blueprint AST. An API Blueprint AST with raw Markdown descriptions has the `.raw` suffix whereas version with Markdown descriptions rendered into HTML has the `.html` suffix. The base media type serialization format is specified in the `+<serialization format>` appendix.
 
 ### Serialization formats
 
 Two supported, feature-equal serialization formats are JSON and YAML:
 
-+ `vnd.apiblueprint.ast.raw+json` and `vnd.apiblueprint.ast.html+json`
-+ `vnd.apiblueprint.ast.raw+yaml` and `vnd.apiblueprint.ast.html+yaml`
++ `application/vnd.apiblueprint.ast.raw+json` and `application/vnd.apiblueprint.ast.html+json`
++ `application/vnd.apiblueprint.ast.raw+yaml` and `application/vnd.apiblueprint.ast.html+yaml`
 
 ### JSON Serialization
 
-`vnd.apiblueprint.ast.raw+json; version=2.0`
+`application/vnd.apiblueprint.ast.raw+json; version=2.0`
 
 ```json
 {
@@ -159,12 +159,12 @@ Two supported, feature-equal serialization formats are JSON and YAML:
 
 ### YAML Serialization
 
-`vnd.apiblueprint.ast.raw+yaml; version=2.0`
+`application/vnd.apiblueprint.ast.raw+yaml; version=2.0`
 
 ```yaml
 _version: <AST version>
 
-metadata: 
+metadata:
 - name: "<metadata key name>"
   value: "<metadata value>"
 
@@ -184,21 +184,21 @@ resourceGroups:
       name: "<resource model name>"
       description: "<resource model description>"
 
-      headers: 
+      headers:
       - name: "<HTTP header field name>"
-        value: "<HTTP header field value>"          
+        value: "<HTTP header field value>"
 
       body: "<resource model body>"
       schema: "<resource model schema>"
 
-    parameters: 
+    parameters:
     - name: "<name>"
       description: "<description>"
       type: "<type>"
       required: "<required parameter flag>"
       default: "<default value>"
       example: "<example value>"
-      values: 
+      values:
       - value: "<enum element>"
 
     actions:
@@ -206,14 +206,14 @@ resourceGroups:
       description: "<action description>"
       method: "<action HTTP request method>"
 
-      parameters: 
+      parameters:
       - name: "<name>"
         description: "<description>"
         type: "<type>"
         required: "<required parameter flag>"
         default: "<default value>"
         example: "<example value>"
-        values: 
+        values:
         - value: "<enum element>"
 
       examples:
@@ -224,7 +224,7 @@ resourceGroups:
         - name: "<request name>"
           description: "<request description>"
 
-          headers: 
+          headers:
           - name: "<HTTP header field name>"
             value: "<HTTP header field value>"
 
@@ -235,7 +235,7 @@ resourceGroups:
         - name: "<response HTTP status code>"
           description: "<response description>"
 
-          headers: 
+          headers:
           - name: "<HTTP header field name>"
             value: "<HTTP header field value>"
 
@@ -245,9 +245,9 @@ resourceGroups:
 
 ## Keys Description
 
-Most of the keys corresponds to their counter parts in API Blueprint Specification. Where applicable, refer to the relevant entry [API Blueprint Language Specification](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md) for details. 
+Most of the keys corresponds to their counter parts in API Blueprint Specification. Where applicable, refer to the relevant entry [API Blueprint Language Specification](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md) for details.
 
-### Blueprint Section 
+### Blueprint Section
 
 + `_version` ... Version of the AST Serialization as [defined](#version) in this document
 + `metadata` ... Ordered array of API Blueprint [metadata](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#MetadataSection)
@@ -274,7 +274,7 @@ Description of one resource, or a cluster of resources defined by its URI templa
 + `parameters` ... Ordered array of URI [parameters](#parameter-section) description sections
 + `actions` ... Ordered array of actions available on the resource each defining at least one complete HTTP transaction
 
-### Action Section 
+### Action Section
 
 + `name` ... Name of the Action
 + `description` ... Description of the Action (`.raw` or `.html`)
@@ -286,12 +286,12 @@ Description of one resource, or a cluster of resources defined by its URI templa
 
 An [API Blueprint payload](https://github.com/apiaryio/api-blueprint/blob/master/Glossary%20of%20Terms.md#payload).
 
-+ `name` ... Name of the payload 
++ `name` ... Name of the payload
 
     The content of this key depends on the type of payload:
 
     + **model** payload: name of the resource, if any
-    + **request** payload: name of the request, if any 
+    + **request** payload: name of the request, if any
     + **response** payload: HTTP status code
 
 + `description` ... Description of the payload (`.raw` or `.html`)
