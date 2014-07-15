@@ -1,11 +1,11 @@
-![logo](https://raw.github.com/apiaryio/api-blueprint/gh-pages/assets/logo_apiblueprint.png) 
+![logo](https://raw.github.com/apiaryio/api-blueprint/master/assets/logo_apiblueprint.png)
 
 # Parse Result Media Types
-This document describes API Blueprint Serialized Parse Result Media Types – the media type used to serialize a result of parsing an API Blueprint document. In addition to parsed [API Blueprint AST](README.md) this media types bear the information on any and source annotations – warnings and errors - issued by the parser during parsing. 
+This document describes API Blueprint Serialized Parse Result Media Types – the media type used to serialize a result of parsing an API Blueprint document. In addition to parsed [API Blueprint AST](README.md) this media types bear the information on any and source annotations – warnings and errors - issued by the parser during parsing.
 
 ## Media Types
 
-The base media type for API Blueprint Parsing result is `vnd.apiblueprint.parseresult`. A Parser Result with raw Markdown descriptions in API Blueprint AST has the `.raw` suffix whereas version with Markdown descriptions rendered into HTML has the `.html`. 
+The base media type for API Blueprint Parsing result is `vnd.apiblueprint.parseresult`. A Parser Result with raw Markdown descriptions in API Blueprint AST has the `.raw` suffix whereas version with Markdown descriptions rendered into HTML has the `.html`.
 
 The base media type serialization format is specified in the `+<serialization format>` appendix.
 
@@ -34,7 +34,7 @@ Two supported, feature-equal serialization formats are JSON and YAML:
 + `vnd.apiblueprint.parseresult.raw+json` and `vnd.apiblueprint.parseresult.html+json`
 + `vnd.apiblueprint.parseresult.raw+yaml` and `vnd.apiblueprint.parseresult.html+yaml`
 
-Parser Result Media Types inherit from the respective [AST Serialization Type](README.md): 
+Parser Result Media Types inherit from the respective [AST Serialization Type](README.md):
 
 + [`vnd.apiblueprint.ast.*+json`](#json-serialization)
 + [`vnd.apiblueprint.ast.*+yaml`](#yaml-serialization)
@@ -83,7 +83,7 @@ Parser Result Media Types inherit from the respective [AST Serialization Type](R
 
 ```yaml
 _version: "1.0"
-ast: 
+ast:
   _version: "2.0"
 
   ...
@@ -91,14 +91,14 @@ ast:
 error:
   code: <error code>
   message: "<error message>"
-  location: 
+  location:
     - index: <character index>
       length: <character count>
 
-warnings: 
+warnings:
   - code: <warning code>
     message: "<warning message>"
-    location: 
+    location:
       - index: <character index>
         length: <character count>
 ```
@@ -115,7 +115,7 @@ warnings:
 
 The structure under this key is defined by the [AST Blueprint serialization Media Type v2.0](https://github.com/apiaryio/api-blueprint-ast#json-serialization) – `vnd.apiblueprint.ast.raw+json; version=2.0`.
 
-#### `error` 
+#### `error`
 
 Description of a parsing error as occurred during parsing. If this field is present and `code` different from `0` then the content of `ast` field should be ignored.
 
@@ -132,7 +132,7 @@ Ordered array of parser warnings as occurred during the parsing.
 + `location` ... Warning source map  - see [`location`](#location).
 
 #### `location`
- 
+
 Array of possibly non-continuous blocks of the source API Blueprint.
 
 + `index` ... Zero-based index of the character where warning has occurred.
