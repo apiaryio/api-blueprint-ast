@@ -17,12 +17,13 @@ Converting API Blueprint to AST and its serialization is the task of API Bluepri
 
 + **Version**: 2.0
 + **Created**: 2013-08-30
-+ **Updated**: 2014-06-09
++ **Updated**: 2014-08-14
 
 ---
 
 ## Quick Links
 
++ [AST Description](#ast-description)
 + [Media Types](#media-types)
 + [JSON serialization](#json-serialization)
 + [YAML serialization](#yaml-serialization)
@@ -31,6 +32,101 @@ Converting API Blueprint to AST and its serialization is the task of API Bluepri
 + [Serialized Parsing Result Media Types][parsing media types]
 
 ---
+
+## AST Description
+Following is the description of API Blueprint AST media types using the [MSON](https://github.com/apiaryio/mson) syntax. The description starts with the top-level blueprint object.
+
+### Blueprint Object
+
++ `_version` (string) - Version of the AST Serialization as [defined](#version) in this document
++ `metadata` (array) - Ordered array of API Blueprint [metadata](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#MetadataSection)
+    - (object)
+        - `name` (string) - Name of the metadata
+        - `value` (string) - Value of the metedata
+
++ `name` (string) - Name of the API
++ `description` (string) - Top-level description of the API in Markdown (`.raw`) or HTML (`.html`)
++ `resourceGroups` (array: [Resource Group](#resource-group-object))
+
+### Resource Group Object
+
+Logical group of resources.
+
+#### Attributes
+
++ `name` (string) - Name of the Resource Group
++ `description` (string) - Description of the Resource Group (`.raw` or `.html`)
++ `resources` (array: [Resource](#resource-object)) - Ordered array of the respective resources belonging to the Resource Group
+
+### Resource Object
+
+Description of one resource, or a cluster of resources defined by its URI template.
+
+#### Attributes
+
++ `name` (string) - Name of the Resource
++ `description` (string) - Description of the Resource (`.raw` or `.html`)
++ `uriTemplate` (string) - URI Template as defined in [RFC6570](http://tools.ietf.org/html/rfc6570)
++ `model` ([Payload](#payload-object)) - [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection), a reusable payload representing the resource
++ `parameters` (array: [Parameter](#parameter-object)) - Ordered array of URI parameters
++ `actions` (array: [Action](#action-object)) - Ordered array of actions available on the resource each defining at least one complete HTTP transaction
+
+### Action Object
+
++ `name` (string) - Name of the Action
++ `description` (string) - Description of the Action (`.raw` or `.html`)
++ `method` (string) - HTTP request method defining the action
++ `parameters` (array: [Parameter](#parameter-object)) - Ordered array of resource's URI parameters descriptions specific to this action
++ `examples` (array: [Transaction Example](#transaction-example-object)) - Ordered array of HTTP transaction [examples](#example-section) for the relevant HTTP request method
+
+### Payload Object
+
+An [API Blueprint payload](https://github.com/apiaryio/api-blueprint/blob/master/Glossary%20of%20Terms.md#payload).
+
+#### Attributes
+
++ `name` (string) - Name of the payload
+
+    The content of this key depends on the type of payload:
+
+    + **model** payload: name of the resource, if any
+    + **request** payload: name of the request, if any
+    + **response** payload: HTTP status code
+
++ `description` (string) - Description of the payload (`.raw` or `.html`)
++ `headers` (string) - Ordered array of HTTP headers that are expected to be transferred with HTTP message represented by this payload
++ `body` (string) - An entity body to be transferred with HTTP message represented by this payload
++ `schema` (string) - A validation schema for the entity body as defined in `body`
+
+### Parameter Object
+
+Description of one URI template parameter.
+
+#### Attributes
+
+- `description` (string) - Description of the parameter (`.raw` or `.html`)
+- `type` (string) - An arbitrary type of the parameter (a string)
+- `required` (string) - Boolean flag denoting whether the parameter is required (true) or not (false)
+- `default` (string) - A default value of the parameter (a value assumed when the parameter is not specified)
+- `example` (string) - An example value of the parameter
+- `values` (array) - An array enumerating possible parameter values
+    - (object)
+        - `value` (string) - Value choice of for the parameter
+
+### Transaction Example Object
+
+An HTTP transaction example with expected HTTP message request and response payload(s).
+
+#### Attributes
+
++ `name` (string) - Name of the Transaction Example
++ `description` (string) - Description of the Transaction Example (`.raw` or `.html`)
++ `requests` (array: [Payload](#payload-object)) - Ordered array of example transaction request payloads
++ `requests` (array: [Payload](#payload-object)) - Ordered array of example transaction response payloads
+
+---
+
+> **NOTE:** Most of the keys corresponds to their counter parts in API Blueprint Specification. Where applicable, refer to the relevant entry [API Blueprint Language Specification](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md) for details.
 
 ## Media Types
 
@@ -242,82 +338,6 @@ resourceGroups:
           body: "<response body>"
           schema: "<response schema>"
 ```
-
-## Keys Description
-
-Most of the keys corresponds to their counter parts in API Blueprint Specification. Where applicable, refer to the relevant entry [API Blueprint Language Specification](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md) for details.
-
-### Blueprint Section
-
-+ `_version` ... Version of the AST Serialization as [defined](#version) in this document
-+ `metadata` ... Ordered array of API Blueprint [metadata](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#MetadataSection)
-+ `name` ... Name of the API
-+ `description` ... Top-level description of the API in Markdown (`.raw`) or HTML (`.html`)
-+ `resourceGroups` ... Ordered array of [resources groups](#resource-group-section)
-
-### Resource Group Section
-
-Logical group of resources.
-
-+ `name` ... Name of the Resource Group
-+ `description` ... Description of the Resource Group (`.raw` or `.html`)
-+ `resources` ... Ordered array of the respective [resources](#resource-section) belonging to the Resource Group
-
-### Resource Section
-
-Description of one resource, or a cluster of resources defined by its URI template.
-
-+ `name` ... Name of the Resource
-+ `description` ... Description of the Resource (`.raw` or `.html`)
-+ `uriTemplate` ... URI Template as defined in [RFC6570](http://tools.ietf.org/html/rfc6570)
-+ `model` ... [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection), a reusable [payload](#payload-section) representing the resource
-+ `parameters` ... Ordered array of URI [parameters](#parameter-section) description sections
-+ `actions` ... Ordered array of actions available on the resource each defining at least one complete HTTP transaction
-
-### Action Section
-
-+ `name` ... Name of the Action
-+ `description` ... Description of the Action (`.raw` or `.html`)
-+ `method` ... HTTP request method defining the action
-+ `parameters` ... Ordered array of resource's URI [parameters](#parameter-section) description sections specific to this action
-+ `examples` ... Ordered array of HTTP transaction [examples](#example-section) for the relevant HTTP request method
-
-### Payload Section
-
-An [API Blueprint payload](https://github.com/apiaryio/api-blueprint/blob/master/Glossary%20of%20Terms.md#payload).
-
-+ `name` ... Name of the payload
-
-    The content of this key depends on the type of payload:
-
-    + **model** payload: name of the resource, if any
-    + **request** payload: name of the request, if any
-    + **response** payload: HTTP status code
-
-+ `description` ... Description of the payload (`.raw` or `.html`)
-+ `headers` ... Ordered array of HTTP headers that are expected to be transferred with HTTP message represented by this payload
-+ `body` ... An entity body to be transferred with HTTP message represented by this payload
-+ `schema` ... A validation schema for the entity body as defined in `body`
-
-### Parameter Section
-
-Description of one URI template parameter.
-
-- `description` ... Description of the parameter (`.raw` or `.html`)
-- `type` ... An arbitrary type of the parameter (a string)
-- `required` ... Boolean flag denoting whether the parameter is required (true) or not (false)
-- `default` ... A default value of the parameter (a value assumed when the parameter is not specified)
-- `example` ... An example value of the parameter
-- `values` ... An array enumerating possible parameter values. Array item is an hash with the "value" key denoting the enumerated value.
-
-### Example Section
-
-An HTTP transaction example with expected HTTP message request and response payload(s).
-
-+ `name` ... Name of the Transaction Example
-+ `description` ... Description of the Transaction Example (`.raw` or `.html`)
-+ `requests` ... Ordered array of example transaction request [payloads](#payload-section)
-+ `requests` ... Ordered array of example transaction response [payloads](#payload-section)
 
 ## Serialization in Snow Crash
 
