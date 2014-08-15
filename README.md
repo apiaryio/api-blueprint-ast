@@ -122,7 +122,7 @@ An HTTP transaction example with expected HTTP message request and response payl
 + `name` (string) - Name of the Transaction Example
 + `description` (string) - Description of the Transaction Example (`.raw` or `.html`)
 + `requests` (array: [Payload](#payload-object)) - Ordered array of example transaction request payloads
-+ `requests` (array: [Payload](#payload-object)) - Ordered array of example transaction response payloads
++ `responses` (array: [Payload](#payload-object)) - Ordered array of example transaction response payloads
 
 ---
 
