@@ -7,7 +7,7 @@ This document describes API Blueprint Serialized Parse Result Media Types – th
 
 + **Version**: 1.0
 + **Created**: 2014-06-09
-+ **Updated**: 2014-08-14
++ **Updated**: 2014-10-02
 + **AST Serialization Media Types**: 2.0
 
 ---
@@ -29,11 +29,15 @@ Following is the descripton of Parse Result media types using the [MSON](https:/
 
 - `_version` (string) - Version of the Parse Result Media Type as [defined](#version) in this document
 - `ast` ([AST](#ast-object)) - This is the abstract syntax tree (AST) of the parsed blueprint
+- `sourcemap` ([Sourcemap](#sourcemap-object)) - This is the sourcemap tree of the parsed blueprint
 - `error` ([Error](#error-object)) - Parsing error, if any
 - `warnings` (array: [Warning](#warning-object)) - Ordered array of warnings occurred during the parsing, if any
 
 ### AST Object
 This object is the [Blueprint](README.md#blueprint-object) object as defined in the [AST Blueprint serialization Media Type v2.0](https://github.com/apiaryio/api-blueprint-ast).
+
+### Sourcemap Object
+This object is the [Blueprint Sourcemap](README.md#blueprint-sourcemap-object) object as defined in [AST Blueprint serialization Media Type v2.0](https://github.com/apiaryio/api-blueprint-ast).
 
 ### Error Object
 Description of a parsing error as occurred during parsing. If this field is present and `code` different from `0` then the content of `ast` field should be ignored.
@@ -74,6 +78,8 @@ Parser Result Media Types inherit from the respective [AST Serialization Type](R
 
 + [`application/vnd.apiblueprint.ast.*+json`](#json-serialization)
 + [`application/vnd.apiblueprint.ast.*+yaml`](#yaml-serialization)
++ [`application/vnd.apiblueprint.sourcemap+json`](#json-serialization)
++ [`application/vnd.apiblueprint.sourcemap+yaml`](#yaml-serialization)
 
 ### JSON Serialization
 
@@ -86,7 +92,9 @@ Parser Result Media Types inherit from the respective [AST Serialization Type](R
     "_version": "2.0",
 
     ...
-
+  },
+  "sourcemap": {
+    ...
   },
   "error": {
     "code": <error code>,
@@ -123,7 +131,8 @@ ast:
   _version: "2.0"
 
   ...
-
+sourcemap:
+  ...
 error:
   code: <error code>
   message: "<error message>"
