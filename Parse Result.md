@@ -5,10 +5,10 @@ This document describes API Blueprint Serialized Parse Result Media Types – th
 
 ## Version
 
-+ **Version**: 1.0
++ **Version**: 2.0
 + **Created**: 2014-06-09
-+ **Updated**: 2014-08-14
-+ **AST Serialization Media Types**: 2.0
++ **Updated**: 2014-10-02
++ **AST Serialization Media Types**: 2.1
 
 ---
 
@@ -29,11 +29,15 @@ Following is the descripton of Parse Result media types using the [MSON](https:/
 
 - `_version` (string) - Version of the Parse Result Media Type as [defined](#version) in this document
 - `ast` ([AST](#ast-object)) - This is the abstract syntax tree (AST) of the parsed blueprint
+- `sourcemap` ([Source Map](#source-map)) - This is the sourcemap tree of the parsed blueprint whose content may not be present if the option to export source maps is not present
 - `error` ([Error](#error-object)) - Parsing error, if any
 - `warnings` (array: [Warning](#warning-object)) - Ordered array of warnings occurred during the parsing, if any
 
 ### AST Object
-This object is the [Blueprint](README.md#blueprint-object) object as defined in the [AST Blueprint serialization Media Type v2.0](https://github.com/apiaryio/api-blueprint-ast).
+This object is the [Blueprint](README.md#blueprint-object) object as defined in the [AST Blueprint serialization Media Type v2.1](https://github.com/apiaryio/api-blueprint-ast).
+
+### Source Map
+This object is the [Blueprint Source Map](README.md#blueprint-source-map) object as defined in [AST Blueprint serialization Media Type v2.1](https://github.com/apiaryio/api-blueprint-ast).
 
 ### Error Object
 Description of a parsing error as occurred during parsing. If this field is present and `code` different from `0` then the content of `ast` field should be ignored.
@@ -74,19 +78,23 @@ Parser Result Media Types inherit from the respective [AST Serialization Type](R
 
 + [`application/vnd.apiblueprint.ast.*+json`](#json-serialization)
 + [`application/vnd.apiblueprint.ast.*+yaml`](#yaml-serialization)
++ [`application/vnd.apiblueprint.sourcemap+json`](#json-serialization)
++ [`application/vnd.apiblueprint.sourcemap+yaml`](#yaml-serialization)
 
 ### JSON Serialization
 
-`application/vnd.apiblueprint.parseresult.*+json; version=1.0`
+`application/vnd.apiblueprint.parseresult.*+json; version=2.0`
 
 ```json
 {
-  "_version": "1.0",
+  "_version": "2.0",
   "ast": {
-    "_version": "2.0",
+    "_version": "2.1",
 
     ...
-
+  },
+  "sourcemap": {
+    ...
   },
   "error": {
     "code": <error code>,
@@ -115,15 +123,16 @@ Parser Result Media Types inherit from the respective [AST Serialization Type](R
 
 ### YAML Serialization
 
-`application/vnd.apiblueprint.parseresult.*+yaml; version=1.0`
+`application/vnd.apiblueprint.parseresult.*+yaml; version=2.0`
 
 ```yaml
-_version: "1.0"
+_version: "2.0"
 ast:
-  _version: "2.0"
+  _version: "2.1"
 
   ...
-
+sourcemap:
+  ...
 error:
   code: <error code>
   message: "<error message>"
