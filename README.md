@@ -17,7 +17,7 @@ Converting API Blueprint to AST and its serialization is the task of API Bluepri
 
 ## Version
 
-+ **Version**: 2.0
++ **Version**: 2.1
 + **Created**: 2013-08-30
 + **Updated**: 2014-10-02
 
@@ -258,7 +258,7 @@ For the [API Blueprint Source Map](#source-map-description)
 
 ### JSON Serialization
 
-`application/vnd.apiblueprint.ast.raw+json; version=2.0`
+`application/vnd.apiblueprint.ast.raw+json; version=2.1`
 
 ```json
 {
@@ -399,7 +399,7 @@ For the [API Blueprint Source Map](#source-map-description)
 }
 ```
 
-`application/vnd.apiblueprint.sourcemap+json; version=2.0`
+`application/vnd.apiblueprint.sourcemap+json; version=2.1`
 
 ```json
 {
@@ -614,7 +614,7 @@ For the [API Blueprint Source Map](#source-map-description)
 
 ### YAML Serialization
 
-`application/vnd.apiblueprint.ast.raw+yaml; version=2.0`
+`application/vnd.apiblueprint.ast.raw+yaml; version=2.1`
 
 ```yaml
 _version: <AST version>
@@ -720,7 +720,7 @@ resourceGroups:
           schema: "<resource model schema>"
 ```
 
-`application/vnd.apiblueprint.sourcemap+yaml; version=2.0`
+`application/vnd.apiblueprint.sourcemap+yaml; version=2.1`
 
 ```yaml
 metadata:
