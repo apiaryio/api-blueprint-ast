@@ -96,6 +96,7 @@ An [API Blueprint payload](https://github.com/apiaryio/api-blueprint/blob/master
     + **request** payload: name of the request, if any
     + **response** payload: HTTP status code
 
++ `reference` ([Reference](#reference-object)) - Present if and only if the payload references a [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection)
 + `description` (string) - Description of the payload (`.raw` or `.html`)
 + `headers` (string) - Ordered array of HTTP headers that are expected to be transferred with HTTP message represented by this payload
 + `body` (string) - An entity body to be transferred with HTTP message represented by this payload
@@ -127,6 +128,14 @@ An HTTP transaction example with expected HTTP message request and response payl
 + `requests` (array: [Payload](#payload-object)) - Ordered array of example transaction request payloads
 + `responses` (array: [Payload](#payload-object)) - Ordered array of example transaction response payloads
 
+### Reference Object
+
+A reference object which is used whenever there is a reference from one section to another.
+
+#### Attributes
+
++ `id` (string) - The identifier (name) of the reference
+
 ## Source Map Description
 Following is the description of Source map media types using the [MSON](https://github.com/apiaryio/mson) syntax. The description starts with the top-level blueprint object.
 
@@ -136,7 +145,7 @@ An example source map.
 
 - (array)
   - (array)
-    - 1219 (number) - Start position of the source
+    - 1219 (number) - Zero-based index of the character position of the beginning of the source
     - 30 (number) - Length of the source
   - (array)
     - 1261 (number)
@@ -195,6 +204,7 @@ Source map of [Payload Object](#payload-object)
 #### Attributes
 
 + `name` ([Source Map](#source-map)) - Source map of name of the payload
++ `reference` ([Source Map](#source-map)) - Source map of the reference if the payload references a [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection)
 + `description` ([Source Map](#source-map)) - Source map of description of the payload
 + `headers` (array[[Source Map](#source-map)]) - Ordered array of source maps of HTTP headers that are expected to be transferred with HTTP message represented by this payload. Each item in the header has it's own source map.
 + `body` ([Source Map](#source-map)) - Source map of body to be transferred with HTTP message represented by this payload
@@ -320,7 +330,7 @@ For the [API Blueprint Source Map](#source-map-description)
               "examples": [
                 {
                   "name": "<transaction example name>",
-                  "description": "<transaction example name>",
+                  "description": "<transaction example description>",
                   "requests": [
                     {
                       "name": "<request name>",
@@ -347,6 +357,35 @@ For the [API Blueprint Source Map](#source-map-description)
                       ],
                       "body": "<response body>",
                       "schema": "<response schema>"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "<action name>",
+              "description": "<action description>",
+              "method": "<action HTTP request method>",
+              "parameters": [],
+              "examples": [
+                {
+                  "name": "<transaction example name>",
+                  "description": "<transaction example description>",
+                  "responses": [
+                    {
+                      "name": "<response HTTP status code>",
+                      "reference": {
+                        "id": "<resource model name>"
+                      },
+                      "description": "<resource model description>",
+                      "headers": [
+                        {
+                          "name": "<HTTP header field name>",
+                          "value": "<HTTP header field value>"
+                        }
+                      ],
+                      "body": "<resource model body>",
+                      "schema": "<resource model schema>"
                     }
                   ]
                 }
@@ -524,6 +563,46 @@ For the [API Blueprint Source Map](#source-map-description)
                   ]
                 }
               ]
+            },
+            {
+              "name": [
+                [1219, 24]
+              ],
+              "description": [
+                [1243, 22]
+              ],
+              "method": [
+                [1219, 24]
+              ],
+              "parameters": [],
+              "examples": [
+                {
+                  "name": [],
+                  "description": [],
+                  "responses": [
+                    {
+                      "name": [],
+                      "reference": [
+                        [1270, 24]
+                      ]
+                      "description": [
+                        [214, 29]
+                      ],
+                      "headers": [
+                        [
+                          [267, 56]
+                        ]
+                      ],
+                      "body": [
+                        [344, 26]
+                      ],
+                      "schema": [
+                        [393, 28]
+                      ]
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }
@@ -617,6 +696,28 @@ resourceGroups:
 
           body: "<response body>"
           schema: "<response schema>"
+
+    - name: "<action name>"
+      description: "<action description>"
+      method: "<action HTTP request method>"
+      parameters:
+
+      examples:
+      - name: "<transaction example name>"
+        reference:
+          id: "<resource model name>"
+        description: "<transaction example name>"
+
+        responses:
+        - name: "<response HTTP status code>"
+          description: "<resource model description>"
+
+          headers:
+          - name: "<HTTP header field name>"
+            value: "<HTTP header field value>"
+
+          body: "<resource model body>"
+          schema: "<resource model schema>"
 ```
 
 `application/vnd.apiblueprint.sourcemap+yaml; version=2.0`
@@ -796,6 +897,46 @@ resourceGroups:
           -
             - 1196
             - 22
+    - name:
+      -
+        - 1219
+        - 24
+      description:
+      -
+        - 1243
+        - 22
+      method:
+      -
+        - 1219
+        - 24
+      parameters: []
+      examples:
+      - name: []
+        description: []
+        requests: []
+        responses:
+        - name: []
+          reference:
+          -
+            - 1270
+            - 24
+          description:
+          -
+            - 214
+            - 29
+          headers:
+          -
+            -
+              - 267
+              - 56
+          body:
+          -
+            - 344
+            - 26
+          schema:
+          -
+            - 393
+            - 28
 ```
 
 ## Serialization in Snow Crash
