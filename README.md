@@ -96,7 +96,7 @@ An [API Blueprint payload](https://github.com/apiaryio/api-blueprint/blob/master
     + **request** payload: name of the request, if any
     + **response** payload: HTTP status code
 
-+ `reference` ([Reference](#reference-object)) - Present if and only if the payload references a [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection)
++ `reference` ([Reference](#reference-object)) - Present if and only if a reference to a [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection) is present in the payload and it has been resolved correctly
 + `description` (string) - Description of the payload (`.raw` or `.html`)
 + `headers` (string) - Ordered array of HTTP headers that are expected to be transferred with HTTP message represented by this payload
 + `body` (string) - An entity body to be transferred with HTTP message represented by this payload
@@ -130,7 +130,7 @@ An HTTP transaction example with expected HTTP message request and response payl
 
 ### Reference Object
 
-A reference object which is used whenever there is a reference from one section to another.
+A reference object which is used whenever there is a reference to a [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection).
 
 #### Attributes
 
@@ -153,7 +153,7 @@ An example source map.
 
 ### Blueprint Source Map
 
-Source map of the [Blueprint Object](#blueprint-object)
+Source map of the [Blueprint Object](#blueprint-object).
 
 #### Attributes
 
@@ -164,7 +164,7 @@ Source map of the [Blueprint Object](#blueprint-object)
 
 ### Resource Group Source Map
 
-Source map of the [Resource Group Object](#resource-group-object)
+Source map of the [Resource Group Object](#resource-group-object).
 
 #### Attributes
 
@@ -174,7 +174,7 @@ Source map of the [Resource Group Object](#resource-group-object)
 
 ### Resource Source Map
 
-Source map of the [Resource Object](#resource-object)
+Source map of the [Resource Object](#resource-object).
 
 #### Attributes
 
@@ -187,7 +187,7 @@ Source map of the [Resource Object](#resource-object)
 
 ### Action Source Map
 
-Source map of the [Action Object](#action-object)
+Source map of the [Action Object](#action-object).
 
 #### Attributes
 
@@ -199,12 +199,12 @@ Source map of the [Action Object](#action-object)
 
 ### Payload Source Map
 
-Source map of [Payload Object](#payload-object)
+Source map of [Payload Object](#payload-object). The source map of the payload is in fact the source map of the [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection) when the reference is used.
 
 #### Attributes
 
 + `name` ([Source Map](#source-map)) - Source map of name of the payload
-+ `reference` ([Source Map](#source-map)) - Source map of the reference if the payload references a [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection)
++ `reference` ([Source Map](#source-map)) - Source map of the reference, present if and only if a reference to a [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection) is present in the payload and it has been resolved correctly
 + `description` ([Source Map](#source-map)) - Source map of description of the payload
 + `headers` (array[[Source Map](#source-map)]) - Ordered array of source maps of HTTP headers that are expected to be transferred with HTTP message represented by this payload. Each item in the header has it's own source map.
 + `body` ([Source Map](#source-map)) - Source map of body to be transferred with HTTP message represented by this payload
@@ -212,7 +212,7 @@ Source map of [Payload Object](#payload-object)
 
 ### Parameter Source Map
 
-Source map of [Parameter Object](#parameter-object)
+Source map of [Parameter Object](#parameter-object).
 
 #### Attributes
 
@@ -225,7 +225,7 @@ Source map of [Parameter Object](#parameter-object)
 
 ### Transaction Example Source Map
 
-Source map of [Transaction Example Object](#transaction-example-object)
+Source map of [Transaction Example Object](#transaction-example-object).
 
 #### Attributes
 
