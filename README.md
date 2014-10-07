@@ -19,7 +19,7 @@ Converting API Blueprint to AST and its serialization is the task of API Bluepri
 
 + **Version**: 2.1
 + **Created**: 2013-08-30
-+ **Updated**: 2014-10-02
++ **Updated**: 2014-10-07
 
 ---
 
@@ -39,7 +39,7 @@ Converting API Blueprint to AST and its serialization is the task of API Bluepri
 ## AST Description
 Following is the description of API Blueprint AST media types using the [MSON](https://github.com/apiaryio/mson) syntax. The description starts with the top-level blueprint object.
 
-### Blueprint Object
+### Blueprint
 
 + `_version` (string) - Version of the AST Serialization as [defined](#version) in this document
 + `metadata` (array) - Ordered array of API Blueprint [metadata](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#MetadataSection)
@@ -49,9 +49,9 @@ Following is the description of API Blueprint AST media types using the [MSON](h
 
 + `name` (string) - Name of the API
 + `description` (string) - Top-level description of the API in Markdown (`.raw`) or HTML (`.html`)
-+ `resourceGroups` (array: [Resource Group](#resource-group-object))
++ `resourceGroups` (array[[Resource Group](#resource-group)])
 
-### Resource Group Object
+### Resource Group
 
 Logical group of resources.
 
@@ -59,9 +59,9 @@ Logical group of resources.
 
 + `name` (string) - Name of the Resource Group
 + `description` (string) - Description of the Resource Group (`.raw` or `.html`)
-+ `resources` (array: [Resource](#resource-object)) - Ordered array of the respective resources belonging to the Resource Group
++ `resources` (array[[Resource](#resource)]) - Ordered array of the respective resources belonging to the Resource Group
 
-### Resource Object
+### Resource
 
 Description of one resource, or a cluster of resources defined by its URI template.
 
@@ -70,19 +70,23 @@ Description of one resource, or a cluster of resources defined by its URI templa
 + `name` (string) - Name of the Resource
 + `description` (string) - Description of the Resource (`.raw` or `.html`)
 + `uriTemplate` (string) - URI Template as defined in [RFC6570](http://tools.ietf.org/html/rfc6570)
-+ `model` ([Payload](#payload-object)) - [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection), a reusable payload representing the resource
-+ `parameters` (array: [Parameter](#parameter-object)) - Ordered array of URI parameters
-+ `actions` (array: [Action](#action-object)) - Ordered array of actions available on the resource each defining at least one complete HTTP transaction
++ `model` ([Payload](#payload)) - [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection), a reusable payload representing the resource
++ `parameters` (array[[Parameter](#parameter)]) - Ordered array of URI parameters
++ `actions` (array[[Action](#action)]) - Ordered array of actions available on the resource each defining at least one complete HTTP transaction
 
-### Action Object
+### Action
+
+An HTTP transaction (a request-response transaction). Actions are specified by an HTTP request method within a resource.
+
+#### Attributes
 
 + `name` (string) - Name of the Action
 + `description` (string) - Description of the Action (`.raw` or `.html`)
 + `method` (string) - HTTP request method defining the action
-+ `parameters` (array: [Parameter](#parameter-object)) - Ordered array of resource's URI parameters descriptions specific to this action
-+ `examples` (array: [Transaction Example](#transaction-example-object)) - Ordered array of HTTP transaction [examples](#example-section) for the relevant HTTP request method
++ `parameters` (array[[Parameter](#parameter)]) - Ordered array of resource's URI parameters descriptions specific to this action
++ `examples` (array[[Transaction Example](#transaction-example)]) - Ordered array of HTTP transaction [examples](#example-section) for the relevant HTTP request method
 
-### Payload Object
+### Payload
 
 An [API Blueprint payload](https://github.com/apiaryio/api-blueprint/blob/master/Glossary%20of%20Terms.md#payload).
 
@@ -96,13 +100,13 @@ An [API Blueprint payload](https://github.com/apiaryio/api-blueprint/blob/master
     + **request** payload: name of the request, if any
     + **response** payload: HTTP status code
 
-+ `reference` ([Reference](#reference-object)) - Present if and only if a reference to a [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection) is present in the payload and it has been resolved correctly
++ `reference` ([Reference](#reference)) - Present if and only if a reference to a [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection) is present in the payload and it has been resolved correctly
 + `description` (string) - Description of the payload (`.raw` or `.html`)
 + `headers` (string) - Ordered array of HTTP headers that are expected to be transferred with HTTP message represented by this payload
 + `body` (string) - An entity body to be transferred with HTTP message represented by this payload
 + `schema` (string) - A validation schema for the entity body as defined in `body`
 
-### Parameter Object
+### Parameter
 
 Description of one URI template parameter.
 
@@ -117,7 +121,7 @@ Description of one URI template parameter.
     - (object)
         - `value` (string) - Value choice of for the parameter
 
-### Transaction Example Object
+### Transaction Example
 
 An HTTP transaction example with expected HTTP message request and response payload(s).
 
@@ -125,10 +129,10 @@ An HTTP transaction example with expected HTTP message request and response payl
 
 + `name` (string) - Name of the Transaction Example
 + `description` (string) - Description of the Transaction Example (`.raw` or `.html`)
-+ `requests` (array: [Payload](#payload-object)) - Ordered array of example transaction request payloads
-+ `responses` (array: [Payload](#payload-object)) - Ordered array of example transaction response payloads
++ `requests` (array[[Payload](#payload)]) - Ordered array of example transaction request payloads
++ `responses` (array[[Payload](#payload)]) - Ordered array of example transaction response payloads
 
-### Reference Object
+### Reference
 
 A reference object which is used whenever there is a reference to a [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection).
 
@@ -139,7 +143,7 @@ A reference object which is used whenever there is a reference to a [Resource Mo
 ## Source Map Description
 Following is the description of Source map media types using the [MSON](https://github.com/apiaryio/mson) syntax. The description starts with the top-level blueprint object.
 
-### Source Map Object
+### Source Map
 
 An example source map.
 
@@ -153,7 +157,7 @@ An example source map.
 
 ### Blueprint Source Map
 
-Source map of the [Blueprint Object](#blueprint-object).
+Source map of the [Blueprint](#blueprint).
 
 #### Attributes
 
@@ -164,7 +168,7 @@ Source map of the [Blueprint Object](#blueprint-object).
 
 ### Resource Group Source Map
 
-Source map of the [Resource Group Object](#resource-group-object).
+Source map of the [Resource Group](#resource-group).
 
 #### Attributes
 
@@ -174,7 +178,7 @@ Source map of the [Resource Group Object](#resource-group-object).
 
 ### Resource Source Map
 
-Source map of the [Resource Object](#resource-object).
+Source map of the [Resource](#resource).
 
 #### Attributes
 
@@ -187,7 +191,7 @@ Source map of the [Resource Object](#resource-object).
 
 ### Action Source Map
 
-Source map of the [Action Object](#action-object).
+Source map of the [Action](#action).
 
 #### Attributes
 
@@ -199,7 +203,7 @@ Source map of the [Action Object](#action-object).
 
 ### Payload Source Map
 
-Source map of [Payload Object](#payload-object). The source map of the payload is in fact the source map of the [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection) when the reference is used.
+Source map of [Payload](#payload). The source map of the payload is in fact the source map of the [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection) when the reference is used.
 
 #### Attributes
 
@@ -212,7 +216,7 @@ Source map of [Payload Object](#payload-object). The source map of the payload i
 
 ### Parameter Source Map
 
-Source map of [Parameter Object](#parameter-object).
+Source map of [Parameter](#parameter).
 
 #### Attributes
 
@@ -225,7 +229,7 @@ Source map of [Parameter Object](#parameter-object).
 
 ### Transaction Example Source Map
 
-Source map of [Transaction Example Object](#transaction-example-object).
+Source map of [Transaction Example](#transaction-example).
 
 #### Attributes
 

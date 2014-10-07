@@ -7,7 +7,7 @@ This document describes API Blueprint Serialized Parse Result Media Types – th
 
 + **Version**: 2.0
 + **Created**: 2014-06-09
-+ **Updated**: 2014-10-02
++ **Updated**: 2014-10-07
 + **AST Serialization Media Types**: 2.1
 
 ---
@@ -28,36 +28,36 @@ Following is the descripton of Parse Result media types using the [MSON](https:/
 ### Parse Result Object
 
 - `_version` (string) - Version of the Parse Result Media Type as [defined](#version) in this document
-- `ast` ([AST](#ast-object)) - This is the abstract syntax tree (AST) of the parsed blueprint
+- `ast` ([AST](#ast)) - This is the abstract syntax tree (AST) of the parsed blueprint
 - `sourcemap` ([Source Map](#source-map)) - This is the sourcemap tree of the parsed blueprint whose content may not be present if the option to export source maps is not present
-- `error` ([Error](#error-object)) - Parsing error, if any
-- `warnings` (array: [Warning](#warning-object)) - Ordered array of warnings occurred during the parsing, if any
+- `error` ([Error](#error)) - Parsing error, if any
+- `warnings` (array[[Warning](#warning)]) - Ordered array of warnings occurred during the parsing, if any
 
-### AST Object
+### AST
 This object is the [Blueprint](README.md#blueprint-object) object as defined in the [AST Blueprint serialization Media Type v2.1](https://github.com/apiaryio/api-blueprint-ast).
 
 ### Source Map
 This object is the [Blueprint Source Map](README.md#blueprint-source-map) object as defined in [AST Blueprint serialization Media Type v2.1](https://github.com/apiaryio/api-blueprint-ast).
 
-### Error Object
+### Error
+
 Description of a parsing error as occurred during parsing. If this field is present and `code` different from `0` then the content of `ast` field should be ignored.
 
 #### Attributes
 
 + `code` (number) - Error code. The `0` means success – no error occurred
 + `message` (string) - Error message
-+ `location` (array: [Location](#location-object)) – Error source map
++ `location` ([Source Map](README.md#source-map)]) – Error source map
 
-### Warning Object
+### Warning
+
+Description of a warning from the parser.
+
+#### Attributes
 
 + `code` (number) - Warning [group code](https://github.com/apiaryio/snowcrash/blob/master/src/SourceAnnotation.h#L128)
 + `message` (string) - Warning message
-+ `location` (array: [Location](#location-object)) – Warning source map
-
-### Location Object
-
-+ `index` (number) - Zero-based index of the character where warning has occurred
-+ `length` (number) - Number of the characters from index where warning has occurred
++ `location` ([Source Map](README.md#source-map)]) – Warning source map
 
 ---
 
