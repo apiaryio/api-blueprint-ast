@@ -43,21 +43,21 @@ This object is the [Blueprint Source Map](README.md#blueprint-source-map) object
 
 Description of a parsing error as occurred during parsing. If this field is present and `code` different from `0` then the content of `ast` field should be ignored.
 
-#### Attributes
+#### Properties
 
 + `code` (number) - Error code. The `0` means success – no error occurred
 + `message` (string) - Error message
-+ `location` ([Source Map](README.md#source-map)]) – Error source map
++ `location` ([Source Map](README.md#source-map)) – Error source map
 
 ### Warning
 
 Description of a warning from the parser.
 
-#### Attributes
+#### Properties
 
 + `code` (number) - Warning [group code](https://github.com/apiaryio/snowcrash/blob/master/src/SourceAnnotation.h#L128)
 + `message` (string) - Warning message
-+ `location` ([Source Map](README.md#source-map)]) – Warning source map
++ `location` ([Source Map](README.md#source-map)) – Warning source map
 
 ---
 

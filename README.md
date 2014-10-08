@@ -55,7 +55,7 @@ Following is the description of API Blueprint AST media types using the [MSON](h
 
 Logical group of resources.
 
-#### Attributes
+#### Properties
 
 + `name` (string) - Name of the Resource Group
 + `description` (string) - Description of the Resource Group (`.raw` or `.html`)
@@ -65,7 +65,7 @@ Logical group of resources.
 
 Description of one resource, or a cluster of resources defined by its URI template.
 
-#### Attributes
+#### Properties
 
 + `name` (string) - Name of the Resource
 + `description` (string) - Description of the Resource (`.raw` or `.html`)
@@ -78,7 +78,7 @@ Description of one resource, or a cluster of resources defined by its URI templa
 
 An HTTP transaction (a request-response transaction). Actions are specified by an HTTP request method within a resource.
 
-#### Attributes
+#### Properties
 
 + `name` (string) - Name of the Action
 + `description` (string) - Description of the Action (`.raw` or `.html`)
@@ -90,7 +90,7 @@ An HTTP transaction (a request-response transaction). Actions are specified by a
 
 An [API Blueprint payload](https://github.com/apiaryio/api-blueprint/blob/master/Glossary%20of%20Terms.md#payload).
 
-#### Attributes
+#### Properties
 
 + `name` (string) - Name of the payload
 
@@ -110,7 +110,7 @@ An [API Blueprint payload](https://github.com/apiaryio/api-blueprint/blob/master
 
 Description of one URI template parameter.
 
-#### Attributes
+#### Properties
 
 - `description` (string) - Description of the parameter (`.raw` or `.html`)
 - `type` (string) - An arbitrary type of the parameter (a string)
@@ -125,7 +125,7 @@ Description of one URI template parameter.
 
 An HTTP transaction example with expected HTTP message request and response payload(s).
 
-#### Attributes
+#### Properties
 
 + `name` (string) - Name of the Transaction Example
 + `description` (string) - Description of the Transaction Example (`.raw` or `.html`)
@@ -136,7 +136,7 @@ An HTTP transaction example with expected HTTP message request and response payl
 
 A reference object which is used whenever there is a reference to a [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection).
 
-#### Attributes
+#### Properties
 
 + `id` (string) - The identifier (name) of the reference
 
@@ -159,7 +159,7 @@ An example source map.
 
 Source map of the [Blueprint](#blueprint).
 
-#### Attributes
+#### Properties
 
 + `metadata` (array[[Source Map](#source-map)]) - An array of source maps where each item in metadata has its own source map
 + `name` ([Source Map](#source-map)) - Source map of API name
@@ -170,7 +170,7 @@ Source map of the [Blueprint](#blueprint).
 
 Source map of the [Resource Group](#resource-group).
 
-#### Attributes
+#### Properties
 
 + `name` ([Source Map](#source-map)) - Source map of name of the Resource Group
 + `description` ([Source Map](#source-map)) - Source map of description of the Resource Group
@@ -180,7 +180,7 @@ Source map of the [Resource Group](#resource-group).
 
 Source map of the [Resource](#resource).
 
-#### Attributes
+#### Properties
 
 + `name` ([Source Map](#source-map)) - Source map of name of the Resource
 + `description` ([Source Map](#source-map)) - Source map of description of the Resource
@@ -193,7 +193,7 @@ Source map of the [Resource](#resource).
 
 Source map of the [Action](#action).
 
-#### Attributes
+#### Properties
 
 + `name` ([Source Map](#source-map)) - Source map of name of the Action
 + `description` ([Source Map](#source-map)) - Source map of description of the Action
@@ -205,7 +205,7 @@ Source map of the [Action](#action).
 
 Source map of [Payload](#payload). The source map of the payload is in fact the source map of the [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection) when the reference is used.
 
-#### Attributes
+#### Properties
 
 + `name` ([Source Map](#source-map)) - Source map of name of the payload
 + `reference` ([Source Map](#source-map)) - Source map of the reference, present if and only if a reference to a [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection) is present in the payload and it has been resolved correctly
@@ -218,7 +218,7 @@ Source map of [Payload](#payload). The source map of the payload is in fact the 
 
 Source map of [Parameter](#parameter).
 
-#### Attributes
+#### Properties
 
 - `description` ([Source Map](#source-map)) - Source map of description of the parameter
 - `type` ([Source Map](#source-map)) - Source map of an arbitrary type of the parameter (a string)
@@ -231,7 +231,7 @@ Source map of [Parameter](#parameter).
 
 Source map of [Transaction Example](#transaction-example).
 
-#### Attributes
+#### Properties
 
 + `name` ([Source Map](#source-map)) - Source map of name of the Transaction Example
 + `description` ([Source Map](#source-map)) - Source map of description of the Transaction Example
