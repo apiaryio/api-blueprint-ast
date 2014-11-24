@@ -17,9 +17,9 @@ Converting API Blueprint to AST and its serialization is the task of API Bluepri
 
 ## Version
 
-+ **Version**: 2.1
++ **Version**: 3.0
 + **Created**: 2013-08-30
-+ **Updated**: 2014-10-07
++ **Updated**: 2014-11-24
 
 ---
 
@@ -37,6 +37,7 @@ Converting API Blueprint to AST and its serialization is the task of API Bluepri
 ---
 
 ## AST Description
+
 Following is the description of API Blueprint AST media types using the [MSON](https://github.com/apiaryio/mson) syntax. The description starts with the top-level blueprint object.
 
 ### Blueprint
@@ -72,6 +73,10 @@ Description of one resource, or a cluster of resources defined by its URI templa
 + `uriTemplate` (string) - URI Template as defined in [RFC6570](http://tools.ietf.org/html/rfc6570)
 + `model` ([Payload](#payload)) - [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection), a reusable payload representing the resource
 + `parameters` (array[[Parameter](#parameter)]) - Ordered array of URI parameters
++ `attributes` ([Attributes][]) - Description of the Resource attributes.
+
+    In the case of a Resource with `name`, this section represents [MSON Named Type][].
+
 + `actions` (array[[Action](#action)]) - Ordered array of actions available on the resource each defining at least one complete HTTP transaction
 
 ### Action
@@ -84,6 +89,7 @@ An HTTP transaction (a request-response transaction). Actions are specified by a
 + `description` (string) - Description of the Action (`.raw` or `.html`)
 + `method` (string) - HTTP request method defining the action
 + `parameters` (array[[Parameter](#parameter)]) - Ordered array of resource's URI parameters descriptions specific to this action
++ `attributes` ([Attributes][]) - Description of the action input attributes – the default properties of the request message-body.
 + `examples` (array[[Transaction Example](#transaction-example)]) - Ordered array of HTTP transaction [examples](#example-section) for the relevant HTTP request method
 
 ### Payload
@@ -102,6 +108,7 @@ An [API Blueprint payload](https://github.com/apiaryio/api-blueprint/blob/master
 
 + `reference` ([Reference](#reference)) - Present if and only if a reference to a [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection) is present in the payload and it has been resolved correctly
 + `description` (string) - Description of the payload (`.raw` or `.html`)
++ `attributes` ([Attributes][]) - Description of the message-body attributes
 + `headers` (string) - Ordered array of HTTP headers that are expected to be transferred with HTTP message represented by this payload
 + `body` (string) - An entity body to be transferred with HTTP message represented by this payload
 + `schema` (string) - A validation schema for the entity body as defined in `body`
@@ -139,6 +146,36 @@ A reference object which is used whenever there is a reference to a [Resource Mo
 #### Properties
 
 + `id` (string) - The identifier (name) of the reference
+
+### Attributes
+
+Definition of the respective data structure attributes as described using the [MSON][] syntax.
+
+> **NOTE:** Properties of this object may use types defined in [MSON AST][]. 
+
+#### Properties
++ `name` ([Type Name][]) 
+
+    Name of the type being defined, see MSON AST's [Type Name][].
+
+    This property is only present when the [Attribute section][] defines an MSON named type, such as in the context of the [Resource section][].
+
++ `base` ([Type Definition][])
+
+    Ancestor type as defined by the MSON AST's [Type Definition][].
+
++ `sections` (array[[Type Section][]])
+
+    Ordered list of type sections as defined by the MSON AST's [Type Section][].
+
+### Data Structures
+
+List of arbitrary data structures defined as [MSON Named Types][].
+
+#### Properties
+- `types` (array[[Named Type][]]) - Array of defined types
+
+---
 
 ## Source Map Description
 Following is the description of Source map media types using the [MSON](https://github.com/apiaryio/mson) syntax. The description starts with the top-level blueprint object.
@@ -959,3 +996,18 @@ MIT License. See the [LICENSE](LICENSE) file.
 
 
 [parsing media types]: Parse%20Result.md
+
+[MSON]: https://github.com/apiaryio/mson
+[MSON AST]: https://github.com/apiaryio/mson-ast
+[MSON Named Type]: https://github.com/apiaryio/mson/blob/master/MSON%20Specification.md#22-named-types
+[MSON Named Types]: https://github.com/apiaryio/mson/blob/master/MSON%20Specification.md#22-named-types
+
+[Named Type]: https://github.com/apiaryio/mson-ast#named-type
+[Type Name]: https://github.com/apiaryio/mson-ast#type-name
+[Type Definition]: https://github.com/apiaryio/mson-ast#type-definition
+[Type Section]: https://github.com/apiaryio/mson-ast#type-section
+
+[Attribute section]: https://github.com/apiaryio/api-blueprint/blob/zdne/attributes-description/API%20Blueprint%20Specification.md#def-attributes-section
+[Resource section]: https://github.com/apiaryio/api-blueprint/blob/zdne/attributes-description/API%20Blueprint%20Specification.md#def-resource-section
+
+[Attributes]: #attributes
