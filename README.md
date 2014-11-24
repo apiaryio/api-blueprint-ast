@@ -155,6 +155,7 @@ Definition of the respective data structure attributes as described using the [M
 > **NOTE:** Properties of this object may use types defined in [MSON AST][]. 
 
 #### Properties
+
 + `name` ([Type Name][]) 
 
     Name of the type being defined, see MSON AST's [Type Name][].
@@ -349,6 +350,11 @@ For the [API Blueprint Source Map](#source-map-description)
               ]
             }
           ],
+          "attributes": {
+            "name": <MSON Type Name>,
+            "base": <MSON Type Definition>,
+            "sections": [ <MSON Type Section> ]
+          },
           "actions": [
             {
               "name": "<action name>",
@@ -369,6 +375,10 @@ For the [API Blueprint Source Map](#source-map-description)
                   ]
                 }
               ],
+              "attributes": {
+                "base": <MSON Type Definition>,
+                "sections": [ <MSON Type Section> ]
+              }, 
               "examples": [
                 {
                   "name": "<transaction example name>",
@@ -383,6 +393,10 @@ For the [API Blueprint Source Map](#source-map-description)
                           "value": "<HTTP header field value>"
                         }
                       ],
+                      "attributes": {
+                        "base": <MSON Type Definition>,
+                        "sections": [ <MSON Type Section> ]
+                      },
                       "body": "<request body>",
                       "schema": "<request schema>"
                     }
@@ -397,6 +411,10 @@ For the [API Blueprint Source Map](#source-map-description)
                           "value": "<HTTP header field value>"
                         }
                       ],
+                      "attributes": {
+                        "base": <MSON Type Definition>,
+                        "sections": [ <MSON Type Section> ]
+                      },
                       "body": "<response body>",
                       "schema": "<response schema>"
                     }
@@ -698,6 +716,12 @@ resourceGroups:
       values:
       - value: "<enum element>"
 
+    attributes:
+      name: <MSON Type Name>
+      base: <MSON Type Definition>
+      sections:
+        - <MSON Type Section>
+
     actions:
     - name: "<action name>"
       description: "<action description>"
@@ -713,6 +737,11 @@ resourceGroups:
         values:
         - value: "<enum element>"
 
+      attributes:
+        base: <MSON Type Definition>
+        sections:
+          - <MSON Type Section>
+
       examples:
       - name: "<transaction example name>"
         description: "<transaction example name>"
@@ -725,6 +754,11 @@ resourceGroups:
           - name: "<HTTP header field name>"
             value: "<HTTP header field value>"
 
+          attributes:
+            base: <MSON Type Definition>
+            sections:
+              - <MSON Type Section>
+
           body: "<request body>"
           schema: "<request schema>"
 
@@ -735,6 +769,11 @@ resourceGroups:
           headers:
           - name: "<HTTP header field name>"
             value: "<HTTP header field value>"
+
+          attributes:
+            base: <MSON Type Definition>
+            sections:
+              - <MSON Type Section>
 
           body: "<response body>"
           schema: "<response schema>"
