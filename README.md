@@ -51,6 +51,7 @@ Following is the description of API Blueprint AST media types using the [MSON](h
 + `name` (string) - Name of the API
 + `description` (string) - Top-level description of the API in Markdown (`.raw`) or HTML (`.html`)
 + `resourceGroups` (array[[Resource Group](#resource-group)])
++ `dataStructures` (array[[Data Structures][]]) 
 
 ### Resource Group
 
@@ -1012,3 +1013,4 @@ MIT License. See the [LICENSE](LICENSE) file.
 [Resource section]: https://github.com/apiaryio/api-blueprint/blob/zdne/attributes-description/API%20Blueprint%20Specification.md#def-resource-section
 
 [Attributes]: #attributes
+[Data Structures]: #data-structures
