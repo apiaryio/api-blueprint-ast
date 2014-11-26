@@ -19,7 +19,7 @@ Converting API Blueprint to AST and its serialization is the task of API Bluepri
 
 + **Version**: 3.0
 + **Created**: 2013-08-30
-+ **Updated**: 2014-11-24
++ **Updated**: 2014-11-26
 
 ---
 
@@ -28,9 +28,8 @@ Converting API Blueprint to AST and its serialization is the task of API Bluepri
 + [AST Description](#ast-description)
 + [Source map Description](#source-map-description)
 + [Media Types](#media-types)
-+ [JSON serialization](#json-serialization)
-+ [YAML serialization](#yaml-serialization)
 + [Keys description](#keys-description)
++ [Example: JSON serialization](#json-serialization)
 + [Serialization in Snow Crash](#serialization-in-snow-crash)
 + [Serialized Parsing Result Media Types][parsing media types]
 
@@ -148,34 +147,33 @@ A reference object which is used whenever there is a reference to a [Resource Mo
 
 + `id` (string) - The identifier (name) of the reference
 
-### Attributes
+### Attributes ([Data Structure][])
 
-Definition of the respective data structure attributes as described using the [MSON][] syntax.
+Data structure definition as written in an API Blueprint [Attributes section][Attribute section].
 
-> **NOTE:** Properties of this object may use types defined in [MSON AST][]. 
+> **Note:** The `name` property of the [Data Structure][]'s `type` property is only present when the respective [Attribute section][] defines an MSON named type, such as in the context of the [Resource section][]. Otherwise (in the case of a Payload, Action or an unnamed Resource) the Attributes section is considered to be anonymous named type.
 
-#### Properties
+### Data Structure
 
-+ `name` ([Type Name][]) 
+Definition of an [MSON][] data structure.
 
-    Name of the type being defined, see MSON AST's [Type Name][].
+> **NOTE:** Properties of this object may use some types defined in the [MSON AST][]. 
 
-    This property is only present when the [Attribute section][] defines an MSON named type, such as in the context of the [Resource section][].
+#### Properties 
++ `type` ([Named Type][]) - Data Structure as described in the source API Blueprint
 
-+ `base` ([Type Definition][])
++ `resolvedType` ([Named Type][])
 
-    Ancestor type as defined by the MSON AST's [Type Definition][].
+    `type` property [Named Type][] as resolved by parser harness or subsequent tooling. Usually created by expanding Type references.
 
-+ `sections` (array[[Type Section][]])
-
-    Ordered list of type sections as defined by the MSON AST's [Type Section][].
+    If present, this subtree must be a super set of the `type` property sub tree. In other words it must be safe to use  `resolvedType` instead of `type`, when presented.
 
 ### Data Structures
 
-List of arbitrary data structures defined as [MSON Named Types][].
+List of arbitrary data structures defined in API Blueprint.
 
 #### Properties
-- `types` (array[[Named Type][]]) - Array of defined types
++ `types` (array[[Data Structure][]]) - Array of defined data structures
 
 ---
 
@@ -301,7 +299,7 @@ For the [API Blueprint Source Map](#source-map-description)
 
 ### JSON Serialization
 
-`application/vnd.apiblueprint.ast.raw+json; version=2.1`
+`application/vnd.apiblueprint.ast.raw+json; version=3.0`
 
 ```json
 {
@@ -332,6 +330,17 @@ For the [API Blueprint Source Map](#source-map-description)
                 "value": "<HTTP header field value>"
               }
             ],
+            "attributes": {
+              "type": {
+                "name": null,
+                "base": {
+                  "typeSpecification": {
+                    "name": "<sub-type>"
+                  }
+                },
+                "sections": null
+              }
+            },
             "body": "<resource model body>",
             "schema": "<resource model schema>"
           },
@@ -351,9 +360,17 @@ For the [API Blueprint Source Map](#source-map-description)
             }
           ],
           "attributes": {
-            "name": <MSON Type Name>,
-            "base": <MSON Type Definition>,
-            "sections": [ <MSON Type Section> ]
+            "type": {
+              "name": {
+                "literal": "<resource name>"
+              },
+              "base": {
+                "typeSpecification": {
+                  "name": "<sub-type>"
+                }
+              },
+              "sections": null
+            }
           },
           "actions": [
             {
@@ -376,9 +393,16 @@ For the [API Blueprint Source Map](#source-map-description)
                 }
               ],
               "attributes": {
-                "base": <MSON Type Definition>,
-                "sections": [ <MSON Type Section> ]
-              }, 
+                "type": {
+                  "name": null,
+                  "base": {
+                    "typeSpecification": {
+                      "name": "<sub-type>"
+                    }
+                  },
+                  "sections": null
+                }
+              },
               "examples": [
                 {
                   "name": "<transaction example name>",
@@ -394,8 +418,15 @@ For the [API Blueprint Source Map](#source-map-description)
                         }
                       ],
                       "attributes": {
-                        "base": <MSON Type Definition>,
-                        "sections": [ <MSON Type Section> ]
+                        "type": {
+                          "name": null,
+                          "base": {
+                            "typeSpecification": {
+                              "name": "<sub-type>"
+                            }
+                          },
+                          "sections": null
+                        }
                       },
                       "body": "<request body>",
                       "schema": "<request schema>"
@@ -412,8 +443,15 @@ For the [API Blueprint Source Map](#source-map-description)
                         }
                       ],
                       "attributes": {
-                        "base": <MSON Type Definition>,
-                        "sections": [ <MSON Type Section> ]
+                        "type": {
+                          "name": null,
+                          "base": {
+                            "typeSpecification": {
+                              "name": "<sub-type>"
+                            }
+                          },
+                          "sections": null
+                        }
                       },
                       "body": "<response body>",
                       "schema": "<response schema>"
@@ -644,7 +682,7 @@ For the [API Blueprint Source Map](#source-map-description)
                       "name": [],
                       "reference": [
                         [1270, 24]
-                      ]
+                      ],
                       "description": [
                         [214, 29]
                       ],
@@ -670,354 +708,6 @@ For the [API Blueprint Source Map](#source-map-description)
     }
   ]
 }
-```
-
-### YAML Serialization
-
-`application/vnd.apiblueprint.ast.raw+yaml; version=2.1`
-
-```yaml
-_version: <AST version>
-
-metadata:
-- name: "<metadata key name>"
-  value: "<metadata value>"
-
-name: "<API name>"
-description: "<API description>"
-
-resourceGroups:
-- name: "<resource group name>"
-  description: "<resource group description>"
-
-  resources:
-  - name: "<resource name>"
-    description: "<resource description>"
-    uriTemplate: "<resource URI template>"
-
-    model:
-      name: "<resource model name>"
-      description: "<resource model description>"
-
-      headers:
-      - name: "<HTTP header field name>"
-        value: "<HTTP header field value>"
-
-      body: "<resource model body>"
-      schema: "<resource model schema>"
-
-    parameters:
-    - name: "<name>"
-      description: "<description>"
-      type: "<type>"
-      required: "<required parameter flag>"
-      default: "<default value>"
-      example: "<example value>"
-      values:
-      - value: "<enum element>"
-
-    attributes:
-      name: <MSON Type Name>
-      base: <MSON Type Definition>
-      sections:
-        - <MSON Type Section>
-
-    actions:
-    - name: "<action name>"
-      description: "<action description>"
-      method: "<action HTTP request method>"
-
-      parameters:
-      - name: "<name>"
-        description: "<description>"
-        type: "<type>"
-        required: "<required parameter flag>"
-        default: "<default value>"
-        example: "<example value>"
-        values:
-        - value: "<enum element>"
-
-      attributes:
-        base: <MSON Type Definition>
-        sections:
-          - <MSON Type Section>
-
-      examples:
-      - name: "<transaction example name>"
-        description: "<transaction example name>"
-
-        requests:
-        - name: "<request name>"
-          description: "<request description>"
-
-          headers:
-          - name: "<HTTP header field name>"
-            value: "<HTTP header field value>"
-
-          attributes:
-            base: <MSON Type Definition>
-            sections:
-              - <MSON Type Section>
-
-          body: "<request body>"
-          schema: "<request schema>"
-
-        responses:
-        - name: "<response HTTP status code>"
-          description: "<response description>"
-
-          headers:
-          - name: "<HTTP header field name>"
-            value: "<HTTP header field value>"
-
-          attributes:
-            base: <MSON Type Definition>
-            sections:
-              - <MSON Type Section>
-
-          body: "<response body>"
-          schema: "<response schema>"
-
-    - name: "<action name>"
-      description: "<action description>"
-      method: "<action HTTP request method>"
-      parameters:
-
-      examples:
-      - name: "<transaction example name>"
-        reference:
-          id: "<resource model name>"
-        description: "<transaction example name>"
-
-        responses:
-        - name: "<response HTTP status code>"
-          description: "<resource model description>"
-
-          headers:
-          - name: "<HTTP header field name>"
-            value: "<HTTP header field value>"
-
-          body: "<resource model body>"
-          schema: "<resource model schema>"
-```
-
-`application/vnd.apiblueprint.sourcemap+yaml; version=2.1`
-
-```yaml
-metadata:
--
-  -
-    - 0
-    - 39
-name:
--
-  - 39
-  - 13
-description:
--
-  - 52
-  - 19
-resourceGroups:
-- name:
-  -
-    - 71
-    - 30
-  description:
-  -
-    - 101
-    - 30
-  resources:
-  - name:
-    -
-      - 131
-      - 46
-    description:
-    -
-      - 177
-      - 24
-    uriTemplate:
-    -
-      - 131
-      - 46
-    model:
-      name:
-      -
-        - 131
-        - 46
-      description:
-      -
-        - 214
-        - 29
-      headers:
-      -
-        -
-          - 267
-          - 56
-      body:
-      -
-        - 344
-        - 26
-      schema:
-      -
-        - 393
-        - 28
-    parameters:
-    - name:
-      -
-        - 441
-        - 81
-      description:
-      -
-        - 441
-        - 81
-      type:
-      -
-        - 441
-        - 81
-      required:
-      -
-        - 441
-        - 81
-      default:
-      -
-        - 441
-        - 81
-      example:
-      -
-        - 441
-        - 81
-      values:
-      - 
-        -
-          - 552
-          - 19
-    actions:
-    - name:
-      -
-        - 572
-        - 24
-      description:
-      -
-        - 596
-        - 22
-      method:
-      -
-        - 572
-        - 24
-      parameters:
-      - name:
-        -
-          - 637
-          - 81
-        description:
-        -
-          - 637
-          - 81
-        type:
-        -
-          - 637
-          - 81
-        required:
-        -
-          - 637
-          - 81
-        default:
-        -
-          - 637
-          - 81
-        example:
-        -
-          - 637
-          - 81
-        values:
-        - 
-          -
-            - 748
-            - 19
-      examples:
-      - name: []
-        description: []
-        requests:
-        - name:
-          -
-            - 770
-            - 24
-          description:
-          -
-            - 798
-            - 22
-          headers:
-          -
-            -
-              - 844
-              - 56
-          body:
-          -
-            - 921
-            - 19
-          schema:
-          -
-            - 963
-            - 21
-        responses:
-        - name: []
-          description:
-          -
-            - 1029
-            - 23
-          headers:
-          -
-            -
-              - 1076
-              - 56
-          body:
-          -
-            - 1153
-            - 20
-          schema:
-          -
-            - 1196
-            - 22
-    - name:
-      -
-        - 1219
-        - 24
-      description:
-      -
-        - 1243
-        - 22
-      method:
-      -
-        - 1219
-        - 24
-      parameters: []
-      examples:
-      - name: []
-        description: []
-        requests: []
-        responses:
-        - name: []
-          reference:
-          -
-            - 1270
-            - 24
-          description:
-          -
-            - 214
-            - 29
-          headers:
-          -
-            -
-              - 267
-              - 56
-          body:
-          -
-            - 344
-            - 26
-          schema:
-          -
-            - 393
-            - 28
 ```
 
 ## Serialization in Snow Crash
@@ -1051,4 +741,5 @@ MIT License. See the [LICENSE](LICENSE) file.
 [Resource section]: https://github.com/apiaryio/api-blueprint/blob/zdne/attributes-description/API%20Blueprint%20Specification.md#def-resource-section
 
 [Attributes]: #attributes
+[Data Structure]: #data-structure
 [Data Structures]: #data-structures
