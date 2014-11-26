@@ -29,7 +29,7 @@ Converting API Blueprint to AST and its serialization is the task of API Bluepri
 + [Source map Description](#source-map-description)
 + [Media Types](#media-types)
 + [Keys description](#keys-description)
-+ [Example: JSON serialization](#json-serialization)
++ [Example: JSON serialization](#example-json-serialization)
 + [Serialization in Snow Crash](#serialization-in-snow-crash)
 + [Serialized Parsing Result Media Types][parsing media types]
 
@@ -110,8 +110,30 @@ An [API Blueprint payload](https://github.com/apiaryio/api-blueprint/blob/master
 + `description` (string) - Description of the payload (`.raw` or `.html`)
 + `attributes` ([Attributes][]) - Description of the message-body attributes
 + `headers` (string) - Ordered array of HTTP headers that are expected to be transferred with HTTP message represented by this payload
-+ `body` (string) - An entity body to be transferred with HTTP message represented by this payload
-+ `schema` (string) - A validation schema for the entity body as defined in `body`
++ `bodyAsset` ([Asset][]) - Message-body asset
++ `body` (string) 
+    
+    **Deprecated** – please use `bodyAsset` instead.
+
+    _An entity body to be transferred with HTTP message represented by this payload._
+
++ `schemaAsset` ([Asset][]) - Validation schema for message-body asset. 
++ `schema` (string)
+
+    **Deprecated** – please use `schemaAsset` instead.
+
+    _A validation schema for the entity body as defined in `body`._
+
+### Asset
+
+An [API Blueprint asset][].
+
+#### Properties
++ `asset` (string) - The Asset in its textual representation, as written in the source API Blueprint
+
++ `resolvedAsset` (string)
+
+    `asset` property `string` as resolved by parser harness or subsequent tooling. Usually created from a [Data Structure][] description or fetching the Asset from an URL. 
 
 ### Parameter
 
@@ -167,7 +189,7 @@ Definition of an [MSON][] data structure.
 
     `type` property [Named Type][] as resolved by parser harness or subsequent tooling. Usually created by expanding Type references.
 
-    If present, this subtree must be a super set of the `type` property sub tree. In other words it must be safe to use  `resolvedType` instead of `type`, when presented.
+    If present, this subtree MUST be a super set of the `type` property sub tree.
 
 ### Data Structures
 
@@ -298,7 +320,7 @@ For the [API Blueprint Source Map](#source-map-description)
 + `application/vnd.apiblueprint.sourcemap+json`
 + `application/vnd.apiblueprint.sourcemap+yaml`
 
-### JSON Serialization
+### Example: JSON Serialization
 
 `application/vnd.apiblueprint.ast.raw+json; version=3.0`
 
@@ -342,8 +364,12 @@ For the [API Blueprint Source Map](#source-map-description)
                 "sections": null
               }
             },
-            "body": "<resource model body>",
-            "schema": "<resource model schema>"
+            "bodyAsset": {
+              "asset": "<resource model body>"
+            },
+            "schemaAsset": {
+              "asset": "<resource model schema>"
+            }
           },
           "parameters": [
             {
@@ -429,8 +455,12 @@ For the [API Blueprint Source Map](#source-map-description)
                           "sections": null
                         }
                       },
-                      "body": "<request body>",
-                      "schema": "<request schema>"
+                      "bodyAsset": {
+                        "asset": "<request body>"
+                      },
+                      "schemaAsset": {
+                        "asset": "<request schema>"
+                      }
                     }
                   ],
                   "responses": [
@@ -454,8 +484,12 @@ For the [API Blueprint Source Map](#source-map-description)
                           "sections": null
                         }
                       },
-                      "body": "<response body>",
-                      "schema": "<response schema>"
+                      "bodyAsset": {
+                        "asset": "<response body>"
+                      },
+                      "schemaAsset": {
+                        "asset": "<response schema>"
+                      }
                     }
                   ]
                 }
@@ -483,8 +517,12 @@ For the [API Blueprint Source Map](#source-map-description)
                           "value": "<HTTP header field value>"
                         }
                       ],
-                      "body": "<resource model body>",
-                      "schema": "<resource model schema>"
+                      "bodyAsset": {
+                        "asset": "<resource model body>"
+                      },
+                      "schemaAsset": {
+                        "asset": "<resource model schema>"
+                      }
                     }
                   ]
                 }
@@ -725,22 +763,35 @@ Similarly, it also supports serialization of [API Blueprint Source Map](https://
 
 MIT License. See the [LICENSE](LICENSE) file.
 
+<!-- API Blueprint AST -->
 
 [parsing media types]: Parse%20Result.md
+
+<!-- MSON -->
 
 [MSON]: https://github.com/apiaryio/mson
 [MSON AST]: https://github.com/apiaryio/mson-ast
 [MSON Named Type]: https://github.com/apiaryio/mson/blob/master/MSON%20Specification.md#22-named-types
 [MSON Named Types]: https://github.com/apiaryio/mson/blob/master/MSON%20Specification.md#22-named-types
 
+<!-- MSON AST -->
+
 [Named Type]: https://github.com/apiaryio/mson-ast#named-type
 [Type Name]: https://github.com/apiaryio/mson-ast#type-name
 [Type Definition]: https://github.com/apiaryio/mson-ast#type-definition
 [Type Section]: https://github.com/apiaryio/mson-ast#type-section
 
+[API Blueprint asset]: https://github.com/apiaryio/api-blueprint/blob/master/Glossary%20of%20Terms.md#asset
+
+<!-- API Blueprint Attributes -->
+
 [Attribute section]: https://github.com/apiaryio/api-blueprint/blob/zdne/attributes-description/API%20Blueprint%20Specification.md#def-attributes-section
 [Resource section]: https://github.com/apiaryio/api-blueprint/blob/zdne/attributes-description/API%20Blueprint%20Specification.md#def-resource-section
 
+<!-- Document anchors -->
+
+[Asset]: #asset
 [Attributes]: #attributes
 [Data Structure]: #data-structure
 [Data Structures]: #data-structures
+
