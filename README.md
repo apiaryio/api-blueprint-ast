@@ -110,19 +110,13 @@ An [API Blueprint payload](https://github.com/apiaryio/api-blueprint/blob/master
 + `description` (string) - Description of the payload (`.raw` or `.html`)
 + `attributes` ([Attributes][]) - Description of the message-body attributes
 + `headers` (string) - Ordered array of HTTP headers that are expected to be transferred with HTTP message represented by this payload
-+ `bodyAsset` ([Asset][]) - Message-body asset
-+ `body` (string) 
-    
-    **Deprecated** – please use `bodyAsset` instead.
++ `bodyAsset` ([Asset][])
 
-    _An entity body to be transferred with HTTP message represented by this payload._
+    An entity body to be transferred with HTTP message represented by this payload.
 
-+ `schemaAsset` ([Asset][]) - Validation schema for message-body asset. 
-+ `schema` (string)
++ `schemaAsset` ([Asset][])
 
-    **Deprecated** – please use `schemaAsset` instead.
-
-    _A validation schema for the entity body as defined in `body`._
+    A validation schema for the entity body as defined in `bodyAsset`.
 
 ### Asset
 
