@@ -74,9 +74,6 @@ Description of one resource, or a cluster of resources defined by its URI templa
 + `model` ([Payload](#payload)) - [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection), a reusable payload representing the resource
 + `parameters` (array[[Parameter](#parameter)]) - Ordered array of URI parameters
 + `attributes` ([Attributes][]) - Description of the Resource attributes.
-
-    In the case of a Resource with `name`, this section represents [MSON Named Type][].
-
 + `actions` (array[[Action](#action)]) - Ordered array of actions available on the resource each defining at least one complete HTTP transaction
 
 ### Action
@@ -127,7 +124,7 @@ An [API Blueprint asset][].
 
 + `resolvedAsset` (string)
 
-    `asset` property `string` as resolved by parser harness or subsequent tooling. Usually created from a [Data Structure][] description or fetching the Asset from an URL. 
+    `asset` property `string` as resolved by parser subsequent tooling. Usually created from a [Data Structure][] description or fetching the Asset from an URL. 
 
 ### Parameter
 
@@ -180,7 +177,7 @@ Definition of an [MSON][] data structure.
 
 + `resolvedType` ([Named Type][])
 
-    `type` property [Named Type][] as resolved by parser harness or subsequent tooling. Usually created by expanding Type references.
+    `type` property [Named Type][] as resolved by parser subsequent tooling. Usually created by expanding MSON Type references.
 
     If present, this subtree MUST be a super set of the `type` property sub tree.
 
@@ -756,18 +753,11 @@ Similarly, it also supports serialization of [API Blueprint Source Map](https://
 
 MIT License. See the [LICENSE](LICENSE) file.
 
-<!-- API Blueprint AST -->
-
 [parsing media types]: Parse%20Result.md
-
-<!-- MSON -->
 
 [MSON]: https://github.com/apiaryio/mson
 [MSON AST]: https://github.com/apiaryio/mson-ast
 [MSON Named Type]: https://github.com/apiaryio/mson/blob/master/MSON%20Specification.md#22-named-types
-[MSON Named Types]: https://github.com/apiaryio/mson/blob/master/MSON%20Specification.md#22-named-types
-
-<!-- MSON AST -->
 
 [Named Type]: https://github.com/apiaryio/mson-ast#named-type
 [Type Name]: https://github.com/apiaryio/mson-ast#type-name
@@ -776,15 +766,10 @@ MIT License. See the [LICENSE](LICENSE) file.
 
 [API Blueprint asset]: https://github.com/apiaryio/api-blueprint/blob/master/Glossary%20of%20Terms.md#asset
 
-<!-- API Blueprint Attributes -->
-
 [Attribute section]: https://github.com/apiaryio/api-blueprint/blob/zdne/attributes-description/API%20Blueprint%20Specification.md#def-attributes-section
 [Resource section]: https://github.com/apiaryio/api-blueprint/blob/zdne/attributes-description/API%20Blueprint%20Specification.md#def-resource-section
 
-<!-- Document anchors -->
-
 [Asset]: #asset
-[Attributes]: #attributes
+[Attributes]: ##attributes-data-structure
 [Data Structure]: #data-structure
 [Data Structures]: #data-structures
-
