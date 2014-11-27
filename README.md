@@ -340,7 +340,7 @@ For the [API Blueprint Source Map](#source-map-description)
               }
             ],
             "attributes": {
-              "type": {
+              "source": {
                 "name": null,
                 "base": {
                   "typeSpecification": {
@@ -375,7 +375,7 @@ For the [API Blueprint Source Map](#source-map-description)
             }
           ],
           "attributes": {
-            "type": {
+            "source": {
               "name": {
                 "literal": "<resource name>"
               },
@@ -408,7 +408,7 @@ For the [API Blueprint Source Map](#source-map-description)
                 }
               ],
               "attributes": {
-                "type": {
+                "source": {
                   "name": null,
                   "base": {
                     "typeSpecification": {
@@ -433,7 +433,7 @@ For the [API Blueprint Source Map](#source-map-description)
                         }
                       ],
                       "attributes": {
-                        "type": {
+                        "source": {
                           "name": null,
                           "base": {
                             "typeSpecification": {
@@ -464,7 +464,7 @@ For the [API Blueprint Source Map](#source-map-description)
                         }
                       ],
                       "attributes": {
-                        "type": {
+                        "source": {
                           "name": null,
                           "base": {
                             "typeSpecification": {
