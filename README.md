@@ -19,7 +19,7 @@ Converting API Blueprint to AST and its serialization is the task of API Bluepri
 
 + **Version**: 3.0
 + **Created**: 2013-08-30
-+ **Updated**: 2014-11-26
++ **Updated**: 2014-11-27
 
 ---
 
@@ -107,24 +107,22 @@ An [API Blueprint payload](https://github.com/apiaryio/api-blueprint/blob/master
 + `description` (string) - Description of the payload (`.raw` or `.html`)
 + `attributes` ([Attributes][]) - Description of the message-body attributes
 + `headers` (string) - Ordered array of HTTP headers that are expected to be transferred with HTTP message represented by this payload
-+ `bodyAsset` ([Asset][])
-
-    An entity body to be transferred with HTTP message represented by this payload.
-
-+ `schemaAsset` ([Asset][])
-
-    A validation schema for the entity body as defined in `bodyAsset`.
++ `assets`
+  + `body` ([Asset][]) - An entity body to be transferred with HTTP message represented by this payload
+  + `schema` ([Asset][]) - A validation schema for the entity body as defined in the `body`
 
 ### Asset
 
 An [API Blueprint asset][].
 
 #### Properties
-+ `asset` (string) - The Asset in its textual representation, as written in the source API Blueprint
++ `source` (string) 
 
-+ `resolvedAsset` (string)
+    The Asset in its textual representation as written in the source API Blueprint
 
-    `asset` property `string` as resolved by parser subsequent tooling. Usually created from a [Data Structure][] description or fetching the Asset from an URL. 
++ `resolved` (string)
+
+    Asset in its textual form as resolved by parser' subsequent tooling. For example, generated from a [Data Structure][] description or by fetching the asset from an URL. 
 
 ### Parameter
 
@@ -174,13 +172,11 @@ Definition of an [MSON][] data structure.
 > **NOTE:** Properties of this object may use some types defined in the [MSON AST][]. 
 
 #### Properties 
-+ `type` ([Named Type][]) - Data Structure as described in the source API Blueprint
++ `source` ([Named Type][]) - The data structure as described in the source API Blueprint
 
-+ `resolvedType` ([Named Type][])
++ `resolved` ([Named Type][])
 
-    `type` property [Named Type][] as resolved by parser subsequent tooling. Usually created by expanding MSON Type references.
-
-    If present, this subtree MUST be a super set of the `type` property sub tree.
+    The data structure as resolved by parser's subsequent tooling. Usually obtained by expanding MSON Type references.
 
 ### Data Structures
 
@@ -355,11 +351,13 @@ For the [API Blueprint Source Map](#source-map-description)
                 "sections": null
               }
             },
-            "bodyAsset": {
-              "asset": "<resource model body>"
-            },
-            "schemaAsset": {
-              "asset": "<resource model schema>"
+            "assets": {
+              "body": {
+                "source": "<resource model body>"
+              },
+              "schema": {
+                "source": "<resource model schema>"
+              }
             }
           },
           "parameters": [
@@ -446,11 +444,13 @@ For the [API Blueprint Source Map](#source-map-description)
                           "sections": null
                         }
                       },
-                      "bodyAsset": {
-                        "asset": "<request body>"
-                      },
-                      "schemaAsset": {
-                        "asset": "<request schema>"
+                      "assets": {
+                        "body": {
+                          "source": "<request body>"
+                        },
+                        "schema": {
+                          "source": "<request schema>"
+                        }
                       }
                     }
                   ],
@@ -475,11 +475,13 @@ For the [API Blueprint Source Map](#source-map-description)
                           "sections": null
                         }
                       },
-                      "bodyAsset": {
-                        "asset": "<response body>"
-                      },
-                      "schemaAsset": {
-                        "asset": "<response schema>"
+                      "assets": {
+                        "body": {
+                          "source": "<response body>"
+                        },
+                        "schema": {
+                          "source": "<response schema>"
+                        }
                       }
                     }
                   ]
@@ -508,11 +510,13 @@ For the [API Blueprint Source Map](#source-map-description)
                           "value": "<HTTP header field value>"
                         }
                       ],
-                      "bodyAsset": {
-                        "asset": "<resource model body>"
-                      },
-                      "schemaAsset": {
-                        "asset": "<resource model schema>"
+                      "assets": {
+                        "body": {
+                          "source": "<resource model body>"
+                        },
+                        "schema": {
+                          "source": "<resource model schema>"
+                        }
                       }
                     }
                   ]
