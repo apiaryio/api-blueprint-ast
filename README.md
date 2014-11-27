@@ -771,6 +771,6 @@ MIT License. See the [LICENSE](LICENSE) file.
 [Resource section]: https://github.com/apiaryio/api-blueprint/blob/zdne/attributes-description/API%20Blueprint%20Specification.md#def-resource-section
 
 [Asset]: #asset
-[Attributes]: ##attributes-data-structure
+[Attributes]: #attributes-data-structure
 [Data Structure]: #data-structure
 [Data Structures]: #data-structures
