@@ -122,7 +122,7 @@ An [API Blueprint asset][].
 
 + `resolved` (string)
 
-    Asset in its textual form as resolved by parser' subsequent tooling. For example, generated from a [Data Structure][] description or by fetching the asset from an URL. 
+    Asset in its textual form as resolved by parser's subsequent tooling. For example, generated from a [Data Structure][] description or by fetching the asset from an URL. 
 
 ### Parameter
 
