@@ -50,7 +50,7 @@ Following is the description of API Blueprint AST media types using the [MSON](h
 + `name` (string) - Name of the API
 + `description` (string) - Top-level description of the API in Markdown (`.raw`) or HTML (`.html`)
 + `resourceGroups` (array[[Resource Group](#resource-group)])
-+ `dataStructures` (array[[Data Structures][]]) 
++ `dataStructures` (array[[Data Structures][]])
 
 ### Resource Group
 
@@ -116,13 +116,13 @@ An [API Blueprint payload](https://github.com/apiaryio/api-blueprint/blob/master
 An [API Blueprint asset][].
 
 #### Properties
-+ `source` (string) 
++ `source` (string)
 
     The Asset in its textual representation as written in the source API Blueprint
 
 + `resolved` (string)
 
-    Asset in its textual form as resolved by parser's subsequent tooling. For example, generated from a [Data Structure][] description or by fetching the asset from an URL. 
+    Asset in its textual form as resolved by parser's subsequent tooling. For example, generated from a [Data Structure][] description or by fetching the asset from an URL.
 
 ### Parameter
 
@@ -162,15 +162,13 @@ A reference object which is used whenever there is a reference to a [Resource Mo
 
 Data structure definition as written in an API Blueprint [Attributes section][Attribute section].
 
-> **Note:** The `name` property of the [Data Structure][]'s `type` property is only present when the respective [Attribute section][] defines an MSON named type, such as in the context of the [Resource section][]. Otherwise (in the case of a Payload, Action or an unnamed Resource) the Attributes section is considered to be anonymous named type.
-
 ### Data Structure
 
 Definition of an [MSON][] data structure.
 
-> **NOTE:** Properties of this object may use some types defined in the [MSON AST][]. 
+> **NOTE:** Properties of this object may use some types defined in the [MSON AST][].
 
-#### Properties 
+#### Properties
 + `source` ([Named Type][]) - The data structure as described in the source API Blueprint
 
 + `resolved` ([Named Type][])
