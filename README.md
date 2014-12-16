@@ -19,7 +19,7 @@ Converting API Blueprint to AST and its serialization is the task of API Bluepri
 
 + **Version**: 3.0
 + **Created**: 2013-08-30
-+ **Updated**: 2014-11-27
++ **Updated**: 2014-12-16
 
 ---
 
@@ -107,6 +107,18 @@ An [API Blueprint payload](https://github.com/apiaryio/api-blueprint/blob/master
 + `description` (string) - Description of the payload (`.raw` or `.html`)
 + `attributes` ([Attributes][]) - Description of the message-body attributes
 + `headers` (string) - Ordered array of HTTP headers that are expected to be transferred with HTTP message represented by this payload
++ `body` (string) - **Deprecated**
+
+    An entity body to be transferred with HTTP message represented by this payload
+
+    Note this property is **deprecated** and will be removed in a future. Use `assets/body/source` instead.
+
++ `schema` (string) - **Deprecated**
+
+    A validation schema for the entity body as defined in `body`.
+
+    Note this property is **deprecated** and will be removed in a future. Use `assets/schema/source` instead.
+
 + `assets`
   + `body` ([Asset][]) - An entity body to be transferred with HTTP message represented by this payload
   + `schema` ([Asset][]) - A validation schema for the entity body as defined in the `body`
