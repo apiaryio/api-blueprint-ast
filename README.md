@@ -203,102 +203,100 @@ List of arbitrary data structures defined in API Blueprint.
 ---
 
 ## Source Map Description
-Following is the description of Source map media types using the [MSON](https://github.com/apiaryio/mson) syntax. The description starts with the top-level blueprint object.
 
-### Source Map
+Following is the description of Source map media types using the [MSON][] syntax. The description starts with the top-level blueprint object.
 
-An example source map.
+### Source Map (array)
 
-- (array)
-  - (array)
-    - 1219 (number) - Zero-based index of the character position of the beginning of the source
-    - 30 (number) - Length of the source
-  - (array)
-    - 1261 (number)
-    - 175 (number)
+This contains the information about the characters positions in the source.
 
-### Blueprint Source Map
+#### Items
+- (array, fixed)
+    - *1219* (number) - Zero-based index of the character position of the beginning of the source
+    - *30* (number) - Length of the source
 
-Source map of the [Blueprint](#blueprint).
+### Blueprint Source Map (object)
+
+Source map of the [Blueprint][].
 
 #### Properties
 
-+ `metadata` (array[[Source Map](#source-map)]) - An array of source maps where each item in metadata has its own source map
-+ `name` ([Source Map](#source-map)) - Source map of API name
-+ `description` ([Source Map](#source-map)) - Source map of API description
-+ `resourceGroups` (array[[Resource Group Source Map](#resource-group-source-map)])
++ `metadata` (array[[Source Map][]]) - An array of source maps where each item in metadata has its own source map
++ `name` ([Source Map][]) - Source map of API name
++ `description` ([Source Map][]) - Source map of API description
++ `resourceGroups` (array[[Resource Group Source Map][]])
 
-### Resource Group Source Map
+### Resource Group Source Map (object)
 
-Source map of the [Resource Group](#resource-group).
-
-#### Properties
-
-+ `name` ([Source Map](#source-map)) - Source map of name of the Resource Group
-+ `description` ([Source Map](#source-map)) - Source map of description of the Resource Group
-+ `resources` (array[[Resource Source Map](#resource-source-map)]) - Ordered array of the respective resources belonging to the Resource Group
-
-### Resource Source Map
-
-Source map of the [Resource](#resource).
+Source map of the [Resource Group][].
 
 #### Properties
 
-+ `name` ([Source Map](#source-map)) - Source map of name of the Resource
-+ `description` ([Source Map](#source-map)) - Source map of description of the Resource
-+ `uriTemplate` ([Source Map](#source-map)) - Source map of URI Template
-+ `model` ([Payload Source map](#payload-source-map)) - [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection), a reusable payload representing the resource
-+ `parameters` (array[[Parameter Source Map](#parameter-source-map)]) - Ordered array of source maps of URI parameters
-+ `actions` (array[[Action Source Map](#action-source-map)]) - Ordered array of source maps of actions available on the resource each defining at least one complete HTTP transaction
++ `name` ([Source Map][]) - Source map of name of the Resource Group
++ `description` ([Source Map][]) - Source map of description of the Resource Group
++ `resources` (array[[Resource Source Map][]]) - Ordered array of the respective resources belonging to the Resource Group
 
-### Action Source Map
+### Resource Source Map (object)
 
-Source map of the [Action](#action).
+Source map of the [Resource][].
 
 #### Properties
 
-+ `name` ([Source Map](#source-map)) - Source map of name of the Action
-+ `description` ([Source Map](#source-map)) - Source map of description of the Action
-+ `method` ([Source Map](#source-map)) - Source map of HTTP request method defining the action
-+ `parameters` (array[[Parameter Source Map](#parameter-source-map)]) - Ordered array of source maps of resource's URI parameters descriptions specific to this action
-+ `examples` (array[[Transaction Example Source Map](#transaction-example-source-map)]) - Ordered array of source maps of HTTP transaction [examples](#example-section) for the relevant HTTP request method
++ `name` ([Source Map][]) - Source map of name of the Resource
++ `description` ([Source Map][]) - Source map of description of the Resource
++ `uriTemplate` ([Source Map][]) - Source map of URI Template
++ `model` ([Payload Source Map][]) - [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection), a reusable payload representing the resource
++ `parameters` (array[[Parameter Source Map][]]) - Ordered array of source maps of URI parameters
++ `actions` (array[[Action Source Map][]]) - Ordered array of source maps of actions available on the resource each defining at least one complete HTTP transaction
 
-### Payload Source Map
+### Action Source Map (object)
 
-Source map of [Payload](#payload). The source map of the payload is in fact the source map of the [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection) when the reference is used.
-
-#### Properties
-
-+ `name` ([Source Map](#source-map)) - Source map of name of the payload
-+ `reference` ([Source Map](#source-map)) - Source map of the reference, present if and only if a reference to a [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection) is present in the payload and it has been resolved correctly
-+ `description` ([Source Map](#source-map)) - Source map of description of the payload
-+ `headers` (array[[Source Map](#source-map)]) - Ordered array of source maps of HTTP headers that are expected to be transferred with HTTP message represented by this payload. Each item in the header has it's own source map.
-+ `body` ([Source Map](#source-map)) - Source map of body to be transferred with HTTP message represented by this payload
-+ `schema` ([Source Map](#source-map)) - Source map of a validation schema for the entity body as defined in `body`
-
-### Parameter Source Map
-
-Source map of [Parameter](#parameter).
+Source map of the [Action][].
 
 #### Properties
 
-- `description` ([Source Map](#source-map)) - Source map of description of the parameter
-- `type` ([Source Map](#source-map)) - Source map of an arbitrary type of the parameter (a string)
-- `required` ([Source Map](#source-map)) - Source map of boolean flag denoting whether the parameter is required (true) or not (false)
-- `default` ([Source Map](#source-map)) - Source map of a default value of the parameter (a value assumed when the parameter is not specified)
-- `example` ([Source Map](#source-map)) - Source map of an example value of the parameter
-- `values` (array[[Source Map](#source-map)]) - Source map of an array enumerating possible parameter values. Each item has it's own source map.
++ `name` ([Source Map][]) - Source map of name of the Action
++ `description` ([Source Map][]) - Source map of description of the Action
++ `method` ([Source Map][]) - Source map of HTTP request method defining the action
++ `parameters` (array[[Parameter Source Map][]]) - Ordered array of source maps of resource's URI parameters descriptions specific to this action
++ `examples` (array[[Transaction Example Source Map][]]) - Ordered array of source maps of HTTP transaction [examples](#example-section) for the relevant HTTP request method
 
-### Transaction Example Source Map
+### Payload Source Map (object)
 
-Source map of [Transaction Example](#transaction-example).
+Source map of [Payload][]. The source map of the payload is in fact the source map of the [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection) when the reference is used.
 
 #### Properties
 
-+ `name` ([Source Map](#source-map)) - Source map of name of the Transaction Example
-+ `description` ([Source Map](#source-map)) - Source map of description of the Transaction Example
-+ `requests` (array[[Payload Source Map](#payload-source-map)]) - Ordered array of source maps of example transaction request payloads
-+ `responses` (array[[Payload Source Map](#payload-source-map)]) - Ordered array of source maps of example transaction response payloads
++ `name` ([Source Map][]) - Source map of name of the payload
++ `reference` ([Source Map][]) - Source map of the reference, present if and only if a reference to a [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection) is present in the payload and it has been resolved correctly
++ `description` ([Source Map][]) - Source map of description of the payload
++ `headers` (array[[Source Map][]]) - Ordered array of source maps of HTTP headers that are expected to be transferred with HTTP message represented by this payload. Each item in the header has it's own source map.
++ `body` ([Source Map][]) - Source map of body to be transferred with HTTP message represented by this payload
++ `schema` ([Source Map][]) - Source map of a validation schema for the entity body as defined in `body`
+
+### Parameter Source Map (object)
+
+Source map of [Parameter][].
+
+#### Properties
+
++ `description` ([Source Map][]) - Source map of description of the parameter
++ `type` ([Source Map][]) - Source map of an arbitrary type of the parameter (a string)
++ `required` ([Source Map][]) - Source map of boolean flag denoting whether the parameter is required (true) or not (false)
++ `default` ([Source Map][]) - Source map of a default value of the parameter (a value assumed when the parameter is not specified)
++ `example` ([Source Map][]) - Source map of an example value of the parameter
++ `values` (array[[Source Map][]]) - Source map of an array enumerating possible parameter values. Each item has it's own source map.
+
+### Transaction Example Source Map (object)
+
+Source map of [Transaction Example][].
+
+#### Properties
+
++ `name` ([Source Map][]) - Source map of name of the Transaction Example
++ `description` ([Source Map][]) - Source map of description of the Transaction Example
++ `requests` (array[[Payload Source Map][]]) - Ordered array of source maps of example transaction request payloads
++ `responses` (array[[Payload Source Map][]]) - Ordered array of source maps of example transaction response payloads
 
 ---
 
@@ -804,3 +802,12 @@ MIT License. See the [LICENSE](LICENSE) file.
 [Attributes]: #attributes-data-structure
 [Data Structure]: #data-structure-object
 [Data Structures]: #data-structures-object
+
+[Source Map]: #source-map-array
+[Blueprint Source Map]: #blueprint-source-map-object
+[Resource Group Source Map]: #resource-group-source-map-object
+[Resource Source Map]: #resource-source-map-object
+[Action Source Map]: #action-source-map-object
+[Payload Source Map]: #payload-source-map-object
+[Parameter Source Map]: #parameter-source-map-object
+[Transaction Example Source Map]: #transaction-example-source-map-object
