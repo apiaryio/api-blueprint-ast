@@ -45,7 +45,7 @@ Following is the description of API Blueprint AST media types using the [MSON](h
 + `metadata` (array) - Ordered array of API Blueprint [metadata](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#MetadataSection)
     - (object)
         - `name` (string) - Name of the metadata
-        - `value` (string) - Value of the metedata
+        - `value` (string) - Value of the metadata
 
 + `name` (string) - Name of the API
 + `description` (string) - Top-level description of the API in Markdown (`.raw`) or HTML (`.html`)
@@ -76,7 +76,7 @@ Description of one resource, or a cluster of resources defined by its URI templa
 
 ### Action
 
-An HTTP transaction (a request-response transaction). Actions are specified by an HTTP request method within a resource.
+A HTTP transaction (a request-response transaction). Actions are specified by a HTTP request method within a resource.
 
 #### Properties
 
@@ -947,11 +947,11 @@ resourceGroups:
 
 The `snowcrash` [command-line tool](https://github.com/apiaryio/snowcrash#snow-crash-command-line-tool) supports serialization of [API Blueprint AST](https://github.com/apiaryio/snowcrash/blob/master/src/Blueprint.h) via the `--format` option.
 
-Similarily, it also supports serialization of [API Blueprint Source Map](https://github.com/apiaryio/snowcrash/blob/master/src/BlueprintSourcemap.h) via the `--format` option if and only is the `-s` is present.
+Similarly, it also supports serialization of [API Blueprint Source Map](https://github.com/apiaryio/snowcrash/blob/master/src/BlueprintSourcemap.h) via the `--format` option if and only is the `-s` is present.
 
 ## Related Media Types
 
-- [**Serialized Parsing Result Media Types**][parsing media types] - Media types for the serialization of complete parsing results (including warnigns and errors)
+- [**Serialized Parsing Result Media Types**][parsing media types] - Media types for the serialization of complete parsing results (including warnings and errors)
 
 ## License
 
