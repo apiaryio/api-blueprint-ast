@@ -23,7 +23,7 @@ This document describes API Blueprint Serialized Parse Result Media Types – th
 ---
 
 ## Parse Result Description
-Following is the descripton of Parse Result media types using the [MSON](https://github.com/apiaryio/mson) syntax.
+Following is the description of Parse Result media types using the [MSON](https://github.com/apiaryio/mson) syntax.
 
 ### Parse Result Object
 
