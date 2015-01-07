@@ -112,6 +112,7 @@ Description of one URI template parameter.
 
 #### Properties
 
+- `name` (string) - Name of the parameter
 - `description` (string) - Description of the parameter (`.raw` or `.html`)
 - `type` (string) - An arbitrary type of the parameter (a string)
 - `required` (string) - Boolean flag denoting whether the parameter is required (true) or not (false)
