@@ -4,13 +4,13 @@
 ### JSON & YAML face of the API Blueprint
 API Blueprint AST is JSON or YAML, machine-friendly, face of API Blueprint suitable for use in [tools](http://apiblueprint.org/#tooling) consuming (or producing) API Blueprint.
 
-This document defines serialization format for [API Blueprint](http://apiblueprint.org) abstract syntax tree, or AST for short.
+This document defines serialization formats for [API Blueprint](http://apiblueprint.org) abstract syntax tree, or AST for short.
 
 For the definition of API Blueprint AST Source Map see the [API Blueprint AST Source Map definition][Source Map Definition].
 
 Converting API Blueprint to AST and its serialization is the task of API Blueprint Parser – [Snow Crash](https://github.com/apiaryio/snowcrash) or one of its [bindings](https://github.com/apiaryio/snowcrash#bindings). Reverse process from AST (serialization) to API Blueprint is also possible thanks to the [Matter Compiler](https://github.com/apiaryio/matter_compiler).
 
-## Do not like to design APIs in JSON or YAML?
+## Don't like to design APIs in JSON or YAML?
 If you are looking for a way to describe your Web API without using JSON or YAML see [API Blueprint](https://github.com/apiaryio/api-blueprint).
 
 ## Version
