@@ -42,7 +42,7 @@ Following is the definition of API Blueprint AST media types using the [MSON](ht
 
 + `name` (string) - Name of the API
 + `description` (string) - Top-level description of the API in Markdown (`.raw`) or HTML (`.html`)
-+ `resourceGroups` (array[[Resource Group](#resource-group)])
++ `resourceGroups` (array[[Resource Group][]])
 + `dataStructures` (array[[Data Structures][]])
 
 ### Resource Group (object)
@@ -51,7 +51,7 @@ Logical group of resources.
 #### Properties
 + `name` (string) - Name of the Resource Group
 + `description` (string) - Description of the Resource Group (`.raw` or `.html`)
-+ `resources` (array[[Resource](#resource)]) - Ordered array of the respective resources belonging to the Resource Group
++ `resources` (array[[Resource][]]) - Ordered array of the respective resources belonging to the Resource Group
 
 ### Resource (object)
 Description of one resource, or a cluster of resources defined by its URI template.
@@ -60,10 +60,10 @@ Description of one resource, or a cluster of resources defined by its URI templa
 + `name` (string) - Name of the Resource
 + `description` (string) - Description of the Resource (`.raw` or `.html`)
 + `uriTemplate` (string) - URI Template as defined in [RFC6570](http://tools.ietf.org/html/rfc6570)
-+ `model` ([Payload](#payload)) - [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection), a reusable payload representing the resource
-+ `parameters` (array[[Parameter](#parameter)]) - Ordered array of URI parameters
++ `model` ([Payload][]) - [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection), a reusable payload representing the resource
++ `parameters` (array[[Parameter][]]) - Ordered array of URI parameters
 + `attributes` ([Attributes][]) - Description of the Resource attributes.
-+ `actions` (array[[Action](#action)]) - Ordered array of actions available on the resource each defining at least one complete HTTP transaction
++ `actions` (array[[Action][]]) - Ordered array of actions available on the resource each defining at least one complete HTTP transaction
 
 ### Action (object)
 An HTTP transaction (a request-response transaction). Actions are specified by an HTTP request method within a resource.
@@ -72,9 +72,9 @@ An HTTP transaction (a request-response transaction). Actions are specified by a
 + `name` (string) - Name of the Action
 + `description` (string) - Description of the Action (`.raw` or `.html`)
 + `method` (string) - HTTP request method defining the action
-+ `parameters` (array[[Parameter](#parameter)]) - Ordered array of resource's URI parameters descriptions specific to this action
++ `parameters` (array[[Parameter][]]) - Ordered array of resource's URI parameters descriptions specific to this action
 + `attributes` ([Attributes][]) - Description of the action input attributes – the default properties of the request message-body.
-+ `examples` (array[[Transaction Example](#transaction-example)]) - Ordered array of HTTP transaction [examples](#example-section) for the relevant HTTP request method
++ `examples` (array[[Transaction Example][]]) - Ordered array of HTTP transaction [examples](#example-section) for the relevant HTTP request method
 
 ### Payload (object)
 An [API Blueprint payload](https://github.com/apiaryio/api-blueprint/blob/master/Glossary%20of%20Terms.md#payload).
@@ -88,7 +88,7 @@ An [API Blueprint payload](https://github.com/apiaryio/api-blueprint/blob/master
     + **request** payload: name of the request, if any
     + **response** payload: HTTP status code
 
-+ `reference` ([Reference](#reference)) - Present if and only if a reference to a [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection) is present in the payload and it has been resolved correctly
++ `reference` ([Reference][]) - Present if and only if a reference to a [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection) is present in the payload and it has been resolved correctly
 + `description` (string) - Description of the payload (`.raw` or `.html`)
 + `attributes` ([Attributes][]) - Description of the message-body attributes
 + `headers` (string) - Ordered array of HTTP headers that are expected to be transferred with HTTP message represented by this payload
@@ -140,8 +140,8 @@ An HTTP transaction example with expected HTTP message request and response payl
 #### Properties
 + `name` (string) - Name of the Transaction Example
 + `description` (string) - Description of the Transaction Example (`.raw` or `.html`)
-+ `requests` (array[[Payload](#payload)]) - Ordered array of example transaction request payloads
-+ `responses` (array[[Payload](#payload)]) - Ordered array of example transaction response payloads
++ `requests` (array[[Payload][]]) - Ordered array of example transaction request payloads
++ `responses` (array[[Payload][]]) - Ordered array of example transaction response payloads
 
 ### Reference (object)
 A reference object which is used whenever there is a reference to a [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection).
@@ -159,7 +159,6 @@ Definition of an [MSON][] data structure.
 
 #### Properties
 + `source` ([Named Type][]) - The data structure as described in the source API Blueprint
-
 + `resolved` ([Named Type][])
 
     The data structure as resolved by parser's subsequent tooling. Usually obtained by expanding MSON Type references.
@@ -403,7 +402,7 @@ Two supported, feature-equal serialization formats are JSON and YAML:
 ```
 
 ## Related Media Types
-- [**Serialized Parsing Result Media Types**][parsing media types] - Media types for the serialization of complete parsing results (including warnings and errors)
+- [**Serialized Parsing Result Media Types**][Parsing media types] - Media types for the serialization of complete parsing results (including warnings and errors)
 
 ## Serialization in Snow Crash
 The `snowcrash` [command-line tool](https://github.com/apiaryio/snowcrash#snow-crash-command-line-tool) supports serialization of [API Blueprint AST](https://github.com/apiaryio/snowcrash/blob/master/src/Blueprint.h) via the `--format` option. Similarly, it also supports serialization of [API Blueprint Source Map](https://github.com/apiaryio/snowcrash/blob/master/src/BlueprintSourcemap.h) using the `--format` and `--sourcemap` option.
@@ -411,7 +410,7 @@ The `snowcrash` [command-line tool](https://github.com/apiaryio/snowcrash#snow-c
 ## License
 MIT License. See the [LICENSE](LICENSE) file.
 
-[parsing media types]: Parse%20Result.md
+[Parsing media types]: Parse%20Result.md
 
 [MSON]: https://github.com/apiaryio/mson
 [MSON AST]: https://github.com/apiaryio/mson-ast
@@ -427,9 +426,17 @@ MIT License. See the [LICENSE](LICENSE) file.
 [Attribute section]: https://github.com/apiaryio/api-blueprint/blob/zdne/attributes-description/API%20Blueprint%20Specification.md#def-attributes-section
 [Resource section]: https://github.com/apiaryio/api-blueprint/blob/zdne/attributes-description/API%20Blueprint%20Specification.md#def-resource-section
 
-[Asset]: #asset
+[Blueprint]: #blueprint-object
+[Resource Group]: #resource-group-object
+[Resource]: #resource-object
+[Action]: #action-object
+[Payload]: #payload-object
+[Reference]: #reference-object
+[Asset]: #asset-object
+[Parameter]: #parameter-object
+[Transaction Example]: #transaction-example-object
 [Attributes]: #attributes-data-structure
-[Data Structure]: #data-structure
-[Data Structures]: #data-structures
+[Data Structure]: #data-structure-object
+[Data Structures]: #data-structures-object
 
 [Source Map Definition]: Source%20Map.md
