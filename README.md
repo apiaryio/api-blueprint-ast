@@ -16,7 +16,7 @@ If you are looking for a way to describe your Web API without using JSON or YAML
 ## Version
 + **Version**: 3.0
 + **Created**: 2013-08-30
-+ **Updated**: 2014-12-16
++ **Updated**: 2015-01-21
 
 ## Quick Links
 + [AST Description](#ast-definition)
@@ -27,11 +27,9 @@ If you are looking for a way to describe your Web API without using JSON or YAML
 + [Serialized Parsing Result Media Types][parsing media types]
 
 ## AST Definition
-Following is the definition of API Blueprint AST media types using the [MSON](https://github.com/apiaryio/mson) syntax. The definition starts with the top-level Blueprint object.
-
+Following is the definition of API Blueprint AST media types using the [MSON](https://github.com/apiaryio/mson) syntax.
 
 > **NOTE:** Most of the keys corresponds to their counter parts in API Blueprint Specification. Where applicable, refer to the relevant entry [API Blueprint Language Specification](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md) for details.
-
 
 ### Blueprint (object)
 + `_version` (string) - Version of the AST Serialization as [defined](#version) in this document
@@ -42,10 +40,32 @@ Following is the definition of API Blueprint AST media types using the [MSON](ht
 
 + `name` (string) - Name of the API
 + `description` (string) - Top-level description of the API in Markdown (`.raw`) or HTML (`.html`)
-+ `resourceGroups` (array[[Resource Group][]])
-+ `dataStructures` (array[[Data Structures][]])
++ `resourceGroups` (array[[Resource Group][]]) - **Deprecated**
+
+    Note this property is **deprecated** and will be removed in a future. Use `content` instead.
+
++ `class`: `category` (fixed, required)
++ `content` (array[[Element][]]) - Section elements of the blueprint
+
+### Element (object)
+A component of an API description.
+
+#### Properties
++ `name` (string, optional) - Human readable name of the element
++ `class` (enum[string])
+    + `category` - Element is a group of other elements
+    + `description` - Element is a human readable description
+    + `resource` - Element is a Resource
+    + `dataStructure` - Element is a Data Structure definition
++ `content` (enum)
+    + (array[[Element][]]) - Ordered array of nested elements (for class `category`)
+    + (string) - Markdown-formatted text (for class `description`)
+    + ([Resource][]) - Resource definiton (for class `resource`)
+    + ([Data Structure][]) - Data structure (for class `dataStructure`)
 
 ### Resource Group (object)
+**Deprecated**
+
 Logical group of resources.
 
 #### Properties
@@ -59,6 +79,7 @@ Description of one resource, or a cluster of resources defined by its URI templa
 #### Properties
 + `name` (string) - Name of the Resource
 + `description` (string) - Description of the Resource (`.raw` or `.html`)
++ `class`: `resource` (fixed, required)
 + `uriTemplate` (string) - URI Template as defined in [RFC6570](http://tools.ietf.org/html/rfc6570)
 + `model` ([Payload][]) - [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection), a reusable payload representing the resource
 + `parameters` (array[[Parameter][]]) - Ordered array of URI parameters
@@ -158,16 +179,11 @@ Definition of an [MSON][] data structure.
 > **NOTE:** Properties of this object may use some types defined in the [MSON AST][].
 
 #### Properties
++ `class`: `dataStructure` (fixed, required)
 + `source` ([Named Type][]) - The data structure as described in the source API Blueprint
 + `resolved` ([Named Type][])
 
     The data structure as resolved by parser's subsequent tooling. Usually obtained by expanding MSON Type references.
-
-### Data Structures (object)
-List of arbitrary data structures defined in API Blueprint.
-
-#### Properties
-+ `types` (array[[Data Structure][]]) - Array of defined data structures
 
 ## Media Types
 The `application/vnd.apiblueprint.ast` is the base media type for API Blueprint AST. An API Blueprint AST with raw Markdown descriptions has the `.raw` suffix whereas version with Markdown descriptions rendered into HTML has the `.html` suffix. The base media type serialization format is specified in the `+<serialization format>` appendix.
@@ -192,14 +208,20 @@ Two supported, feature-equal serialization formats are JSON and YAML:
   ],
   "name": "<API name>",
   "description": "<API description>",
-  "resourceGroups": [
+  "class": "category",
+  "content": [
     {
       "name": "<resource group name>",
-      "description": "<resource group description>",
-      "resources": [
+      "class": "category",
+      "content": [
+        {
+          "class": "description",
+          "content": "<resource group description>"
+        },
         {
           "name": "<resource name>",
           "description": "<resource description>",
+          "class": "resource",
           "uriTemplate": "<resource URI template>",
           "model": {
             "name": "<resource model name>",
@@ -396,6 +418,18 @@ Two supported, feature-equal serialization formats are JSON and YAML:
           ]
         }
       ]
+    },
+    {
+      "class": "category",
+      "content": [
+        {
+          "class": "dataStructure",
+          "content": {
+            "source": null,
+            "resolved": null
+          }
+        }
+      ]
     }
   ]
 }
@@ -427,6 +461,7 @@ MIT License. See the [LICENSE](LICENSE) file.
 [Resource section]: https://github.com/apiaryio/api-blueprint/blob/zdne/attributes-description/API%20Blueprint%20Specification.md#def-resource-section
 
 [Blueprint]: #blueprint-object
+[Element]: #element-object
 [Resource Group]: #resource-group-object
 [Resource]: #resource-object
 [Action]: #action-object
