@@ -92,11 +92,8 @@ When a reference is used, the source map of the payload is in fact the source ma
   + `body` ([Asset Source Map][]) - Source map of body to be transferred with HTTP message represented by this payload
   + `schema` ([Asset Source Map][]) - Source map of a validation schema for the entity body as defined in the `body`
 
-### Asset Source Map (object)
+### Asset Source Map ([Source Map][])
 Source map of [Asset][]
-
-#### Properties
-+ `source` ([Source Map][]) - Source map of the asset in its textual representation as written in the source API Blueprint 
 
 ### Parameter Source Map (object)
 Source map of [Parameter][].
@@ -377,7 +374,7 @@ Two supported, feature-equal serialization formats are JSON and YAML:
 [Resource Source Map]: #resource-source-map-object
 [Action Source Map]: #action-source-map-object
 [Payload Source Map]: #payload-source-map-object
-[Asset Source Map]: #asset-source-map-object
+[Asset Source Map]: #asset-source-map-source-map
 [Parameter Source Map]: #parameter-source-map-object
 [Transaction Example Source Map]: #transaction-example-source-map-object
 [Attributes Source Map]: #attributes-source-map-data-structure-source-map
