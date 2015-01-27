@@ -53,14 +53,14 @@ A component of an API description.
 #### Properties
 + `element` (enum[string]) - Element name
     + `category` - Element is a group of other elements
-    + `description` - Element is a human readable description
+    + `copy` - Element is a human readable text
     + `resource` - Element is a Resource
     + `dataStructure` - Element is a Data Structure definition
 + `attributes` (object) - Element-specific attributes
     + `name` (string, optional) - Human readable name of the element
 + `content` (enum)
     + (array[[Element][]]) - Ordered array of nested elements (for element `category`)
-    + (string) - Markdown-formatted text (for element `description`)
+    + (string) - Markdown-formatted text (for element `copy`)
     + ([Resource][]) - Resource definiton (for element `resource`)
     + ([Data Structure][]) - Data structure (for element `dataStructure`)
 
@@ -219,7 +219,7 @@ Two supported, feature-equal serialization formats are JSON and YAML:
       },
       "content": [
         {
-          "element": "description",
+          "element": "copy",
           "content": "<resource group description>"
         },
         {
