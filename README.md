@@ -44,24 +44,25 @@ Following is the definition of API Blueprint AST media types using the [MSON](ht
 
     Note this property is **deprecated** and will be removed in a future. Use `content` instead.
 
-+ `class`: `category` (fixed, required)
++ `element`: `category` (fixed, required)
 + `content` (array[[Element][]]) - Section elements of the blueprint
 
 ### Element (object)
 A component of an API description.
 
 #### Properties
-+ `name` (string, optional) - Human readable name of the element
-+ `class` (enum[string])
++ `element` (enum[string]) - Element name
     + `category` - Element is a group of other elements
-    + `description` - Element is a human readable description
+    + `copy` - Element is a human readable text
     + `resource` - Element is a Resource
     + `dataStructure` - Element is a Data Structure definition
++ `attributes` (object) - Element-specific attributes
+    + `name` (string, optional) - Human readable name of the element
 + `content` (enum)
-    + (array[[Element][]]) - Ordered array of nested elements (for class `category`)
-    + (string) - Markdown-formatted text (for class `description`)
-    + ([Resource][]) - Resource definiton (for class `resource`)
-    + ([Data Structure][]) - Data structure (for class `dataStructure`)
+    + (array[[Element][]]) - Ordered array of nested elements (for element `category`)
+    + (string) - Markdown-formatted text (for element `copy`)
+    + ([Resource][]) - Resource definiton (for element `resource`)
+    + ([Data Structure][]) - Data structure (for element `dataStructure`)
 
 ### Resource Group (object)
 **Deprecated**
@@ -79,7 +80,7 @@ Description of one resource, or a cluster of resources defined by its URI templa
 #### Properties
 + `name` (string) - Name of the Resource
 + `description` (string) - Description of the Resource (`.raw` or `.html`)
-+ `class`: `resource` (fixed, required)
++ `element`: `resource` (fixed, required)
 + `uriTemplate` (string) - URI Template as defined in [RFC6570](http://tools.ietf.org/html/rfc6570)
 + `model` ([Payload][]) - [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection), a reusable payload representing the resource
 + `parameters` (array[[Parameter][]]) - Ordered array of URI parameters
@@ -179,9 +180,10 @@ Definition of an [MSON][] data structure.
 > **NOTE:** Properties of this object may use some types defined in the [MSON AST][].
 
 #### Properties
-+ `class`: `dataStructure` (fixed, required)
-+ `source` ([Named Type][]) - The data structure as described in the source API Blueprint
-+ `resolved` ([Named Type][])
++ `element`: `dataStructure` (fixed, required)
++ `content`
+    + `source` ([Named Type][]) - The data structure as described in the source API Blueprint
+    + `resolved` ([Named Type][])
 
     The data structure as resolved by parser's subsequent tooling. Usually obtained by expanding MSON Type references.
 
@@ -208,20 +210,22 @@ Two supported, feature-equal serialization formats are JSON and YAML:
   ],
   "name": "<API name>",
   "description": "<API description>",
-  "class": "category",
+  "element": "category",
   "content": [
     {
-      "name": "<resource group name>",
-      "class": "category",
+      "element": "category",
+      "attributes": {
+          "name": "<resource group name>"
+      },
       "content": [
         {
-          "class": "description",
+          "element": "copy",
           "content": "<resource group description>"
         },
         {
           "name": "<resource name>",
           "description": "<resource description>",
-          "class": "resource",
+          "element": "resource",
           "uriTemplate": "<resource URI template>",
           "model": {
             "name": "<resource model name>",
@@ -420,10 +424,10 @@ Two supported, feature-equal serialization formats are JSON and YAML:
       ]
     },
     {
-      "class": "category",
+      "element": "category",
       "content": [
         {
-          "class": "dataStructure",
+          "element": "dataStructure",
           "content": {
             "source": null,
             "resolved": null
