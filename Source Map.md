@@ -24,7 +24,7 @@ Each block is defined by a zero-based index of its first character and the numbe
     - *1219* (number) - Zero-based index of the first character
     - *30* (number) - Number of the characters in the block
 
-### Blueprint Source Map ([Element Source Map][])
+### Blueprint Source Map (object)
 Source map of the [Blueprint][].
 
 #### Properties
