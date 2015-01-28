@@ -115,7 +115,7 @@ Description of one URI template parameter.
 - `name` (string) - Name of the parameter
 - `description` (string) - Description of the parameter (`.raw` or `.html`)
 - `type` (string) - An arbitrary type of the parameter (a string)
-- `required` (string) - Boolean flag denoting whether the parameter is required (true) or not (false)
+- `required` (boolean) - Boolean flag denoting whether the parameter is required (true) or not (false)
 - `default` (string) - A default value of the parameter (a value assumed when the parameter is not specified)
 - `example` (string) - An example value of the parameter
 - `values` (array) - An array enumerating possible parameter values
