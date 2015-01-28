@@ -24,17 +24,28 @@ Each block is defined by a zero-based index of its first character and the numbe
     - *1219* (number) - Zero-based index of the first character
     - *30* (number) - Number of the characters in the block
 
-### Blueprint Source Map (object)
+### Blueprint Source Map ([Element Source Map][])
 Source map of the [Blueprint][].
 
 #### Properties
 + `metadata` (array[[Source Map][]]) - An array of source maps where each item in metadata has its own source map
 + `name` ([Source Map][]) - Source map of API name
 + `description` ([Source Map][]) - Source map of API description
-+ `resourceGroups` (array[[Resource Group Source Map][]])
-+ `dataStructrues` (array[[Data Structures Source Map][]])
++ `resourceGroups` (array[[Resource Group Source Map][]]) - **Deprecated**
++ `content` (array[[Element Source Map][]]) - Source map of section elements
+
+### Element Source Map (object)
++ `attributes`
+    + `name` ([Source Map][]) - Source map of the element name
++ `content` (enum)
+    + (array[[Element Source Map][]]) - Source maps of nested elements (for element `category`)
+    + ([Source Map][]) - Source map for element `copy`
+    + ([Resource Source Map][]) - Source map for element `resource`
+    + ([Data Structure Source Map][]) - Source map for element `dataStructure`
 
 ### Resource Group Source Map (object)
+**Deprecated**
+
 Source map of the [Resource Group][].
 
 #### Properties
@@ -122,13 +133,8 @@ Source map of [Attributes][]
 Source map of [Data Structure][]
 
 #### Properties
-+ `source` ([Named Type Source Map][]) - Source map of the data structure as described in the source API Blueprint
-
-### Data Structures Source Map (object)
-Source map of [Data Structures][]
-
-#### Properties
-+ `types` (array[[Data Structure Source Map][]]) - Array of defined data structure source maps
++ `content`
+    + `source` ([Named Type Source Map][]) - Source map of the data structure as described in the source API Blueprint
 
 ## Media Types
 The `application/vnd.apiblueprint.sourcemap` is the base media type for API Blueprint AST Source Map.
@@ -139,219 +145,6 @@ Two supported, feature-equal serialization formats are JSON and YAML:
 + `application/vnd.apiblueprint.sourcemap+json`
 + `application/vnd.apiblueprint.sourcemap+yaml`
 
-### Example: JSON Serialization
-`application/vnd.apiblueprint.sourcemap+json; version=2.1`
-
-```json
-{
-  "metadata": [
-    [
-      [0, 39]
-    ]
-  ],
-  "name": [
-    [39, 13]
-  ],
-  "description": [
-    [52, 19]
-  ],
-  "resourceGroups": [
-    {
-      "name": [
-        [71, 30]
-      ],
-      "description": [
-        [101, 30]
-      ],
-      "resources": [
-        {
-          "name": [
-            [131, 46]
-          ],
-          "description": [
-            [177, 24]
-          ],
-          "uriTemplate": [
-            [131, 46]
-          ],
-          "model": {
-            "name": [
-              [131, 46]
-            ],
-            "description": [
-              [214, 29]
-            ],
-            "headers": [
-              [
-                [267, 56]
-              ]
-            ],
-            "body": [
-              [344, 26]
-            ],
-            "schema": [
-              [393, 28]
-            ]
-          },
-          "parameters": [
-            {
-              "name": [
-                [441, 81]
-              ],
-              "description": [
-                [441, 81]
-              ],
-              "type": [
-                [441, 81]
-              ],
-              "required": [
-                [441, 81]
-              ],
-              "default": [
-                [441, 81]
-              ],
-              "example": [
-                [441, 81]
-              ],
-              "values": [
-                [
-                  [552, 19]
-                ]
-              ]
-            }
-          ],
-          "actions": [
-            {
-              "name": [
-                [572, 24]
-              ],
-              "description": [
-                [596, 22]
-              ],
-              "method": [
-                [572, 24]
-              ],
-              "parameters": [
-                {
-                  "name": [
-                    [637, 81]
-                  ],
-                  "description": [
-                    [637, 81]
-                  ],
-                  "type": [
-                    [637, 81]
-                  ],
-                  "required": [
-                    [637, 81]
-                  ],
-                  "default": [
-                    [637, 81]
-                  ],
-                  "example": [
-                    [637, 81]
-                  ],
-                  "values": [
-                    [
-                      [748, 19]
-                    ]
-                  ]
-                }
-              ],
-              "examples": [
-                {
-                  "name": [],
-                  "description": [],
-                  "requests": [
-                    {
-                      "name": [
-                        [770, 24]
-                      ],
-                      "description": [
-                        [798, 22]
-                      ],
-                      "headers": [
-                        [
-                          [844, 56]
-                        ]
-                      ],
-                      "body": [
-                        [921, 19]
-                      ],
-                      "schema": [
-                        [963, 21]
-                      ]
-                    }
-                  ],
-                  "responses": [
-                    {
-                      "name": [],
-                      "description": [
-                        [1029, 23]
-                      ],
-                      "headers": [
-                        [
-                          [1076, 56]
-                        ]
-                      ],
-                      "body": [
-                        [1153, 20]
-                      ],
-                      "schema": [
-                        [1196, 22]
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "name": [
-                [1219, 24]
-              ],
-              "description": [
-                [1243, 22]
-              ],
-              "method": [
-                [1219, 24]
-              ],
-              "parameters": [],
-              "examples": [
-                {
-                  "name": [],
-                  "description": [],
-                  "responses": [
-                    {
-                      "name": [],
-                      "reference": [
-                        [1270, 24]
-                      ],
-                      "description": [
-                        [214, 29]
-                      ],
-                      "headers": [
-                        [
-                          [267, 56]
-                        ]
-                      ],
-                      "body": [
-                        [344, 26]
-                      ],
-                      "schema": [
-                        [393, 28]
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}
-```
 
 [MSON]: https://github.com/apiaryio/mson
 [API Blueprint AST Definition]: README.md
@@ -380,5 +173,6 @@ Two supported, feature-equal serialization formats are JSON and YAML:
 [Attributes Source Map]: #attributes-source-map-data-structure-source-map
 [Data Structure Source Map]: #data-structure-source-map-object
 [Data Structures Source Map]: #data-structures-source-map-object
+[Element Source Map]: #element-source-map-object
 
 [Named Type Source Map]: https://github.com/apiaryio/mson-ast/blob/master/Source%20Map.md#named-type-source-map-object
