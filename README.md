@@ -16,7 +16,13 @@ If you are looking for a way to describe your Web API without using JSON or YAML
 ## Version
 + **Version**: 3.0
 + **Created**: 2013-08-30
-+ **Updated**: 2015-01-21
++ **Updated**: 2015-01-29
+
+## Future Development
+As of version 3.0 the API Blueprint AST is in the *interim* transition period
+towards unified document-structure based on the concept of DOM elements
+(see the [Element][] object). Please refrain from using AST elements marked as
+*"deprecated"*.
 
 ## Quick Links
 + [AST Description](#ast-definition)
@@ -42,7 +48,8 @@ Following is the definition of API Blueprint AST media types using the [MSON](ht
 + `description` (string) - Top-level description of the API in Markdown (`.raw`) or HTML (`.html`)
 + `resourceGroups` (array[[Resource Group][]]) - **Deprecated**
 
-    Note this property is **deprecated** and will be removed in a future. Use `content` instead.
+    Note this property is **deprecated** and will be removed in a future.
+    Replaced by `category` elements of the `content` property.
 
 + `element`: `category` (fixed, required)
 + `content` (array[[Element][]]) - Section elements of the blueprint
@@ -65,7 +72,7 @@ A component of an API description.
     + ([Data Structure][]) - Data structure (for element `dataStructure`)
 
 ### Resource Group (object)
-**Deprecated**
+**Deprecated**, replaced by the `category` [Element][].
 
 Logical group of resources.
 
@@ -84,8 +91,12 @@ Description of one resource, or a cluster of resources defined by its URI templa
 + `uriTemplate` (string) - URI Template as defined in [RFC6570](http://tools.ietf.org/html/rfc6570)
 + `model` ([Payload][]) - [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection), a reusable payload representing the resource
 + `parameters` (array[[Parameter][]]) - Ordered array of URI parameters
-+ `attributes` ([Attributes][]) - Description of the Resource attributes.
 + `actions` (array[[Action][]]) - Ordered array of actions available on the resource each defining at least one complete HTTP transaction
++ `content` (array[[Data Structure][]]) - Array of Resource's elements
+
+    In the interim period this may contain at maximum one
+    element of the `dataStructure` type - the definition of the of the Resource
+    attributes.
 
 ### Action (object)
 An HTTP transaction (a request-response transaction). Actions are specified by an HTTP request method within a resource.
@@ -95,8 +106,12 @@ An HTTP transaction (a request-response transaction). Actions are specified by a
 + `description` (string) - Description of the Action (`.raw` or `.html`)
 + `method` (string) - HTTP request method defining the action
 + `parameters` (array[[Parameter][]]) - Ordered array of resource's URI parameters descriptions specific to this action
-+ `attributes` ([Attributes][]) - Description of the action input attributes – the default properties of the request message-body.
 + `examples` (array[[Transaction Example][]]) - Ordered array of HTTP transaction [examples](#example-section) for the relevant HTTP request method
++ `content` (array[[Data Structure][]])  - Array of Action's elements
+
+    In the interim period this may contain at maximum one
+    element of the `dataStructure` type - the definition of the of the action input
+    attributes.
 
 ### Payload (object)
 An [API Blueprint payload](https://github.com/apiaryio/api-blueprint/blob/master/Glossary%20of%20Terms.md#payload).
@@ -112,23 +127,30 @@ An [API Blueprint payload](https://github.com/apiaryio/api-blueprint/blob/master
 
 + `reference` ([Reference][]) - Present if and only if a reference to a [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection) is present in the payload and it has been resolved correctly
 + `description` (string) - Description of the payload (`.raw` or `.html`)
-+ `attributes` ([Attributes][]) - Description of the message-body attributes
 + `headers` (string) - Ordered array of HTTP headers that are expected to be transferred with HTTP message represented by this payload
 + `body` (string) - **Deprecated**
 
     An entity body to be transferred with HTTP message represented by this payload
 
-    Note this property is **deprecated** and will be removed in a future. Use `assets/body/source` instead.
+    Note this property is **deprecated** and will be removed in a future.
+    Replaced by `body` property of the `asset` property.
 
 + `schema` (string) - **Deprecated**
 
     A validation schema for the entity body as defined in `body`.
 
-    Note this property is **deprecated** and will be removed in a future. Use `assets/schema/source` instead.
+    Note this property is **deprecated** and will be removed in a future.
+    Replaced by `schema` property of the `asset` property.
 
 + `assets`
   + `body` ([Asset][]) - An entity body to be transferred with HTTP message represented by this payload
   + `schema` ([Asset][]) - A validation schema for the entity body as defined in the `body`
+
++ `content` (array[[Data Structure][]]) - Array of Payloads's elements
+
+    In the interim period this may contain at maximum one
+    element of the `dataStructure` type - the definition of the message-body
+    attributes.
 
 ### Asset (object)
 An [API Blueprint asset][].
@@ -171,21 +193,11 @@ A reference object which is used whenever there is a reference to a [Resource Mo
 #### Properties
 + `id` (string) - The identifier (name) of the reference
 
-### Attributes ([Data Structure][])
-Data structure definition as written in an API Blueprint [Attributes section][Attribute section].
-
-### Data Structure (object)
+### Data Structure ([Named Type][])
 Definition of an [MSON][] data structure.
 
-> **NOTE:** Properties of this object may use some types defined in the [MSON AST][].
-
 #### Properties
-+ `element`: `dataStructure` (fixed, required)
-+ `content`
-    + `source` ([Named Type][]) - The data structure as described in the source API Blueprint
-    + `resolved` ([Named Type][])
-
-    The data structure as resolved by parser's subsequent tooling. Usually obtained by expanding MSON Type references.
+- `element`: `dataStructure` (fixed, required)
 
 ## Media Types
 The `application/vnd.apiblueprint.ast` is the base media type for API Blueprint AST. An API Blueprint AST with raw Markdown descriptions has the `.raw` suffix whereas version with Markdown descriptions rendered into HTML has the `.html` suffix. The base media type serialization format is specified in the `+<serialization format>` appendix.
@@ -236,17 +248,6 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                 "value": "<HTTP header field value>"
               }
             ],
-            "attributes": {
-              "source": {
-                "name": null,
-                "base": {
-                  "typeSpecification": {
-                    "name": "<sub-type>"
-                  }
-                },
-                "sections": null
-              }
-            },
             "assets": {
               "body": {
                 "source": "<resource model body>"
@@ -254,7 +255,21 @@ Two supported, feature-equal serialization formats are JSON and YAML:
               "schema": {
                 "source": "<resource model schema>"
               }
-            }
+            },
+            "content": [
+                {
+                  "element": "dataStructure",
+                  "source": {
+                    "name": null,
+                    "base": {
+                      "typeSpecification": {
+                        "name": "<sub-type>"
+                      }
+                    },
+                    "sections": null
+                  }
+                }
+            ],
           },
           "parameters": [
             {
@@ -271,19 +286,6 @@ Two supported, feature-equal serialization formats are JSON and YAML:
               ]
             }
           ],
-          "attributes": {
-            "source": {
-              "name": {
-                "literal": "<resource name>"
-              },
-              "base": {
-                "typeSpecification": {
-                  "name": "<sub-type>"
-                }
-              },
-              "sections": null
-            }
-          },
           "actions": [
             {
               "name": "<action name>",
@@ -304,17 +306,6 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                   ]
                 }
               ],
-              "attributes": {
-                "source": {
-                  "name": null,
-                  "base": {
-                    "typeSpecification": {
-                      "name": "<sub-type>"
-                    }
-                  },
-                  "sections": null
-                }
-              },
               "examples": [
                 {
                   "name": "<transaction example name>",
@@ -329,8 +320,9 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                           "value": "<HTTP header field value>"
                         }
                       ],
-                      "attributes": {
-                        "source": {
+                      "content": [
+                        {
+                          "element": "dataStructure",
                           "name": null,
                           "base": {
                             "typeSpecification": {
@@ -339,7 +331,7 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                           },
                           "sections": null
                         }
-                      },
+                      ],
                       "assets": {
                         "body": {
                           "source": "<request body>"
@@ -360,8 +352,9 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                           "value": "<HTTP header field value>"
                         }
                       ],
-                      "attributes": {
-                        "source": {
+                      "content": [
+                        {
+                          "element": "dataStructure",
                           "name": null,
                           "base": {
                             "typeSpecification": {
@@ -370,7 +363,7 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                           },
                           "sections": null
                         }
-                      },
+                      ],
                       "assets": {
                         "body": {
                           "source": "<response body>"
@@ -382,7 +375,19 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                     }
                   ]
                 }
-              ]
+              ],
+              "content": [
+                {
+                  "element": "dataStructure",
+                  "name": null,
+                  "base": {
+                    "typeSpecification": {
+                      "name": "<sub-type>"
+                    }
+                  },
+                  "sections": null
+                }
+              ],
             },
             {
               "name": "<action name>",
@@ -419,6 +424,20 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                 }
               ]
             }
+          ],
+          "content": [
+            {
+              "element": "dataStructure",
+              "name": {
+                "literal": "<resource name>"
+              },
+              "base": {
+                "typeSpecification": {
+                  "name": "<sub-type>"
+                }
+              },
+              "sections": null
+            }
           ]
         }
       ]
@@ -428,10 +447,15 @@ Two supported, feature-equal serialization formats are JSON and YAML:
       "content": [
         {
           "element": "dataStructure",
-          "content": {
-            "source": null,
-            "resolved": null
-          }
+          "name": {
+            "literal": "<data structure name>"
+          },
+          "base": {
+            "typeSpecification": {
+              "name": "<sub-type>"
+            }
+          },
+          "sections": null
         }
       ]
     }
