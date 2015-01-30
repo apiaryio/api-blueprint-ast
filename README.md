@@ -261,16 +261,14 @@ Two supported, feature-equal serialization formats are JSON and YAML:
             "content": [
                 {
                   "element": "dataStructure",
-                  "source": {
                     "name": null,
                     "base": {
                       "typeSpecification": {
                         "name": "<sub-type>"
                       }
                     },
-                    "sections": null
+                    "sections": []
                   }
-                }
             ],
           },
           "parameters": [
@@ -331,7 +329,7 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                               "name": "<sub-type>"
                             }
                           },
-                          "sections": null
+                          "sections": []
                         }
                       ],
                       "assets": {
@@ -365,7 +363,7 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                               "name": "<sub-type>"
                             }
                           },
-                          "sections": null
+                          "sections": []
                         }
                       ],
                       "assets": {
@@ -391,7 +389,7 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                       "name": "<sub-type>"
                     }
                   },
-                  "sections": null
+                  "sections": []
                 }
               ],
             },
@@ -437,14 +435,15 @@ Two supported, feature-equal serialization formats are JSON and YAML:
             {
               "element": "dataStructure",
               "name": {
-                "literal": "<resource name>"
+                "literal": "<resource name>",
+                "variable": false
               },
               "base": {
                 "typeSpecification": {
                   "name": "<sub-type>"
                 }
               },
-              "sections": null
+              "sections": []
             }
           ]
         }
@@ -456,14 +455,15 @@ Two supported, feature-equal serialization formats are JSON and YAML:
         {
           "element": "dataStructure",
           "name": {
-            "literal": "<data structure name>"
+            "literal": "<data structure name>",
+            "variable": false
           },
           "base": {
             "typeSpecification": {
               "name": "<sub-type>"
             }
           },
-          "sections": null
+          "sections": []
         }
       ]
     }
