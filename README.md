@@ -43,7 +43,7 @@ Following is the definition of API Blueprint AST media types using the [MSON](ht
 + `name` (string) - Name of the API
 + `description` (string) - Top-level description of the API in Markdown (`.raw`) or HTML (`.html`)
 + `resourceGroups` (array[[Resource Group][]])
-+ `dataStructures` (array[[Data Structures][]])
++ `dataStructures` (array[[Data Structure][]]) - List of arbitrary data structures defined in API Blueprint
 
 ### Resource Group (object)
 Logical group of resources.
@@ -62,7 +62,7 @@ Description of one resource, or a cluster of resources defined by its URI templa
 + `uriTemplate` (string) - URI Template as defined in [RFC6570](http://tools.ietf.org/html/rfc6570)
 + `model` ([Payload][]) - [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection), a reusable payload representing the resource
 + `parameters` (array[[Parameter][]]) - Ordered array of URI parameters
-+ `attributes` ([Attributes][]) - Description of the Resource attributes.
++ `traits` ([Traits][]) - Description of the Resource traits.
 + `actions` (array[[Action][]]) - Ordered array of actions available on the resource each defining at least one complete HTTP transaction
 
 ### Action (object)
@@ -73,7 +73,7 @@ An HTTP transaction (a request-response transaction). Actions are specified by a
 + `description` (string) - Description of the Action (`.raw` or `.html`)
 + `method` (string) - HTTP request method defining the action
 + `parameters` (array[[Parameter][]]) - Ordered array of resource's URI parameters descriptions specific to this action
-+ `attributes` ([Attributes][]) - Description of the action input attributes – the default properties of the request message-body.
++ `traits` ([Traits][]) - Description of the action input traits – the default properties of the request message-body.
 + `examples` (array[[Transaction Example][]]) - Ordered array of HTTP transaction [examples](#example-section) for the relevant HTTP request method
 
 ### Payload (object)
@@ -90,7 +90,7 @@ An [API Blueprint payload](https://github.com/apiaryio/api-blueprint/blob/master
 
 + `reference` ([Reference][]) - Present if and only if a reference to a [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection) is present in the payload and it has been resolved correctly
 + `description` (string) - Description of the payload (`.raw` or `.html`)
-+ `attributes` ([Attributes][]) - Description of the message-body attributes
++ `traits` ([Traits][]) - Description of the message-body traits
 + `headers` (string) - Ordered array of HTTP headers that are expected to be transferred with HTTP message represented by this payload
 + `body` (string) - **Deprecated**
 
@@ -149,8 +149,8 @@ A reference object which is used whenever there is a reference to a [Resource Mo
 #### Properties
 + `id` (string) - The identifier (name) of the reference
 
-### Attributes ([Data Structure][])
-Data structure definition as written in an API Blueprint [Attributes section][Attribute section].
+### Traits ([Data Structure][])
+Data structure definition as written in an API Blueprint [Traits section][Traits section].
 
 ### Data Structure (object)
 Definition of an [MSON][] data structure.
@@ -162,12 +162,6 @@ Definition of an [MSON][] data structure.
 + `resolved` ([Named Type][])
 
     The data structure as resolved by parser's subsequent tooling. Usually obtained by expanding MSON Type references.
-
-### Data Structures (object)
-List of arbitrary data structures defined in API Blueprint.
-
-#### Properties
-+ `types` (array[[Data Structure][]]) - Array of defined data structures
 
 ## Media Types
 The `application/vnd.apiblueprint.ast` is the base media type for API Blueprint AST. An API Blueprint AST with raw Markdown descriptions has the `.raw` suffix whereas version with Markdown descriptions rendered into HTML has the `.html` suffix. The base media type serialization format is specified in the `+<serialization format>` appendix.
@@ -210,7 +204,7 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                 "value": "<HTTP header field value>"
               }
             ],
-            "attributes": {
+            "traits": {
               "source": {
                 "name": null,
                 "base": {
@@ -218,15 +212,18 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                     "name": "<sub-type>"
                   }
                 },
-                "sections": null
-              }
+                "sections": []
+              },
+              "resolved": {}
             },
             "assets": {
               "body": {
-                "source": "<resource model body>"
+                "source": "<resource model body>",
+                "resolved": ""
               },
               "schema": {
-                "source": "<resource model schema>"
+                "source": "<resource model schema>",
+                "resolved": ""
               }
             }
           },
@@ -245,7 +242,7 @@ Two supported, feature-equal serialization formats are JSON and YAML:
               ]
             }
           ],
-          "attributes": {
+          "traits": {
             "source": {
               "name": {
                 "literal": "<resource name>"
@@ -255,8 +252,9 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                   "name": "<sub-type>"
                 }
               },
-              "sections": null
-            }
+              "sections": []
+            },
+            "resolved": {}
           },
           "actions": [
             {
@@ -278,7 +276,7 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                   ]
                 }
               ],
-              "attributes": {
+              "traits": {
                 "source": {
                   "name": null,
                   "base": {
@@ -286,8 +284,9 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                       "name": "<sub-type>"
                     }
                   },
-                  "sections": null
-                }
+                  "sections": []
+                },
+                "resolved": {}
               },
               "examples": [
                 {
@@ -303,7 +302,7 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                           "value": "<HTTP header field value>"
                         }
                       ],
-                      "attributes": {
+                      "traits": {
                         "source": {
                           "name": null,
                           "base": {
@@ -311,15 +310,17 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                               "name": "<sub-type>"
                             }
                           },
-                          "sections": null
+                          "sections": []
                         }
                       },
                       "assets": {
                         "body": {
-                          "source": "<request body>"
+                          "source": "<request body>",
+                          "resolved": ""
                         },
                         "schema": {
-                          "source": "<request schema>"
+                          "source": "<request schema>",
+                          "resolved": ""
                         }
                       }
                     }
@@ -334,7 +335,7 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                           "value": "<HTTP header field value>"
                         }
                       ],
-                      "attributes": {
+                      "traits": {
                         "source": {
                           "name": null,
                           "base": {
@@ -342,15 +343,18 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                               "name": "<sub-type>"
                             }
                           },
-                          "sections": null
-                        }
+                          "sections": []
+                        },
+                        "resolved": {}
                       },
                       "assets": {
                         "body": {
-                          "source": "<response body>"
+                          "source": "<response body>",
+                          "resolved": ""
                         },
                         "schema": {
-                          "source": "<response schema>"
+                          "source": "<response schema>",
+                          "resolved": ""
                         }
                       }
                     }
@@ -382,10 +386,12 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                       ],
                       "assets": {
                         "body": {
-                          "source": "<resource model body>"
+                          "source": "<resource model body>",
+                          "resolved": ""
                         },
                         "schema": {
-                          "source": "<resource model schema>"
+                          "source": "<resource model schema>",
+                          "resolved": ""
                         }
                       }
                     }
@@ -396,6 +402,62 @@ Two supported, feature-equal serialization formats are JSON and YAML:
           ]
         }
       ]
+    }
+  ],
+  "dataStructures": [
+    {
+      "source": {
+        "name": {
+          "literal": "<data structure name>",
+          "variable": false
+        },
+        "typeDefinition": {
+          "typeSpecification": {
+            "name": "object",
+            "nestedTypes": []
+          },
+          "attributes": []
+        },
+        "sections": [
+          {
+            "class": "memberType",
+            "content": [
+              {
+                "content": {
+                  "name": {
+                    "literal": "<property name>",
+                    "variable": false
+                  },
+                  "description": "",
+                  "valueDefinition": {
+                    "values": [
+                      {
+                        "literal": "<value>",
+                        "variable": false
+                      }
+                    ],
+                    "typeDefinition": {
+                      "typeSpecification": {
+                        "name": "string",
+                        "nestedTypes": []
+                      },
+                      "attributes": []
+                    }
+                  },
+                  "sections": [
+                    {
+                      "class": "blockDescription",
+                      "content": "<property description>"
+                    }
+                  ]
+                },
+                "class": "property"
+              }
+            ]
+          }
+        ]
+      },
+      "resolved": {}
     }
   ]
 }
@@ -423,7 +485,7 @@ MIT License. See the [LICENSE](LICENSE) file.
 
 [API Blueprint asset]: https://github.com/apiaryio/api-blueprint/blob/master/Glossary%20of%20Terms.md#asset
 
-[Attribute section]: https://github.com/apiaryio/api-blueprint/blob/zdne/attributes-description/API%20Blueprint%20Specification.md#def-attributes-section
+[Traits section]: https://github.com/apiaryio/api-blueprint/blob/zdne/attributes-description/API%20Blueprint%20Specification.md#def-attributes-section
 [Resource section]: https://github.com/apiaryio/api-blueprint/blob/zdne/attributes-description/API%20Blueprint%20Specification.md#def-resource-section
 
 [Blueprint]: #blueprint-object
@@ -435,8 +497,7 @@ MIT License. See the [LICENSE](LICENSE) file.
 [Asset]: #asset-object
 [Parameter]: #parameter-object
 [Transaction Example]: #transaction-example-object
-[Attributes]: #attributes-data-structure
+[Traits]: #traits-data-structure
 [Data Structure]: #data-structure-object
-[Data Structures]: #data-structures-object
 
 [Source Map Definition]: Source%20Map.md
