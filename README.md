@@ -43,7 +43,7 @@ Following is the definition of API Blueprint AST media types using the [MSON](ht
 + `name` (string) - Name of the API
 + `description` (string) - Top-level description of the API in Markdown (`.raw`) or HTML (`.html`)
 + `resourceGroups` (array[[Resource Group][]])
-+ `dataStructures` (array[[Data Structures][]])
++ `dataStructures` (array[[Data Structure][]]) - List of arbitrary data structures defined in API Blueprint
 
 ### Resource Group (object)
 Logical group of resources.
@@ -162,12 +162,6 @@ Definition of an [MSON][] data structure.
 + `resolved` ([Named Type][])
 
     The data structure as resolved by parser's subsequent tooling. Usually obtained by expanding MSON Type references.
-
-### Data Structures (object)
-List of arbitrary data structures defined in API Blueprint.
-
-#### Properties
-+ `types` (array[[Data Structure][]]) - Array of defined data structures
 
 ## Media Types
 The `application/vnd.apiblueprint.ast` is the base media type for API Blueprint AST. An API Blueprint AST with raw Markdown descriptions has the `.raw` suffix whereas version with Markdown descriptions rendered into HTML has the `.html` suffix. The base media type serialization format is specified in the `+<serialization format>` appendix.
@@ -396,6 +390,62 @@ Two supported, feature-equal serialization formats are JSON and YAML:
           ]
         }
       ]
+    }
+  ],
+  "dataStructures": [
+    {
+      "source": {
+        "name": {
+          "literal": "<data structure name>",
+          "variable": false
+        },
+        "typeDefinition": {
+          "typeSpecification": {
+            "name": "object",
+            "nestedTypes": []
+          },
+          "attributes": []
+        },
+        "sections": [
+          {
+            "class": "memberType",
+            "content": [
+              {
+                "content": {
+                  "name": {
+                    "literal": "<property name>",
+                    "variable": false
+                  },
+                  "description": "",
+                  "valueDefinition": {
+                    "values": [
+                      {
+                        "literal": "<value>",
+                        "variable": false
+                      }
+                    ],
+                    "typeDefinition": {
+                      "typeSpecification": {
+                        "name": "string",
+                        "nestedTypes": []
+                      },
+                      "attributes": []
+                    }
+                  },
+                  "sections": [
+                    {
+                      "class": "blockDescription",
+                      "content": "<property description>"
+                    }
+                  ]
+                },
+                "class": "property"
+              }
+            ]
+          }
+        ]
+      },
+      "resolved": {}
     }
   ]
 }
