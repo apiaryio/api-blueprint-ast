@@ -218,10 +218,12 @@ Two supported, feature-equal serialization formats are JSON and YAML:
             },
             "assets": {
               "body": {
-                "source": "<resource model body>"
+                "source": "<resource model body>",
+                "resolved": ""
               },
               "schema": {
-                "source": "<resource model schema>"
+                "source": "<resource model schema>",
+                "resolved": ""
               }
             }
           },
@@ -313,10 +315,12 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                       },
                       "assets": {
                         "body": {
-                          "source": "<request body>"
+                          "source": "<request body>",
+                          "resolved": ""
                         },
                         "schema": {
-                          "source": "<request schema>"
+                          "source": "<request schema>",
+                          "resolved": ""
                         }
                       }
                     }
@@ -345,10 +349,12 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                       },
                       "assets": {
                         "body": {
-                          "source": "<response body>"
+                          "source": "<response body>",
+                          "resolved": ""
                         },
                         "schema": {
-                          "source": "<response schema>"
+                          "source": "<response schema>",
+                          "resolved": ""
                         }
                       }
                     }
@@ -380,10 +386,12 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                       ],
                       "assets": {
                         "body": {
-                          "source": "<resource model body>"
+                          "source": "<resource model body>",
+                          "resolved": ""
                         },
                         "schema": {
-                          "source": "<resource model schema>"
+                          "source": "<resource model schema>",
+                          "resolved": ""
                         }
                       }
                     }
