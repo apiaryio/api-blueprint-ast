@@ -134,18 +134,14 @@ An [API Blueprint payload](https://github.com/apiaryio/api-blueprint/blob/master
     An entity body to be transferred with HTTP message represented by this payload
 
     Note this property is **deprecated** and will be removed in a future.
-    Replaced by `body` property of the `asset` property.
+    Replaced by `bodyExample` [Asset][] element.
 
 + `schema` (string) - **Deprecated**
 
     A validation schema for the entity body as defined in `body`.
 
     Note this property is **deprecated** and will be removed in a future.
-    Replaced by `schema` property of the `asset` property.
-
-+ `assets`
-  + `body` ([Asset][]) - An entity body to be transferred with HTTP message represented by this payload
-  + `schema` ([Asset][]) - A validation schema for the entity body as defined in the `body`
+    Replaced by `bodySchema` `asset` element.
 
 + `content` (array) - Array of Payloads's elements
 
@@ -253,16 +249,6 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                 "value": "<HTTP header field value>"
               }
             ],
-            "assets": {
-              "body": {
-                "source": "<resource model body>",
-                "resolved": ""
-              },
-              "schema": {
-                "source": "<resource model schema>",
-                "resolved": ""
-              }
-            },
             "content": [
               {
                 "element": "dataStructure",
@@ -536,7 +522,7 @@ MIT License. See the [LICENSE](LICENSE) file.
 [Action]: #action-object
 [Payload]: #payload-object
 [Reference]: #reference-object
-[Asset]: #asset-object
+[Asset]: #asset-element
 [Parameter]: #parameter-object
 [Transaction Example]: #transaction-example-object
 [Attributes]: #attributes-data-structure
