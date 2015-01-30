@@ -227,7 +227,7 @@ Two supported, feature-equal serialization formats are JSON and YAML:
     {
       "element": "category",
       "attributes": {
-          "name": "<resource group name>"
+        "name": "<resource group name>"
       },
       "content": [
         {
@@ -259,17 +259,17 @@ Two supported, feature-equal serialization formats are JSON and YAML:
               }
             },
             "content": [
-                {
-                  "element": "dataStructure",
-                    "name": null,
-                    "base": {
-                      "typeSpecification": {
-                        "name": "<sub-type>"
-                      }
-                    },
-                    "sections": []
+              {
+                "element": "dataStructure",
+                "name": null,
+                "base": {
+                  "typeSpecification": {
+                    "name": "<sub-type>"
                   }
-            ],
+                },
+                "sections": []
+              }
+            ]
           },
           "parameters": [
             {
@@ -391,7 +391,7 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                   },
                   "sections": []
                 }
-              ],
+              ]
             },
             {
               "name": "<action name>",
