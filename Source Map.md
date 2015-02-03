@@ -39,9 +39,9 @@ Source map of the [Blueprint][].
     + `name` ([Source Map][]) - Source map of the element name
 + `content` (enum)
     + (array[[Element Source Map][]]) - Source maps of nested elements (for element `category`)
-    + ([Source Map][]) - Source map for element `copy`
-    + ([Resource Source Map][]) - Source map for element `resource`
-    + ([Data Structure Source Map][]) - Source map for element `dataStructure`
+    + ([Source Map][]) - Source map (for element `copy` and `asset`)
+    + ([Resource Source Map][]) - Source map of Resource (for element `resource`)
+    + ([Data Structure Source Map][]) - Source map of Data Structure (for element `dataStructure`)
 
 ### Resource Group Source Map (object)
 **Deprecated**
@@ -62,8 +62,8 @@ Source map of the [Resource][].
 + `uriTemplate` ([Source Map][]) - Source map of URI Template
 + `model` ([Payload Source map][]) - [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection), a reusable payload representing the resource
 + `parameters` (array[[Parameter Source Map][]]) - Ordered array of source maps of URI parameters
-+ `attributes` ([Attributes Source Map][]) - Source map of attributes of the Resource
 + `actions` (array[[Action Source Map][]]) - Ordered array of source maps of actions available on the resource each defining at least one complete HTTP transaction
++ `content` (array[[Data Structure Source Map][]]) - Ordered array of Resource source map's elements
 
 ### Action Source Map (object)
 Source map of the [Action][].
@@ -73,8 +73,8 @@ Source map of the [Action][].
 + `description` ([Source Map][]) - Source map of description of the Action
 + `method` ([Source Map][]) - Source map of HTTP request method defining the action
 + `parameters` (array[[Parameter Source Map][]]) - Ordered array of source maps of resource's URI parameters descriptions specific to this action
-+ `attributes` ([Attributes Source Map][]) - Source map of attributes of the Action
 + `examples` (array[[Transaction Example Source Map][]]) - Ordered array of source maps of HTTP transaction [examples](#example-section) for the relevant HTTP request method
++ `content` (array[[Data Structure Source Map][]]) - Ordered array of Action source map's elements
 
 ### Payload Source Map (object)
 Source map of [Payload][].
@@ -99,11 +99,13 @@ When a reference is used, the source map of the payload is in fact the source ma
 
     Note this property is **deprecated** and will be removed in a future. Use `assets/schema/source` instead.
 
-+ `assets`
-  + `body` ([Asset Source Map][]) - Source map of body to be transferred with HTTP message represented by this payload
-  + `schema` ([Asset Source Map][]) - Source map of a validation schema for the entity body as defined in the `body`
++ `content` (array) - Ordered array of Payload source map's elements
 
-### Asset Source Map ([Source Map][])
+    + Items
+        + ([Data Structure Source Map][])
+        + ([Asset Source Map][])
+
+### Asset Source Map ([Element Source Map][])
 Source map of [Asset][]
 
 ### Parameter Source Map (object)
@@ -126,15 +128,8 @@ Source map of [Transaction Example][].
 + `requests` (array[[Payload Source Map][]]) - Ordered array of source maps of example transaction request payloads
 + `responses` (array[[Payload Source Map][]]) - Ordered array of source maps of example transaction response payloads
 
-### Attributes Source Map ([Data Structure Source Map][])
-Source map of [Attributes][]
-
-### Data Structure Source Map (object)
+### Data Structure Source Map ([Named Type Source Map][])
 Source map of [Data Structure][]
-
-#### Properties
-+ `content`
-    + `source` ([Named Type Source Map][]) - Source map of the data structure as described in the source API Blueprint
 
 ## Media Types
 The `application/vnd.apiblueprint.sourcemap` is the base media type for API Blueprint AST Source Map.
@@ -167,12 +162,10 @@ Two supported, feature-equal serialization formats are JSON and YAML:
 [Resource Source Map]: #resource-source-map-object
 [Action Source Map]: #action-source-map-object
 [Payload Source Map]: #payload-source-map-object
-[Asset Source Map]: #asset-source-map-source-map
+[Asset Source Map]: #asset-source-map-element-source-map
 [Parameter Source Map]: #parameter-source-map-object
 [Transaction Example Source Map]: #transaction-example-source-map-object
-[Attributes Source Map]: #attributes-source-map-data-structure-source-map
-[Data Structure Source Map]: #data-structure-source-map-object
-[Data Structures Source Map]: #data-structures-source-map-object
+[Data Structure Source Map]: #data-structure-source-map-named-type-source-map
 [Element Source Map]: #element-source-map-object
 
 [Named Type Source Map]: https://github.com/apiaryio/mson-ast/blob/master/Source%20Map.md#named-type-source-map-object
