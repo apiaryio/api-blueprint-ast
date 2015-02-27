@@ -108,6 +108,9 @@ An HTTP transaction (a request-response transaction). Actions are specified by a
 + `method` (string) - HTTP request method defining the action
 + `parameters` (array[[Parameter][]]) - Ordered array of resource's URI parameters descriptions specific to this action
 + `examples` (array[[Transaction Example][]]) - Ordered array of HTTP transaction [examples](#example-section) for the relevant HTTP request method
++ `attributes` (object) - Action-specific attributes
+    + `uriTemplate` (string) - URI Template as defined in [RFC6570](http://tools.ietf.org/html/rfc6570)
+    + `relation` (string) - Link relation identifier of the action as defined in [Relation section][]
 + `content` (array[[Data Structure][]])  - Array of Action's elements
 
     In the interim period this may contain at maximum one
@@ -514,6 +517,7 @@ MIT License. See the [LICENSE](LICENSE) file.
 
 [Attribute section]: https://github.com/apiaryio/api-blueprint/blob/zdne/attributes-description/API%20Blueprint%20Specification.md#def-attributes-section
 [Resource section]: https://github.com/apiaryio/api-blueprint/blob/zdne/attributes-description/API%20Blueprint%20Specification.md#def-resource-section
+[Relation section]: https://github.com/apiaryio/api-blueprint/blob/zdne/attributes-description/API%20Blueprint%20Specification.md#def-relation-section
 
 [Blueprint]: #blueprint-object
 [Element]: #element-object
