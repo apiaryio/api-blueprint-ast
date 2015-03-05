@@ -74,6 +74,9 @@ Source map of the [Action][].
 + `method` ([Source Map][]) - Source map of HTTP request method defining the action
 + `parameters` (array[[Parameter Source Map][]]) - Ordered array of source maps of resource's URI parameters descriptions specific to this action
 + `examples` (array[[Transaction Example Source Map][]]) - Ordered array of source maps of HTTP transaction [examples](#example-section) for the relevant HTTP request method
++ `attributes` (object)
+    + `uriTemplate` (string) - Source map of URI Template
+    + `relation` (string) - Source map of link relation identifier of the action
 + `content` (array[[Data Structure Source Map][]]) - Ordered array of Action source map's elements
 
 ### Payload Source Map (object)
