@@ -8,7 +8,7 @@ This document defines serialization formats for [API Blueprint](http://apibluepr
 
 For the definition of API Blueprint AST Source Map see the [API Blueprint AST Source Map definition][Source Map Definition].
 
-Converting API Blueprint to AST and its serialization is the task of API Blueprint Parser – [Snow Crash](https://github.com/apiaryio/snowcrash) or one of its [bindings](https://github.com/apiaryio/snowcrash#bindings). Reverse process from AST (serialization) to API Blueprint is also possible thanks to the [Matter Compiler](https://github.com/apiaryio/matter_compiler).
+Converting API Blueprint to AST and its serialization is the task of API Blueprint Parser – [Drafter](https://github.com/apiaryio/drafter) or one of its [bindings](https://github.com/apiaryio/drafter#bindings). Reverse process from AST (serialization) to API Blueprint is also possible thanks to the [Matter Compiler](https://github.com/apiaryio/matter_compiler).
 
 ## Don't like to design APIs in JSON or YAML?
 If you are looking for a way to describe your Web API without using JSON or YAML see [API Blueprint](https://github.com/apiaryio/api-blueprint).
@@ -29,7 +29,7 @@ towards unified document-structure based on the concept of DOM elements
 + [Media Types](#media-types)
 + [Keys description](#keys-description)
 + [Example: JSON serialization](#example-json-serialization)
-+ [Serialization in Snow Crash](#serialization-in-snow-crash)
++ [Serialization in Drafter](#serialization-in-drafter)
 + [Serialized Parsing Result Media Types][parsing media types]
 
 ## AST Definition
@@ -496,8 +496,8 @@ Two supported, feature-equal serialization formats are JSON and YAML:
 ## Related Media Types
 - [**Serialized Parsing Result Media Types**][Parsing media types] - Media types for the serialization of complete parsing results (including warnings and errors)
 
-## Serialization in Snow Crash
-The `snowcrash` [command-line tool](https://github.com/apiaryio/snowcrash#snow-crash-command-line-tool) supports serialization of [API Blueprint AST](https://github.com/apiaryio/snowcrash/blob/master/src/Blueprint.h) via the `--format` option. Similarly, it also supports serialization of [API Blueprint Source Map](https://github.com/apiaryio/snowcrash/blob/master/src/BlueprintSourcemap.h) using the `--format` and `--sourcemap` option.
+## Serialization in Drafter
+The `drafter` [command-line tool](https://github.com/apiaryio/drafter#drafter-command-line-tool) supports serialization of [API Blueprint AST](https://github.com/apiaryio/snowcrash/blob/master/src/Blueprint.h) via the `--format` option. Similarly, it also supports serialization of [API Blueprint Source Map](https://github.com/apiaryio/snowcrash/blob/master/src/BlueprintSourcemap.h) using the `--format` and `--sourcemap` option.
 
 ## License
 MIT License. See the [LICENSE](LICENSE) file.
