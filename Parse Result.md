@@ -54,7 +54,7 @@ Description of a warning from the parser.
 
 #### Properties
 
-+ `code` (number) - Warning [group code](https://github.com/apiaryio/snowcrash/blob/master/src/SourceAnnotation.h#L128)
++ `code` (number) - Warning [group code](https://github.com/apiaryio/snowcrash/blob/master/src/SourceAnnotation.h#L115)
 + `message` (string) - Warning message
 + `location` ([Source Map](README.md#source-map)) – Warning source map
 
