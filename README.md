@@ -589,7 +589,7 @@ For the [API Blueprint Source Map](#source-map-description)
                       "name": [],
                       "reference": [
                         [1270, 24]
-                      ]
+                      ],
                       "description": [
                         [214, 29]
                       ],
