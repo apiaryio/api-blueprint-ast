@@ -1,46 +1,43 @@
 ![logo](https://raw.github.com/apiaryio/api-blueprint/master/assets/logo_apiblueprint.png)
 
-# API Blueprint AST & Source Map Serialization Media Types
-### API Blueprint's contract with machines
+# API Blueprint AST
+### JSON & YAML face of the API Blueprint
+API Blueprint AST is JSON or YAML, machine-friendly, face of API Blueprint suitable for use in [tools](http://apiblueprint.org/#tooling) consuming (or producing) API Blueprint.
 
-This document defines serialization formats of [API Blueprint](http://apiblueprint.org) abstract syntax tree, or AST for short and Source Map tree.
+This document defines serialization formats for [API Blueprint](http://apiblueprint.org) abstract syntax tree, or AST for short.
 
-API Blueprint AST is a machine-friendly face of API Blueprint suitable for use in [tools](http://apiblueprint.org/#tooling) consuming (or producing) API Blueprint.
+For the definition of API Blueprint AST Source Map see the [API Blueprint AST Source Map definition][Source Map Definition].
 
-API Blueprint Source Map is 1-on-1 with API Blueprint AST and represents the source maps for each of the nodes in the AST tree.
+Converting API Blueprint to AST and its serialization is the task of API Blueprint Parser – [Drafter](https://github.com/apiaryio/drafter) or one of its [bindings](https://github.com/apiaryio/drafter#bindings). Reverse process from AST (serialization) to API Blueprint is also possible thanks to the [Matter Compiler](https://github.com/apiaryio/matter_compiler).
 
-Converting API Blueprint to AST and its serialization is the task of API Blueprint Parser – [Snow Crash](https://github.com/apiaryio/snowcrash) or one of its [bindings](https://github.com/apiaryio/snowcrash#bindings). Reverse process from AST (serialization) to API Blueprint is also possible thanks to the [Matter Compiler](https://github.com/apiaryio/matter_compiler).
-
-## What?
-
-**This document is intended for authors of tools using API Blueprint**. If you are looking for a way to describe your Web API proceed directly to [API Blueprint](https://github.com/apiaryio/api-blueprint).
+## Don't like to design APIs in JSON or YAML?
+If you are looking for a way to describe your Web API without using JSON or YAML see [API Blueprint](https://github.com/apiaryio/api-blueprint).
 
 ## Version
-
-+ **Version**: 2.1
++ **Version**: 3.0
 + **Created**: 2013-08-30
-+ **Updated**: 2014-10-07
++ **Updated**: 2015-01-29
 
----
+## Future Development
+As of version 3.0 the API Blueprint AST is in the *interim* transition period
+towards unified document-structure based on the concept of DOM elements
+(see the [Element][] object). Please refrain from using AST elements marked as
+*"deprecated"*.
 
 ## Quick Links
-
-+ [AST Description](#ast-description)
-+ [Source map Description](#source-map-description)
++ [AST Description](#ast-definition)
 + [Media Types](#media-types)
-+ [JSON serialization](#json-serialization)
-+ [YAML serialization](#yaml-serialization)
 + [Keys description](#keys-description)
-+ [Serialization in Snow Crash](#serialization-in-snow-crash)
++ [Example: JSON serialization](#example-json-serialization)
++ [Serialization in Drafter](#serialization-in-drafter)
 + [Serialized Parsing Result Media Types][parsing media types]
 
----
+## AST Definition
+Following is the definition of API Blueprint AST media types using the [MSON](https://github.com/apiaryio/mson) syntax.
 
-## AST Description
-Following is the description of API Blueprint AST media types using the [MSON](https://github.com/apiaryio/mson) syntax. The description starts with the top-level blueprint object.
+> **NOTE:** Most of the keys corresponds to their counter parts in API Blueprint Specification. Where applicable, refer to the relevant entry [API Blueprint Language Specification](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md) for details.
 
-### Blueprint
-
+### Blueprint (object)
 + `_version` (string) - Version of the AST Serialization as [defined](#version) in this document
 + `metadata` (array) - Ordered array of API Blueprint [metadata](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#MetadataSection)
     - (object)
@@ -49,49 +46,81 @@ Following is the description of API Blueprint AST media types using the [MSON](h
 
 + `name` (string) - Name of the API
 + `description` (string) - Top-level description of the API in Markdown (`.raw`) or HTML (`.html`)
-+ `resourceGroups` (array[[Resource Group](#resource-group)])
++ `resourceGroups` (array[[Resource Group][]]) - **Deprecated**
 
-### Resource Group
+    Note this property is **deprecated** and will be removed in a future.
+    Replaced by `category` elements of the `content` property.
+
++ `element`: `category` (fixed, required)
++ `content` (array[[Element][]]) - Section elements of the blueprint
+
+### Element (object)
+A component of an API description.
+
+#### Properties
++ `element` (enum[string]) - Element name
+    + `category` - Element is a group of other elements
+    + `copy` - Element is a human readable text
+    + `resource` - Element is a Resource
+    + `dataStructure` - Element is a Data Structure definition
+    + `asset` - Element is an asset of API description
++ `attributes` (object) - Element-specific attributes
+    + `name` (string, optional) - Human readable name of the element
++ `content` (enum)
+    + (array[[Element][]]) - Ordered array of nested elements (for element `category`)
+    + (string) - Markdown-formatted text (for element `copy` and `asset` type)
+    + ([Resource][]) - Resource definiton (for element `resource`)
+    + ([Data Structure][]) - Data structure (for element `dataStructure`)
+
+### Resource Group (object)
+**Deprecated**, replaced by the `category` [Element][].
 
 Logical group of resources.
 
 #### Properties
-
 + `name` (string) - Name of the Resource Group
 + `description` (string) - Description of the Resource Group (`.raw` or `.html`)
-+ `resources` (array[[Resource](#resource)]) - Ordered array of the respective resources belonging to the Resource Group
++ `resources` (array[[Resource][]]) - Ordered array of the respective resources belonging to the Resource Group
 
-### Resource
-
+### Resource (object)
 Description of one resource, or a cluster of resources defined by its URI template.
 
 #### Properties
-
 + `name` (string) - Name of the Resource
 + `description` (string) - Description of the Resource (`.raw` or `.html`)
++ `element`: `resource` (fixed, required)
 + `uriTemplate` (string) - URI Template as defined in [RFC6570](http://tools.ietf.org/html/rfc6570)
-+ `model` ([Payload](#payload)) - [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection), a reusable payload representing the resource
-+ `parameters` (array[[Parameter](#parameter)]) - Ordered array of URI parameters
-+ `actions` (array[[Action](#action)]) - Ordered array of actions available on the resource each defining at least one complete HTTP transaction
++ `model` ([Payload][]) - [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection), a reusable payload representing the resource
++ `parameters` (array[[Parameter][]]) - Ordered array of URI parameters
++ `actions` (array[[Action][]]) - Ordered array of actions available on the resource each defining at least one complete HTTP transaction
++ `content` (array[[Data Structure][]]) - Array of Resource's elements
 
-### Action
+    In the interim period this may contain at maximum one
+    element of the `dataStructure` type - the definition of the of the Resource
+    attributes.
 
-A HTTP transaction (a request-response transaction). Actions are specified by a HTTP request method within a resource.
+### Action (object)
+An HTTP transaction (a request-response transaction). Actions are specified by an HTTP request method within a resource.
 
 #### Properties
-
 + `name` (string) - Name of the Action
 + `description` (string) - Description of the Action (`.raw` or `.html`)
 + `method` (string) - HTTP request method defining the action
-+ `parameters` (array[[Parameter](#parameter)]) - Ordered array of resource's URI parameters descriptions specific to this action
-+ `examples` (array[[Transaction Example](#transaction-example)]) - Ordered array of HTTP transaction [examples](#example-section) for the relevant HTTP request method
++ `parameters` (array[[Parameter][]]) - Ordered array of resource's URI parameters descriptions specific to this action
++ `examples` (array[[Transaction Example][]]) - Ordered array of HTTP transaction [examples](#example-section) for the relevant HTTP request method
++ `attributes` (object) - Action-specific attributes
+    + `uriTemplate` (string) - URI Template as defined in [RFC6570](http://tools.ietf.org/html/rfc6570)
+    + `relation` (string) - Link relation identifier of the action as defined in [Relation section][]
++ `content` (array[[Data Structure][]])  - Array of Action's elements
 
-### Payload
+    In the interim period this may contain at maximum one
+    element of the `dataStructure` type - the definition of the of the action input
+    attributes.
 
+### Payload (object)
 An [API Blueprint payload](https://github.com/apiaryio/api-blueprint/blob/master/Glossary%20of%20Terms.md#payload).
 
 #### Properties
-
 + `name` (string) - Name of the payload
 
     The content of this key depends on the type of payload:
@@ -100,18 +129,49 @@ An [API Blueprint payload](https://github.com/apiaryio/api-blueprint/blob/master
     + **request** payload: name of the request, if any
     + **response** payload: HTTP status code
 
-+ `reference` ([Reference](#reference)) - Present if and only if a reference to a [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection) is present in the payload and it has been resolved correctly
++ `reference` ([Reference][]) - Present if and only if a reference to a [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection) is present in the payload and it has been resolved correctly
 + `description` (string) - Description of the payload (`.raw` or `.html`)
 + `headers` (string) - Ordered array of HTTP headers that are expected to be transferred with HTTP message represented by this payload
-+ `body` (string) - An entity body to be transferred with HTTP message represented by this payload
-+ `schema` (string) - A validation schema for the entity body as defined in `body`
++ `body` (string) - **Deprecated**
 
-### Parameter
+    An entity body to be transferred with HTTP message represented by this payload
 
+    Note this property is **deprecated** and will be removed in a future.
+    Replaced by `bodyExample` [Asset][] element.
+
++ `schema` (string) - **Deprecated**
+
+    A validation schema for the entity body as defined in `body`.
+
+    Note this property is **deprecated** and will be removed in a future.
+    Replaced by `bodySchema` `asset` element.
+
++ `content` (array) - Array of Payloads's elements
+
+    In the interim period this may contain only:
+    + At maximum one element of the `dataStructure` type - the definition of the message-body
+    attributes
+    + Up to two asset elements one for body example other for body schema
+
+    + Items
+        + ([Data Structure][])
+        + ([Asset][])
+
+### Asset (Element)
+An [API Blueprint asset][]. The content is an Asset in its textual
+representation as written in the source API Blueprint.
+
+#### Properties
++ `element`: `asset` (fixed, required)
++ `attributes`
+    + `role` - Role of the asset
+        + `bodyExample` - Asset is an example of message-body
+        + `bodySchema` - Asset is an schema for message-body
+
+### Parameter (object)
 Description of one URI template parameter.
 
 #### Properties
-
 - `name` (string) - Name of the parameter
 - `description` (string) - Description of the parameter (`.raw` or `.html`)
 - `type` (string) - An arbitrary type of the parameter (a string)
@@ -122,148 +182,38 @@ Description of one URI template parameter.
     - (object)
         - `value` (string) - Value choice of for the parameter
 
-### Transaction Example
-
+### Transaction Example (object)
 An HTTP transaction example with expected HTTP message request and response payload(s).
 
 #### Properties
-
 + `name` (string) - Name of the Transaction Example
 + `description` (string) - Description of the Transaction Example (`.raw` or `.html`)
-+ `requests` (array[[Payload](#payload)]) - Ordered array of example transaction request payloads
-+ `responses` (array[[Payload](#payload)]) - Ordered array of example transaction response payloads
++ `requests` (array[[Payload][]]) - Ordered array of example transaction request payloads
++ `responses` (array[[Payload][]]) - Ordered array of example transaction response payloads
 
-### Reference
-
+### Reference (object)
 A reference object which is used whenever there is a reference to a [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection).
 
 #### Properties
-
 + `id` (string) - The identifier (name) of the reference
 
-## Source Map Description
-Following is the description of Source map media types using the [MSON](https://github.com/apiaryio/mson) syntax. The description starts with the top-level blueprint object.
-
-### Source Map
-
-An example source map.
-
-- (array)
-  - (array)
-    - 1219 (number) - Zero-based index of the character position of the beginning of the source
-    - 30 (number) - Length of the source
-  - (array)
-    - 1261 (number)
-    - 175 (number)
-
-### Blueprint Source Map
-
-Source map of the [Blueprint](#blueprint).
+### Data Structure ([Named Type][])
+Definition of an [MSON][] data structure.
 
 #### Properties
-
-+ `metadata` (array[[Source Map](#source-map)]) - An array of source maps where each item in metadata has its own source map
-+ `name` ([Source Map](#source-map)) - Source map of API name
-+ `description` ([Source Map](#source-map)) - Source map of API description
-+ `resourceGroups` (array[[Resource Group Source Map](#resource-group-source-map)])
-
-### Resource Group Source Map
-
-Source map of the [Resource Group](#resource-group).
-
-#### Properties
-
-+ `name` ([Source Map](#source-map)) - Source map of name of the Resource Group
-+ `description` ([Source Map](#source-map)) - Source map of description of the Resource Group
-+ `resources` (array[[Resource Source Map](#resource-source-map)]) - Ordered array of the respective resources belonging to the Resource Group
-
-### Resource Source Map
-
-Source map of the [Resource](#resource).
-
-#### Properties
-
-+ `name` ([Source Map](#source-map)) - Source map of name of the Resource
-+ `description` ([Source Map](#source-map)) - Source map of description of the Resource
-+ `uriTemplate` ([Source Map](#source-map)) - Source map of URI Template
-+ `model` ([Payload Source map](#payload-source-map)) - [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection), a reusable payload representing the resource
-+ `parameters` (array[[Parameter Source Map](#parameter-source-map)]) - Ordered array of source maps of URI parameters
-+ `actions` (array[[Action Source Map](#action-source-map)]) - Ordered array of source maps of actions available on the resource each defining at least one complete HTTP transaction
-
-### Action Source Map
-
-Source map of the [Action](#action).
-
-#### Properties
-
-+ `name` ([Source Map](#source-map)) - Source map of name of the Action
-+ `description` ([Source Map](#source-map)) - Source map of description of the Action
-+ `method` ([Source Map](#source-map)) - Source map of HTTP request method defining the action
-+ `parameters` (array[[Parameter Source Map](#parameter-source-map)]) - Ordered array of source maps of resource's URI parameters descriptions specific to this action
-+ `examples` (array[[Transaction Example Source Map](#transaction-example-source-map)]) - Ordered array of source maps of HTTP transaction [examples](#example-section) for the relevant HTTP request method
-
-### Payload Source Map
-
-Source map of [Payload](#payload). The source map of the payload is in fact the source map of the [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection) when the reference is used.
-
-#### Properties
-
-+ `name` ([Source Map](#source-map)) - Source map of name of the payload
-+ `reference` ([Source Map](#source-map)) - Source map of the reference, present if and only if a reference to a [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection) is present in the payload and it has been resolved correctly
-+ `description` ([Source Map](#source-map)) - Source map of description of the payload
-+ `headers` (array[[Source Map](#source-map)]) - Ordered array of source maps of HTTP headers that are expected to be transferred with HTTP message represented by this payload. Each item in the header has it's own source map.
-+ `body` ([Source Map](#source-map)) - Source map of body to be transferred with HTTP message represented by this payload
-+ `schema` ([Source Map](#source-map)) - Source map of a validation schema for the entity body as defined in `body`
-
-### Parameter Source Map
-
-Source map of [Parameter](#parameter).
-
-#### Properties
-
-- `description` ([Source Map](#source-map)) - Source map of description of the parameter
-- `type` ([Source Map](#source-map)) - Source map of an arbitrary type of the parameter (a string)
-- `required` ([Source Map](#source-map)) - Source map of boolean flag denoting whether the parameter is required (true) or not (false)
-- `default` ([Source Map](#source-map)) - Source map of a default value of the parameter (a value assumed when the parameter is not specified)
-- `example` ([Source Map](#source-map)) - Source map of an example value of the parameter
-- `values` (array[[Source Map](#source-map)]) - Source map of an array enumerating possible parameter values. Each item has it's own source map.
-
-### Transaction Example Source Map
-
-Source map of [Transaction Example](#transaction-example).
-
-#### Properties
-
-+ `name` ([Source Map](#source-map)) - Source map of name of the Transaction Example
-+ `description` ([Source Map](#source-map)) - Source map of description of the Transaction Example
-+ `requests` (array[[Payload Source Map](#payload-source-map)]) - Ordered array of source maps of example transaction request payloads
-+ `responses` (array[[Payload Source Map](#payload-source-map)]) - Ordered array of source maps of example transaction response payloads
-
----
-
-> **NOTE:** Most of the keys corresponds to their counter parts in API Blueprint Specification. Where applicable, refer to the relevant entry [API Blueprint Language Specification](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md) for details.
+- `element`: `dataStructure` (fixed, required)
 
 ## Media Types
-
 The `application/vnd.apiblueprint.ast` is the base media type for API Blueprint AST. An API Blueprint AST with raw Markdown descriptions has the `.raw` suffix whereas version with Markdown descriptions rendered into HTML has the `.html` suffix. The base media type serialization format is specified in the `+<serialization format>` appendix.
 
 ### Serialization formats
-
 Two supported, feature-equal serialization formats are JSON and YAML:
-
-For the [API Blueprint AST](#ast-description)
 
 + `application/vnd.apiblueprint.ast.raw+json` and `application/vnd.apiblueprint.ast.html+json`
 + `application/vnd.apiblueprint.ast.raw+yaml` and `application/vnd.apiblueprint.ast.html+yaml`
 
-For the [API Blueprint Source Map](#source-map-description)
-
-+ `application/vnd.apiblueprint.sourcemap+json`
-+ `application/vnd.apiblueprint.sourcemap+yaml`
-
-### JSON Serialization
-
-`application/vnd.apiblueprint.ast.raw+json; version=2.1`
+### Example: JSON Serialization
+`application/vnd.apiblueprint.ast.raw+json; version=3.0`
 
 ```json
 {
@@ -276,14 +226,22 @@ For the [API Blueprint Source Map](#source-map-description)
   ],
   "name": "<API name>",
   "description": "<API description>",
-  "resourceGroups": [
+  "element": "category",
+  "content": [
     {
-      "name": "<resource group name>",
-      "description": "<resource group description>",
-      "resources": [
+      "element": "category",
+      "attributes": {
+        "name": "<resource group name>"
+      },
+      "content": [
+        {
+          "element": "copy",
+          "content": "<resource group description>"
+        },
         {
           "name": "<resource name>",
           "description": "<resource description>",
+          "element": "resource",
           "uriTemplate": "<resource URI template>",
           "model": {
             "name": "<resource model name>",
@@ -294,8 +252,32 @@ For the [API Blueprint Source Map](#source-map-description)
                 "value": "<HTTP header field value>"
               }
             ],
-            "body": "<resource model body>",
-            "schema": "<resource model schema>"
+            "content": [
+              {
+                "element": "dataStructure",
+                "name": null,
+                "base": {
+                  "typeSpecification": {
+                    "name": "<sub-type>"
+                  }
+                },
+                "sections": []
+              },
+              {
+                "element": "asset",
+                "attributes":  {
+                  "role": "bodyExample"
+                },
+                "content": "<resource model body>"
+              },
+              {
+                "element": "asset",
+                "attributes":  {
+                  "role": "bodySchema"
+                },
+                "content": "<resource model schema>"
+              }
+            ]
           },
           "parameters": [
             {
@@ -346,8 +328,32 @@ For the [API Blueprint Source Map](#source-map-description)
                           "value": "<HTTP header field value>"
                         }
                       ],
-                      "body": "<request body>",
-                      "schema": "<request schema>"
+                      "content": [
+                        {
+                          "element": "dataStructure",
+                          "name": null,
+                          "base": {
+                            "typeSpecification": {
+                              "name": "<sub-type>"
+                            }
+                          },
+                          "sections": []
+                        },
+                        {
+                          "element": "asset",
+                          "attributes": {
+                            "role": "bodyExample"
+                          },
+                          "content": "<request body>"
+                        },
+                        {
+                          "element": "asset",
+                          "attributes": {
+                            "role": "bodySchema"
+                          },
+                          "content": "<request schema>"
+                        }
+                      ]
                     }
                   ],
                   "responses": [
@@ -360,10 +366,46 @@ For the [API Blueprint Source Map](#source-map-description)
                           "value": "<HTTP header field value>"
                         }
                       ],
-                      "body": "<response body>",
-                      "schema": "<response schema>"
+                      "content": [
+                        {
+                          "element": "dataStructure",
+                          "name": null,
+                          "base": {
+                            "typeSpecification": {
+                              "name": "<sub-type>"
+                            }
+                          },
+                          "sections": []
+                        },
+                        {
+                          "element": "asset",
+                          "attributes": {
+                            "role": "bodyExample"
+                          },
+                          "content": "<request body>"
+                        },
+                        {
+                          "element": "asset",
+                          "attributes": {
+                            "role": "bodySchema"
+                          },
+                          "content": "<request schema>"
+                        }
+                      ]
                     }
                   ]
+                }
+              ],
+              "content": [
+                {
+                  "element": "dataStructure",
+                  "name": null,
+                  "base": {
+                    "typeSpecification": {
+                      "name": "<sub-type>"
+                    }
+                  },
+                  "sections": []
                 }
               ]
             },
@@ -389,574 +431,106 @@ For the [API Blueprint Source Map](#source-map-description)
                           "value": "<HTTP header field value>"
                         }
                       ],
-                      "body": "<resource model body>",
-                      "schema": "<resource model schema>"
+                      "content": [
+                        {
+                          "element": "asset",
+                          "attributes": {
+                            "role": "bodyExample"
+                          },
+                          "content": "<resource model body>"
+                        },
+                        {
+                          "element": "asset",
+                          "attributes": {
+                            "role": "bodySchema"
+                          },
+                          "content": "<resource model schema>"
+                        }
+                      ]
                     }
                   ]
                 }
               ]
             }
+          ],
+          "content": [
+            {
+              "element": "dataStructure",
+              "name": {
+                "literal": "<resource name>",
+                "variable": false
+              },
+              "base": {
+                "typeSpecification": {
+                  "name": "<sub-type>"
+                }
+              },
+              "sections": []
+            }
           ]
         }
       ]
-    }
-  ]
-}
-```
-
-`application/vnd.apiblueprint.sourcemap+json; version=2.1`
-
-```json
-{
-  "metadata": [
-    [
-      [0, 39]
-    ]
-  ],
-  "name": [
-    [39, 13]
-  ],
-  "description": [
-    [52, 19]
-  ],
-  "resourceGroups": [
+    },
     {
-      "name": [
-        [71, 30]
-      ],
-      "description": [
-        [101, 30]
-      ],
-      "resources": [
+      "element": "category",
+      "content": [
         {
-          "name": [
-            [131, 46]
-          ],
-          "description": [
-            [177, 24]
-          ],
-          "uriTemplate": [
-            [131, 46]
-          ],
-          "model": {
-            "name": [
-              [131, 46]
-            ],
-            "description": [
-              [214, 29]
-            ],
-            "headers": [
-              [
-                [267, 56]
-              ]
-            ],
-            "body": [
-              [344, 26]
-            ],
-            "schema": [
-              [393, 28]
-            ]
+          "element": "dataStructure",
+          "name": {
+            "literal": "<data structure name>",
+            "variable": false
           },
-          "parameters": [
-            {
-              "name": [
-                [441, 81]
-              ],
-              "description": [
-                [441, 81]
-              ],
-              "type": [
-                [441, 81]
-              ],
-              "required": [
-                [441, 81]
-              ],
-              "default": [
-                [441, 81]
-              ],
-              "example": [
-                [441, 81]
-              ],
-              "values": [
-                [
-                  [552, 19]
-                ]
-              ]
+          "base": {
+            "typeSpecification": {
+              "name": "<sub-type>"
             }
-          ],
-          "actions": [
-            {
-              "name": [
-                [572, 24]
-              ],
-              "description": [
-                [596, 22]
-              ],
-              "method": [
-                [572, 24]
-              ],
-              "parameters": [
-                {
-                  "name": [
-                    [637, 81]
-                  ],
-                  "description": [
-                    [637, 81]
-                  ],
-                  "type": [
-                    [637, 81]
-                  ],
-                  "required": [
-                    [637, 81]
-                  ],
-                  "default": [
-                    [637, 81]
-                  ],
-                  "example": [
-                    [637, 81]
-                  ],
-                  "values": [
-                    [
-                      [748, 19]
-                    ]
-                  ]
-                }
-              ],
-              "examples": [
-                {
-                  "name": [],
-                  "description": [],
-                  "requests": [
-                    {
-                      "name": [
-                        [770, 24]
-                      ],
-                      "description": [
-                        [798, 22]
-                      ],
-                      "headers": [
-                        [
-                          [844, 56]
-                        ]
-                      ],
-                      "body": [
-                        [921, 19]
-                      ],
-                      "schema": [
-                        [963, 21]
-                      ]
-                    }
-                  ],
-                  "responses": [
-                    {
-                      "name": [],
-                      "description": [
-                        [1029, 23]
-                      ],
-                      "headers": [
-                        [
-                          [1076, 56]
-                        ]
-                      ],
-                      "body": [
-                        [1153, 20]
-                      ],
-                      "schema": [
-                        [1196, 22]
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "name": [
-                [1219, 24]
-              ],
-              "description": [
-                [1243, 22]
-              ],
-              "method": [
-                [1219, 24]
-              ],
-              "parameters": [],
-              "examples": [
-                {
-                  "name": [],
-                  "description": [],
-                  "responses": [
-                    {
-                      "name": [],
-                      "reference": [
-                        [1270, 24]
-                      ],
-                      "description": [
-                        [214, 29]
-                      ],
-                      "headers": [
-                        [
-                          [267, 56]
-                        ]
-                      ],
-                      "body": [
-                        [344, 26]
-                      ],
-                      "schema": [
-                        [393, 28]
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
+          },
+          "sections": []
         }
       ]
     }
   ]
 }
 ```
-
-### YAML Serialization
-
-`application/vnd.apiblueprint.ast.raw+yaml; version=2.1`
-
-```yaml
-_version: <AST version>
-
-metadata:
-- name: "<metadata key name>"
-  value: "<metadata value>"
-
-name: "<API name>"
-description: "<API description>"
-
-resourceGroups:
-- name: "<resource group name>"
-  description: "<resource group description>"
-
-  resources:
-  - name: "<resource name>"
-    description: "<resource description>"
-    uriTemplate: "<resource URI template>"
-
-    model:
-      name: "<resource model name>"
-      description: "<resource model description>"
-
-      headers:
-      - name: "<HTTP header field name>"
-        value: "<HTTP header field value>"
-
-      body: "<resource model body>"
-      schema: "<resource model schema>"
-
-    parameters:
-    - name: "<name>"
-      description: "<description>"
-      type: "<type>"
-      required: "<required parameter flag>"
-      default: "<default value>"
-      example: "<example value>"
-      values:
-      - value: "<enum element>"
-
-    actions:
-    - name: "<action name>"
-      description: "<action description>"
-      method: "<action HTTP request method>"
-
-      parameters:
-      - name: "<name>"
-        description: "<description>"
-        type: "<type>"
-        required: "<required parameter flag>"
-        default: "<default value>"
-        example: "<example value>"
-        values:
-        - value: "<enum element>"
-
-      examples:
-      - name: "<transaction example name>"
-        description: "<transaction example name>"
-
-        requests:
-        - name: "<request name>"
-          description: "<request description>"
-
-          headers:
-          - name: "<HTTP header field name>"
-            value: "<HTTP header field value>"
-
-          body: "<request body>"
-          schema: "<request schema>"
-
-        responses:
-        - name: "<response HTTP status code>"
-          description: "<response description>"
-
-          headers:
-          - name: "<HTTP header field name>"
-            value: "<HTTP header field value>"
-
-          body: "<response body>"
-          schema: "<response schema>"
-
-    - name: "<action name>"
-      description: "<action description>"
-      method: "<action HTTP request method>"
-      parameters:
-
-      examples:
-      - name: "<transaction example name>"
-        reference:
-          id: "<resource model name>"
-        description: "<transaction example name>"
-
-        responses:
-        - name: "<response HTTP status code>"
-          description: "<resource model description>"
-
-          headers:
-          - name: "<HTTP header field name>"
-            value: "<HTTP header field value>"
-
-          body: "<resource model body>"
-          schema: "<resource model schema>"
-```
-
-`application/vnd.apiblueprint.sourcemap+yaml; version=2.1`
-
-```yaml
-metadata:
--
-  -
-    - 0
-    - 39
-name:
--
-  - 39
-  - 13
-description:
--
-  - 52
-  - 19
-resourceGroups:
-- name:
-  -
-    - 71
-    - 30
-  description:
-  -
-    - 101
-    - 30
-  resources:
-  - name:
-    -
-      - 131
-      - 46
-    description:
-    -
-      - 177
-      - 24
-    uriTemplate:
-    -
-      - 131
-      - 46
-    model:
-      name:
-      -
-        - 131
-        - 46
-      description:
-      -
-        - 214
-        - 29
-      headers:
-      -
-        -
-          - 267
-          - 56
-      body:
-      -
-        - 344
-        - 26
-      schema:
-      -
-        - 393
-        - 28
-    parameters:
-    - name:
-      -
-        - 441
-        - 81
-      description:
-      -
-        - 441
-        - 81
-      type:
-      -
-        - 441
-        - 81
-      required:
-      -
-        - 441
-        - 81
-      default:
-      -
-        - 441
-        - 81
-      example:
-      -
-        - 441
-        - 81
-      values:
-      - 
-        -
-          - 552
-          - 19
-    actions:
-    - name:
-      -
-        - 572
-        - 24
-      description:
-      -
-        - 596
-        - 22
-      method:
-      -
-        - 572
-        - 24
-      parameters:
-      - name:
-        -
-          - 637
-          - 81
-        description:
-        -
-          - 637
-          - 81
-        type:
-        -
-          - 637
-          - 81
-        required:
-        -
-          - 637
-          - 81
-        default:
-        -
-          - 637
-          - 81
-        example:
-        -
-          - 637
-          - 81
-        values:
-        - 
-          -
-            - 748
-            - 19
-      examples:
-      - name: []
-        description: []
-        requests:
-        - name:
-          -
-            - 770
-            - 24
-          description:
-          -
-            - 798
-            - 22
-          headers:
-          -
-            -
-              - 844
-              - 56
-          body:
-          -
-            - 921
-            - 19
-          schema:
-          -
-            - 963
-            - 21
-        responses:
-        - name: []
-          description:
-          -
-            - 1029
-            - 23
-          headers:
-          -
-            -
-              - 1076
-              - 56
-          body:
-          -
-            - 1153
-            - 20
-          schema:
-          -
-            - 1196
-            - 22
-    - name:
-      -
-        - 1219
-        - 24
-      description:
-      -
-        - 1243
-        - 22
-      method:
-      -
-        - 1219
-        - 24
-      parameters: []
-      examples:
-      - name: []
-        description: []
-        requests: []
-        responses:
-        - name: []
-          reference:
-          -
-            - 1270
-            - 24
-          description:
-          -
-            - 214
-            - 29
-          headers:
-          -
-            -
-              - 267
-              - 56
-          body:
-          -
-            - 344
-            - 26
-          schema:
-          -
-            - 393
-            - 28
-```
-
-## Serialization in Snow Crash
-
-The `snowcrash` [command-line tool](https://github.com/apiaryio/snowcrash#snow-crash-command-line-tool) supports serialization of [API Blueprint AST](https://github.com/apiaryio/snowcrash/blob/master/src/Blueprint.h) via the `--format` option.
-
-Similarly, it also supports serialization of [API Blueprint Source Map](https://github.com/apiaryio/snowcrash/blob/master/src/BlueprintSourcemap.h) via the `--format` option if and only is the `-s` is present.
 
 ## Related Media Types
+- [**Serialized Parsing Result Media Types**][Parsing media types] - Media types for the serialization of complete parsing results (including warnings and errors)
 
-- [**Serialized Parsing Result Media Types**][parsing media types] - Media types for the serialization of complete parsing results (including warnings and errors)
+## Serialization in Drafter
+The `drafter` [command-line tool](https://github.com/apiaryio/drafter#drafter-command-line-tool) supports serialization of [API Blueprint AST](https://github.com/apiaryio/snowcrash/blob/master/src/Blueprint.h) via the `--format` option. Similarly, it also supports serialization of [API Blueprint Source Map](https://github.com/apiaryio/snowcrash/blob/master/src/BlueprintSourcemap.h) using the `--format` and `--sourcemap` option.
 
 ## License
-
 MIT License. See the [LICENSE](LICENSE) file.
 
+[Parsing media types]: Parse%20Result.md
 
-[parsing media types]: Parse%20Result.md
+[MSON]: https://github.com/apiaryio/mson
+[MSON AST]: https://github.com/apiaryio/mson-ast
+[MSON Named Type]: https://github.com/apiaryio/mson/blob/master/MSON%20Specification.md#22-named-types
+
+[Named Type]: https://github.com/apiaryio/mson-ast#named-type
+[Type Name]: https://github.com/apiaryio/mson-ast#type-name
+[Type Definition]: https://github.com/apiaryio/mson-ast#type-definition
+[Type Section]: https://github.com/apiaryio/mson-ast#type-section
+
+[API Blueprint asset]: https://github.com/apiaryio/api-blueprint/blob/master/Glossary%20of%20Terms.md#asset
+
+[Attribute section]: https://github.com/apiaryio/api-blueprint/blob/zdne/attributes-description/API%20Blueprint%20Specification.md#def-attributes-section
+[Resource section]: https://github.com/apiaryio/api-blueprint/blob/zdne/attributes-description/API%20Blueprint%20Specification.md#def-resource-section
+[Relation section]: https://github.com/apiaryio/api-blueprint/blob/zdne/attributes-description/API%20Blueprint%20Specification.md#def-relation-section
+
+[Blueprint]: #blueprint-object
+[Element]: #element-object
+[Resource Group]: #resource-group-object
+[Resource]: #resource-object
+[Action]: #action-object
+[Payload]: #payload-object
+[Reference]: #reference-object
+[Asset]: #asset-element
+[Parameter]: #parameter-object
+[Transaction Example]: #transaction-example-object
+[Attributes]: #attributes-data-structure
+[Data Structure]: #data-structure-object
+[Data Structures]: #data-structures-object
+
+[Source Map Definition]: Source%20Map.md
