@@ -1,73 +1,71 @@
 ![logo](https://raw.github.com/apiaryio/api-blueprint/master/assets/logo_apiblueprint.png)
 
-# API Blueprint AST
-### JSON & YAML face of the API Blueprint
-API Blueprint AST is JSON or YAML, machine-friendly, face of API Blueprint suitable for use in [tools](http://apiblueprint.org/#tooling) consuming (or producing) API Blueprint.
+# API Blueprint Legacy AST
 
-This document defines serialization formats for [API Blueprint](http://apiblueprint.org) abstract syntax tree, or AST for short.
-
-For the definition of API Blueprint AST Source Map see the [API Blueprint AST Source Map definition][Source Map Definition].
-
-Converting API Blueprint to AST and its serialization is the task of API Blueprint Parser – [Drafter](https://github.com/apiaryio/drafter) or one of its [bindings](https://github.com/apiaryio/drafter#bindings). Reverse process from AST (serialization) to API Blueprint is also possible thanks to the [Matter Compiler](https://github.com/apiaryio/matter_compiler).
-
-## Don't like to design APIs in JSON or YAML?
-If you are looking for a way to describe your Web API without using JSON or YAML see [API Blueprint](https://github.com/apiaryio/api-blueprint).
-
-## Version
-+ **Version**: 3.1
-+ **Created**: 2013-08-30
-+ **Updated**: 2015-03-06
-
-## Future Development
-Below is the future version of the API Blueprint AST. As an *interim*
-transition period, we also support an older variant of the AST which is
-now deprecated. The older AST can be found at [](Deprecated.md). Note,
-during this transition period, the deprecated elements will be found in
-parse results.
-
-## Quick Links
-+ [AST Description](#ast-definition)
-+ [Media Types](#media-types)
-+ [Keys description](#keys-description)
-+ [Example: JSON serialization](#example-json-serialization)
-+ [Serialization in Drafter](#serialization-in-drafter)
-+ [Serialized Parsing Result Media Types][parsing media types]
+This document describes the now deprecated variant of the AST. It is still supported but going forward you should instead use the [new version](README.md).
 
 ## AST Definition
-Following is the definition of API Blueprint AST media types using [MSON](https://github.com/apiaryio/mson) syntax. API Blueprint extends [Refract](https://github.com/refractproject/refract-spec), a recursive datatructure for expressing complex structures, relationships, and metadata. Please refer to the [Refract Specification](https://github.com/refractproject/refract-spec/blob/master/refract-spec.md) to understand the core concepts and base structures of the API Blueprint AST. Every element describe below extends from the Refract base element.
+Following is the definition of API Blueprint AST media types using the [MSON](https://github.com/apiaryio/mson) syntax.
 
 > **NOTE:** Most of the keys corresponds to their counter parts in API Blueprint Specification. Where applicable, refer to the relevant entry [API Blueprint Language Specification](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md) for details.
 
-### Blueprint
+### Blueprint (object)
++ `_version` (string) - Version of the AST Serialization as [defined](#version) in this document
++ `metadata` (array) - Ordered array of API Blueprint [metadata](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#MetadataSection)
+    - (object)
+        - `name` (string) - Name of the metadata
+        - `value` (string) - Value of the metadata
+
++ `name` (string) - Name of the API
++ `description` (string) - Top-level description of the API in Markdown (`.raw`) or HTML (`.html`)
++ `resourceGroups` (array[[Resource Group][]]) - **Deprecated**
+
+    Note this property is **deprecated** and will be removed in a future.
+    Replaced by `category` elements of the `content` property.
+
++ `element`: `category` (fixed, required)
++ `content` (array[[Element][]]) - Section elements of the blueprint
+
+### Element (object)
+A component of an API description.
 
 #### Properties
-+ `element`: `blueprint` (fixed, required)
-+ `meta`: (object)
-    + title (string) - Name of the API
-    + description (string) - Top-level description of the API in Markdown (.raw) or HTML (.html)
-+ `attributes` (object)
-    + `_version` (string) - Version of the AST Serialization as [defined](#version) in this document
-    + `metadata` (array) - Ordered array of API Blueprint [metadata](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#MetadataSection)
-        - (object)
-            - `name` (string) - Name of the metadata
-            - `value` (string) - Value of the metadata
-+ `content` (array) - Section elements of the blueprint
++ `element` (enum[string]) - Element name
+    + `category` - Element is a group of other elements
+    + `copy` - Element is a human readable text
+    + `resource` - Element is a Resource
+    + `dataStructure` - Element is a Data Structure definition
+    + `asset` - Element is an asset of API description
++ `attributes` (object) - Element-specific attributes
+    + `name` (string, optional) - Human readable name of the element
++ `content` (enum)
+    + (array[[Element][]]) - Ordered array of nested elements (for element `category`)
+    + (string) - Markdown-formatted text (for element `copy` and `asset` type)
+    + ([Resource][]) - Resource definiton (for element `resource`)
+    + ([Data Structure][]) - Data structure (for element `dataStructure`)
 
-### Resource
+### Resource Group (object)
+**Deprecated**, replaced by the `category` [Element][].
+
+Logical group of resources.
+
+#### Properties
++ `name` (string) - Name of the Resource Group
++ `description` (string) - Description of the Resource Group (`.raw` or `.html`)
++ `resources` (array[[Resource][]]) - Ordered array of the respective resources belonging to the Resource Group
+
+### Resource (object)
 Description of one resource, or a cluster of resources defined by its URI template.
 
 #### Properties
-
++ `name` (string) - Name of the Resource
++ `description` (string) - Description of the Resource (`.raw` or `.html`)
 + `element`: `resource` (fixed, required)
-+ `meta`: (object)
-    + `title` (string) - Name of the Resource
-    + `description` (string) - Description of the Resource (`.raw` or `.html`)
-+ `attributes` (object)
-    + `uriTemplate` (string) - URI Template as defined in [RFC6570](http://tools.ietf.org/html/rfc6570)
-    + `model` ([Payload][]) - [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection), a reusable payload representing the resource
-    + `parameters` (array[[Parameter][]]) - Ordered array of URI parameters
-    + `actions` (array[[Action][]]) - Ordered array of actions available on the resource each defining at least one complete HTTP transaction
-+ `content` (array[[MSON Element][]]) - Array of Resource's elements
++ `uriTemplate` (string) - URI Template as defined in [RFC6570](http://tools.ietf.org/html/rfc6570)
++ `model` ([Payload][]) - [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection), a reusable payload representing the resource
++ `parameters` (array[[Parameter][]]) - Ordered array of URI parameters
++ `actions` (array[[Action][]]) - Ordered array of actions available on the resource each defining at least one complete HTTP transaction
++ `content` (array[[Data Structure][]]) - Array of Resource's elements
 
     In the interim period this may contain at maximum one
     element of the `dataStructure` type - the definition of the of the Resource
@@ -77,19 +75,15 @@ Description of one resource, or a cluster of resources defined by its URI templa
 An HTTP transaction (a request-response transaction). Actions are specified by an HTTP request method within a resource.
 
 #### Properties
-
-+ `element`: `action` (fixed, required)
-+ `meta`: (object)
-    + `title` (string) - Name of the Action
-    + `description` (string) - Description of the Action (`.raw` or `.html`)
-+ `attributes` (object)
-    + `method` (string) - HTTP request method defining the action
-    + `parameters` (array[[Parameter][]]) - Ordered array of resource's URI parameters descriptions specific to this action
-    + `examples` (array[[Transaction Example][]]) - Ordered array of HTTP transaction [examples](#example-section) for the relevant HTTP request method
-    + `attributes` (object) - Action-specific attributes
-        + `uriTemplate` (string) - URI Template as defined in [RFC6570](http://tools.ietf.org/html/rfc6570)
-        + `relation` (string) - Link relation identifier of the action as defined in [Relation section][]
-+ `content` (array[[MSON Element][]]) - Array of MSON's elements
++ `name` (string) - Name of the Action
++ `description` (string) - Description of the Action (`.raw` or `.html`)
++ `method` (string) - HTTP request method defining the action
++ `parameters` (array[[Parameter][]]) - Ordered array of resource's URI parameters descriptions specific to this action
++ `examples` (array[[Transaction Example][]]) - Ordered array of HTTP transaction [examples](#example-section) for the relevant HTTP request method
++ `attributes` (object) - Action-specific attributes
+    + `uriTemplate` (string) - URI Template as defined in [RFC6570](http://tools.ietf.org/html/rfc6570)
+    + `relation` (string) - Link relation identifier of the action as defined in [Relation section][]
++ `content` (array[[Data Structure][]])  - Array of Action's elements
 
     In the interim period this may contain at maximum one
     element of the `dataStructure` type - the definition of the of the action input
@@ -99,42 +93,40 @@ An HTTP transaction (a request-response transaction). Actions are specified by a
 An [API Blueprint payload](https://github.com/apiaryio/api-blueprint/blob/master/Glossary%20of%20Terms.md#payload).
 
 #### Properties
-+ `element`: `payload` (fixed, required)
-+ `meta`: (object)
-    + `title` (string) - Name of the Payload
-        The content of this key depends on the type of payload:
++ `name` (string) - Name of the payload
 
-        + **model** payload: name of the resource, if any
-        + **request** payload: name of the request, if any
-        + **response** payload: HTTP status code
+    The content of this key depends on the type of payload:
 
-    + `description` (string) - Description of the payload (`.raw` or `.html`)
-+ `attributes` (object)
-    + `reference` ([Reference][]) - Present if and only if a reference to a [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection) is present in the payload and it has been resolved correctly
-    + `headers` (string) - Ordered array of HTTP headers that are expected to be transferred with HTTP message represented by this payload
-    + `body` (string) - **Deprecated**
+    + **model** payload: name of the resource, if any
+    + **request** payload: name of the request, if any
+    + **response** payload: HTTP status code
 
-        An entity body to be transferred with HTTP message represented by this payload
++ `reference` ([Reference][]) - Present if and only if a reference to a [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection) is present in the payload and it has been resolved correctly
++ `description` (string) - Description of the payload (`.raw` or `.html`)
++ `headers` (string) - Ordered array of HTTP headers that are expected to be transferred with HTTP message represented by this payload
++ `body` (string) - **Deprecated**
 
-        Note this property is **deprecated** and will be removed in a future.
-        Replaced by `bodyExample` [Asset][] element.
+    An entity body to be transferred with HTTP message represented by this payload
 
-    + `schema` (string) - **Deprecated**
+    Note this property is **deprecated** and will be removed in a future.
+    Replaced by `bodyExample` [Asset][] element.
 
-        A validation schema for the entity body as defined in `body`.
++ `schema` (string) - **Deprecated**
 
-        Note this property is **deprecated** and will be removed in a future.
-        Replaced by `bodySchema` `asset` element.
+    A validation schema for the entity body as defined in `body`.
+
+    Note this property is **deprecated** and will be removed in a future.
+    Replaced by `bodySchema` `asset` element.
 
 + `content` (array) - Array of Payloads's elements
 
     In the interim period this may contain only:
-    + At maximum one element of the `MSON Element` type - the definition of the message-body
+    + At maximum one element of the `dataStructure` type - the definition of the message-body
     attributes
     + Up to two asset elements one for body example other for body schema
 
     + Items
-        + ([MSON Element][])
+        + ([Data Structure][])
         + ([Asset][])
 
 ### Asset (Element)
@@ -152,16 +144,13 @@ representation as written in the source API Blueprint.
 Description of one URI template parameter.
 
 #### Properties
-+ `element`: `parameter` (fixed, required)
-+ `meta`: (object)
-    + `title` (string) - Name of the Parameter
-    + `description` (string) - Description of the Parameter (`.raw` or `.html`)
-+ `attributes`
-    - `type` (string) - An arbitrary type of the parameter (a string)
-    - `required` (boolean) - Boolean flag denoting whether the parameter is required (true) or not (false)
-    - `default` (string) - A default value of the parameter (a value assumed when the parameter is not specified)
-    - `example` (string) - An example value of the parameter
-- `content` (array) - An array enumerating possible parameter values
+- `name` (string) - Name of the parameter
+- `description` (string) - Description of the parameter (`.raw` or `.html`)
+- `type` (string) - An arbitrary type of the parameter (a string)
+- `required` (boolean) - Boolean flag denoting whether the parameter is required (true) or not (false)
+- `default` (string) - A default value of the parameter (a value assumed when the parameter is not specified)
+- `example` (string) - An example value of the parameter
+- `values` (array) - An array enumerating possible parameter values
     - (object)
         - `value` (string) - Value choice of for the parameter
 
@@ -169,21 +158,22 @@ Description of one URI template parameter.
 An HTTP transaction example with expected HTTP message request and response payload(s).
 
 #### Properties
-+ `element`: `transaction-example` (fixed, required)
-+ `meta`: (object)
-    + `title` (string) - Name of the Transaction Example
-    + `description` (string) - Description of the Transaction Example (`.raw` or `.html`)
-+ `attributes`
-    + `name` (string) - Name of the Transaction Example
-    + `description` (string) - Description of the Transaction Example (`.raw` or `.html`)
-    + `requests` (array[[Payload][]]) - Ordered array of example transaction request payloads
-    + `responses` (array[[Payload][]]) - Ordered array of example transaction response payloads
++ `name` (string) - Name of the Transaction Example
++ `description` (string) - Description of the Transaction Example (`.raw` or `.html`)
++ `requests` (array[[Payload][]]) - Ordered array of example transaction request payloads
++ `responses` (array[[Payload][]]) - Ordered array of example transaction response payloads
 
 ### Reference (object)
 A reference object which is used whenever there is a reference to a [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection).
 
 #### Properties
 + `id` (string) - The identifier (name) of the reference
+
+### Data Structure ([Named Type][])
+Definition of an [MSON][] data structure.
+
+#### Properties
+- `element`: `dataStructure` (fixed, required)
 
 ## Media Types
 The `application/vnd.apiblueprint.ast` is the base media type for API Blueprint AST. An API Blueprint AST with raw Markdown descriptions has the `.raw` suffix whereas version with Markdown descriptions rendered into HTML has the `.html` suffix. The base media type serialization format is specified in the `+<serialization format>` appendix.
@@ -199,24 +189,20 @@ Two supported, feature-equal serialization formats are JSON and YAML:
 
 ```json
 {
+  "_version": "<AST version>",
+  "metadata": [
+    {
+      "name": "<metadata key name>",
+      "value": "<metadata value>"
+    }
+  ],
+  "name": "<API name>",
+  "description": "<API description>",
   "element": "category",
-  "meta": {
-    "name": "<API name>",
-    "description": "<API description>"
-  },
-  "attributes": {
-    "_version": "<AST version>",
-    "metadata": [
-      {
-        "name": "<metadata key name>",
-        "value": "<metadata value>"
-      }
-    ]
-  }
   "content": [
     {
       "element": "category",
-      "meta": {
+      "attributes": {
         "name": "<resource group name>"
       },
       "content": [
@@ -516,6 +502,7 @@ MIT License. See the [LICENSE](LICENSE) file.
 [Parameter]: #parameter-object
 [Transaction Example]: #transaction-example-object
 [Attributes]: #attributes-data-structure
-[MSON Element]: https://github.com/refractproject/refract-spec/blob/master/namespaces/mson-namespace.md
+[Data Structure]: #data-structure-object
+[Data Structures]: #data-structures-object
 
 [Source Map Definition]: Source%20Map.md
