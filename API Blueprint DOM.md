@@ -19,6 +19,9 @@ This document conforms to RFC 2119, which says:
 “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be
 interpreted as described in RFC 2119.
 
+This documents uses [Refract][] and its [MSON Namespace][] and [Representor Namespace][]
+to define API (description) elements.
+
 Additionally, [MSON][] is used throughout this document to describe and define
 data structures.
 
@@ -27,173 +30,197 @@ data structures.
 At this point this document is just a sketch of what the API Blueprint DOM may
 look like.
 
-## Base Element
+## Category (Element)
 
-TODO: Following base element will be defined in the Refract base namespace.
-
-## Refract:Element
-
-- `element` (enum, required)
-    - (string)
-    - (Element)
-
-
-- `attributes` (enum)
-    - (object)
-    - array[Element]
-
-
-- `content` (enum)
-    - (string)
-    - (number)
-    - (boolean)
-    - (array)
-    - (object)
-    - (Element)
-    - array[Element]
-
----
-
-## Category (Refract:Element)
-
-Category element is simply a grouping element – an array of other elements.
+Category element is a grouping element – an array of other elements.
 
 ### Properties
 
 - `element`: category (string, fixed)
-- `attributes` (object)
-    - `label` (string) - Human-readable name of the category
+- `meta`
+    - `class` (array)
+        - (enum)
+            - api
+            - resourceGroup
+            - dataStructures
+            - scenario
+            - anythingElse
 
+- `content` (array[Element])
 
-- `content` (array[Refract:Element])
+## HTTP Transaction (Element)
 
-## Copy (Refract:Element)
-
-Copy elements represents a copy text. A textual information in API description.
-Its content is a string and it MAY include attribute denoting the media type of
-the copy content.
-
-### Properties
-
-- `element`: copy (string, fixed)
-- `attributes` (object)
-    - `contentType` (string) - Optional media type of the content e.g.
-        `text/html`, or `text/plain`
-
-
-- `content` (string)
-
-## Data Structure (MSON:Data Structure)
-
-Data Structure is an element that describes and defines an arbitrary data
-structure. This is identical to [MSON DOM][] data structure element.
+Example of an HTTP Transaction. Exercising a transition initiates HTTP transaction.
 
 ### Properties
 
-- `element`: dataStructure (string, fixed)
+- `element`: httpTransaction (string, fixed)
+- `content` (array[HTTP Message])
 
-## Input Property (object)
+## HTTP Message (Element)
 
-- `name` (string)
-- `value` (Data Structure)
-
-## Resource (Category)
-
-Resource element groups elements that form an description and definition of an
-API resource.
+Data structure for describing an [HTTP Message][].
 
 ### Properties
 
-- `element`: resource (string, fixed)
-- `content` (array)
-    - (Copy) - Copy element discussing the resource
-    - (Data Structure) - Definition of resource data structure
-    - (Transition) - Resource state transition
+- `element`: httpMessage (string, fixed)
+- `meta`
+    `class` (array, fixed)
+        - (enum[string])
+            - request
+            - response
+- `attributes`
+    - `method` (string) - HTTP request method for message of `request` class
+    - `uri` (string) - URI for message of `request` class
+    - `headers` (Object Element)
+    - `statusCode` (number) - HTTP status code for message of `response` class
+    - `assets` (array[Asset]) - Array of assets associated with message description
+- `content` (MSON Element)
 
-
-## Transition (Category)
-
-Element defining a state transition.
-
-### Properties
-
-- `element`: transition (string, fixed)
-- `attributes` (object)
-    - `relation` (string) - relation type of the transition
-    - `http` (HTTP Transition Attributes)
-
-
-- `content` (array)
-    - (Copy) - Copy element discussing the transition
-    - (Data Structure) - Description of input property
-    - (Transition Example) - Example of the data transaction
-
-## HTTP Transition Attributes (object)
-
-### Properties
-
-- `uriTemplate` (string) - URI template matching the resource in the format
-    defined by [RFC 6570][]
-
-
-- `method` (string)
-
-## Transition Example (Category)
-
-Example of a transaction.
-
-### Properties
-
-- `element`: transitionExample (string, fixed)
-- `attributes` (object)
-    - `http` (HTTP Transition)
-
-- `content` (array)
-    - (Request Payload Example)
-    - (Response Payload Example)
-
-## Payload Example (Category)
-
-Example of an API message payload.
-
-### Properties
-
-- `element`: payloadExample (string, fixed)
-- `content` (array)
-    - (Copy) - Description of the payload example
-    - (Metadata) - Payload metadata
-    - (Data Structure) - Definition of the payload data structure
-    - (Asset) - Data asset associated with the payload
-
-## Asset (Refract:Element)
+## Asset (Element)
 
 Asset element represents a data asset of API description.
 
 ### Properties
 
 - `element`: asset (string, fixed)
+- `meta`
+    `class` (array, fixed)
+        - (enum[string])
+            - body - Asset is an example of message-body
+            - bodySchema - Asset is an schema for message-body
 - `attributes` (object)
     - `contentType` (string) - Optional media type of the asset
-
-    - `role`(string) - Role of the asset
-        - bodyExample - Asset is an example of message-body
-        - bodySchema - Asset is an schema for message-body
+    - `href` - Link to the asset
+- `content` (string) - A textual representation of the asset
 
 
-- `content` (string) - The textual representation as written in the source
-    blueprint
+# Example
 
-## Metadata (Category)
+Given the following blueprint:
 
-Grouping element for key-value metadata pairs.
+```markdown
+# Polls API
+Polls is a simple API allowing consumers to view polls and vote in them.
 
-### Properties
+## Group Question
 
-- `element`: metadata (string, fixed)
-- `content` (array)
-    - (object)
-        - `key` (string)
-        - `value` (string)
+Resources related to questions in the API.
+
+## Question [/questions/{question_id}]
+
++ Parameters
+    + question_id (required, number, `1`) ... ID of the Question in form of an integer
+
++ Attributes
+    + question: `Favourite programming language?` (string, required)
+    + published_at: `2014-11-11T08:40:51.620Z` (string) - An ISO8601 date when the question was published
+    + choices (array[Choice], required) - An array of Choice objects
+    + url: /questions/1 (string)
+
+### View a Questions Detail [GET]
+
++ Response 200 (application/json)
+    + Attributes (Question)
+```
+
+The API element tree is:
+
+
+```json
+[
+    "category",
+    {
+        "title": "Polls API",
+        "description": "Polls is a simple API allowing consumers to view polls and vote in them.",
+        "class": [
+            "api"
+        ]
+    },
+    {},
+    [
+        "category",
+        {
+            "title": "Question",
+            "description": "Resources related to questions in the API.",
+            "class": [
+                "resourceGroup"
+            ]
+        },
+        {},
+        [
+            "resource",
+            {
+                "title": "Question"
+            },
+            {
+                "tranistions": [
+                    [
+                        "tranistion",
+                        {
+                            "title": "View a Questions Detail"
+                        },
+                        {
+                            "href": "/questions/{question_id}",
+                            "httpTransactions": [
+                                [
+                                    "httpTransaction",
+                                    {},
+                                    {},
+                                    [
+                                        [
+                                            "httpMessage",
+                                            {
+                                                "meta": [
+                                                    "request"
+                                                ]
+                                            },
+                                            {
+                                                "method": "GET",
+                                                "uri": "/questions/{question_id}"
+                                            }
+                                        ],
+                                        [
+                                            "httpMessage",
+                                            {
+                                                "meta": [
+                                                    "response"
+                                                ]
+                                            },
+                                            {
+                                                "status": "200",
+                                                "headers": [
+                                                    "object",
+                                                    {},
+                                                    {},
+                                                    null
+                                                ]
+                                            },
+                                            [
+                                                "object",
+                                                {},
+                                                {},
+                                                null
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        },
+                        null
+                    ]
+                ]
+            },
+            [
+                "object",
+                {},
+                {},
+                null
+            ]
+        ]
+    ]
+]
+```
 
 
 ---
@@ -201,3 +228,8 @@ Grouping element for key-value metadata pairs.
 [MSON]: https://github.com/apiaryio/mson
 [MSON DOM]: https://github.com/apiaryio/mson-ast
 [RFC 6570]: http://tools.ietf.org/html/rfc6570
+
+[Refract]: https://github.com/refractproject/refract-spec/blob/master/refract-spec.md
+[MSON Namespace]: https://github.com/refractproject/refract-spec/blob/master/namespaces/mson-namespace.md
+[Representor Namespace]: https://github.com/refractproject/refract-spec/pull/8/files#diff-c294a388538c5ba0d834d163434544d8
+[HTTP Message]: http://datatracker.ietf.org/doc/rfc7230/?include_text=1
