@@ -131,7 +131,7 @@ An [API Blueprint payload](https://github.com/apiaryio/api-blueprint/blob/master
 
 + `reference` ([Reference][]) - Present if and only if a reference to a [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection) is present in the payload and it has been resolved correctly
 + `description` (string) - Description of the payload (`.raw` or `.html`)
-+ `headers` (string) - Ordered array of HTTP headers that are expected to be transferred with HTTP message represented by this payload
++ `headers` (array[[Header][]]) - Ordered array of HTTP headers that are expected to be transferred with HTTP message represented by this payload
 + `body` (string) - **Deprecated**
 
     An entity body to be transferred with HTTP message represented by this payload
@@ -156,6 +156,13 @@ An [API Blueprint payload](https://github.com/apiaryio/api-blueprint/blob/master
     + Items
         + ([Data Structure][])
         + ([Asset][])
+
+### Header
+A HTTP header that are expected to be transferred with an HTTP message.
+
+#### Properties
++ `name` (string, required) - The name of the header
++ `value` (string, required) - The value of the header
 
 ### Asset (Element)
 An [API Blueprint asset][]. The content is an Asset in its textual
