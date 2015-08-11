@@ -204,8 +204,8 @@ A reference object which is used whenever there is a reference to a [Resource Mo
 #### Properties
 + `id` (string) - The identifier (name) of the reference
 
-### Data Structure ([Named Type][])
-Definition of an [MSON][] data structure.
+### Data Structure ([Data Structure Element][])
+Definition of an [MSON][] data structure serialized as a refracted [Data Structure Element][].
 
 #### Properties
 - `element`: `dataStructure` (fixed, required)
@@ -261,14 +261,11 @@ Two supported, feature-equal serialization formats are JSON and YAML:
             ],
             "content": [
               {
-                "element": "dataStructure",
-                "name": null,
-                "base": {
-                  "typeSpecification": {
-                    "name": "<sub-type>"
-                  }
+                "element": "object",
+                "attributes": {
+                  "typeAttributes": ["<sub-type>"]
                 },
-                "sections": []
+                "content": []
               },
               {
                 "element": "asset",
@@ -337,14 +334,11 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                       ],
                       "content": [
                         {
-                          "element": "dataStructure",
-                          "name": null,
-                          "base": {
-                            "typeSpecification": {
-                              "name": "<sub-type>"
-                            }
+                          "element": "object",
+                          "attributes": {
+                            "typeAttributes": ["<sub-type>"]
                           },
-                          "sections": []
+                          "content": []
                         },
                         {
                           "element": "asset",
@@ -375,14 +369,11 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                       ],
                       "content": [
                         {
-                          "element": "dataStructure",
-                          "name": null,
-                          "base": {
-                            "typeSpecification": {
-                              "name": "<sub-type>"
-                            }
+                          "element": "object",
+                          "attributes": {
+                            "typeAttributes": ["<sub-type>"]
                           },
-                          "sections": []
+                          "content": []
                         },
                         {
                           "element": "asset",
@@ -405,14 +396,11 @@ Two supported, feature-equal serialization formats are JSON and YAML:
               ],
               "content": [
                 {
-                  "element": "dataStructure",
-                  "name": null,
-                  "base": {
-                    "typeSpecification": {
-                      "name": "<sub-type>"
-                    }
+                  "element": "object",
+                  "attributes": {
+                    "typeAttributes": ["<sub-type>"]
                   },
-                  "sections": []
+                  "content": []
                 }
               ]
             },
@@ -462,17 +450,14 @@ Two supported, feature-equal serialization formats are JSON and YAML:
           ],
           "content": [
             {
-              "element": "dataStructure",
-              "name": {
-                "literal": "<resource name>",
-                "variable": false
+              "element": "object",
+              "meta": {
+                "name": "<resource-name>"
               },
-              "base": {
-                "typeSpecification": {
-                  "name": "<sub-type>"
-                }
+              "attributes": {
+                "typeAttributes": ["<sub-type>"]
               },
-              "sections": []
+              "content": []
             }
           ]
         }
@@ -482,17 +467,14 @@ Two supported, feature-equal serialization formats are JSON and YAML:
       "element": "category",
       "content": [
         {
-          "element": "dataStructure",
-          "name": {
-            "literal": "<data structure name>",
-            "variable": false
+          "element": "object",
+          "meta": {
+            "name": "<data-structure-name>"
           },
-          "base": {
-            "typeSpecification": {
-              "name": "<sub-type>"
-            }
+          "attributes": {
+            "typeAttributes": ["<sub-type>"]
           },
-          "sections": []
+          "content": []
         }
       ]
     }
@@ -512,13 +494,8 @@ MIT License. See the [LICENSE](LICENSE) file.
 [Parsing media types]: Parse%20Result.md
 
 [MSON]: https://github.com/apiaryio/mson
-[MSON AST]: https://github.com/apiaryio/mson-ast
-[MSON Named Type]: https://github.com/apiaryio/mson/blob/master/MSON%20Specification.md#22-named-types
 
-[Named Type]: https://github.com/apiaryio/mson-ast#named-type
-[Type Name]: https://github.com/apiaryio/mson-ast#type-name
-[Type Definition]: https://github.com/apiaryio/mson-ast#type-definition
-[Type Section]: https://github.com/apiaryio/mson-ast#type-section
+[Data Structure Element]: https://github.com/refractproject/refract-spec/blob/master/namespaces/data-structure-namespace.md#data-structure-element-element
 
 [API Blueprint asset]: https://github.com/apiaryio/api-blueprint/blob/master/Glossary%20of%20Terms.md#asset
 
