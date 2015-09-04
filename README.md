@@ -452,7 +452,7 @@ Two supported, feature-equal serialization formats are JSON and YAML:
             {
               "element": "object",
               "meta": {
-                "name": "<resource-name>"
+                "id": "<resource-name>"
               },
               "attributes": {
                 "typeAttributes": ["<sub-type>"]
@@ -469,7 +469,7 @@ Two supported, feature-equal serialization formats are JSON and YAML:
         {
           "element": "object",
           "meta": {
-            "name": "<data-structure-name>"
+            "id": "<data-structure-name>"
           },
           "attributes": {
             "typeAttributes": ["<sub-type>"]
