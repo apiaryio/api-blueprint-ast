@@ -261,11 +261,14 @@ Two supported, feature-equal serialization formats are JSON and YAML:
             ],
             "content": [
               {
-                "element": "object",
-                "attributes": {
-                  "typeAttributes": ["<sub-type>"]
-                },
-                "content": []
+                "element": "dataStructure",
+                "content":{
+                  "element": "object",
+                  "attributes": {
+                    "typeAttributes": ["<sub-type>"]
+                  },
+                  "content": []
+                }
               },
               {
                 "element": "asset",
@@ -334,11 +337,14 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                       ],
                       "content": [
                         {
-                          "element": "object",
-                          "attributes": {
-                            "typeAttributes": ["<sub-type>"]
-                          },
-                          "content": []
+                          "element": "dataStructure",
+                          "content": {
+                            "element": "object",
+                            "attributes": {
+                              "typeAttributes": ["<sub-type>"]
+                            },
+                            "content": []
+                          }
                         },
                         {
                           "element": "asset",
@@ -369,11 +375,14 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                       ],
                       "content": [
                         {
-                          "element": "object",
-                          "attributes": {
-                            "typeAttributes": ["<sub-type>"]
-                          },
-                          "content": []
+                          "element": "dataStructure",
+                          "content": {
+                            "element": "object",
+                            "attributes": {
+                              "typeAttributes": ["<sub-type>"]
+                            },
+                            "content": []
+                          }
                         },
                         {
                           "element": "asset",
@@ -396,11 +405,14 @@ Two supported, feature-equal serialization formats are JSON and YAML:
               ],
               "content": [
                 {
-                  "element": "object",
-                  "attributes": {
-                    "typeAttributes": ["<sub-type>"]
-                  },
-                  "content": []
+                  "element": "dataStructure",
+                  "content": {
+                    "element": "object",
+                    "attributes": {
+                      "typeAttributes": ["<sub-type>"]
+                    },
+                    "content": []
+                  }
                 }
               ]
             },
@@ -450,14 +462,17 @@ Two supported, feature-equal serialization formats are JSON and YAML:
           ],
           "content": [
             {
-              "element": "object",
-              "meta": {
-                "id": "<resource-name>"
-              },
-              "attributes": {
-                "typeAttributes": ["<sub-type>"]
-              },
-              "content": []
+              "element": "dataStructure",
+              "content": {
+                "element": "object",
+                "meta": {
+                  "id": "<resource-name>"
+                },
+                "attributes": {
+                  "typeAttributes": ["<sub-type>"]
+                },
+                "content": []
+              }
             }
           ]
         }
@@ -467,14 +482,17 @@ Two supported, feature-equal serialization formats are JSON and YAML:
       "element": "category",
       "content": [
         {
-          "element": "object",
-          "meta": {
-            "id": "<data-structure-name>"
-          },
-          "attributes": {
-            "typeAttributes": ["<sub-type>"]
-          },
-          "content": []
+          "element": "dataStructure",
+          "content": {
+            "element": "object",
+            "meta": {
+              "id": "<data-structure-name>"
+            },
+            "attributes": {
+              "typeAttributes": ["<sub-type>"]
+            },
+            "content": []
+          }
         }
       ]
     }
