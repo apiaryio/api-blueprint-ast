@@ -205,7 +205,7 @@ A reference object which is used whenever there is a reference to a [Resource Mo
 + `id` (string) - The identifier (name) of the reference
 
 ## Media Types
-The `application/vnd.apiblueprint.ast` is the media type for API Blueprint AST.
+The `application/vnd.apiblueprint.ast` is the media type for API Blueprint AST. The media type serialization format is specified in the `+<serialization format>` appendix.
 
 ### Serialization formats
 Two supported, feature-equal serialization formats are JSON and YAML:
@@ -502,8 +502,6 @@ MIT License. See the [LICENSE](LICENSE) file.
 [Parsing media types]: Parse%20Result.md
 
 [MSON]: https://github.com/apiaryio/mson
-
-[Data Structure Element]: https://github.com/refractproject/refract-spec/blob/master/namespaces/data-structure-namespace.md#data-structure-element-element
 
 [API Blueprint asset]: https://github.com/apiaryio/api-blueprint/blob/master/Glossary%20of%20Terms.md#asset
 
