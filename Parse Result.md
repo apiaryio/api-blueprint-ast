@@ -5,10 +5,10 @@ This document describes API Blueprint Serialized Parse Result Media Types – th
 
 ## Version
 
-+ **Version**: 2.1
++ **Version**: 2.2
 + **Created**: 2014-06-09
-+ **Updated**: 2014-11-27
-+ **AST Serialization Media Types**: 3.0
++ **Updated**: 2015-09-07
++ **AST Serialization Media Types**: 4.0
 
 ---
 
@@ -62,21 +62,19 @@ Description of a warning from the parser.
 
 ## Media Types
 
-The base media type for API Blueprint Parsing result is `application/vnd.apiblueprint.parseresult`. A Parse Result with raw Markdown descriptions in API Blueprint AST has the `.raw` suffix whereas version with Markdown descriptions rendered into HTML has the `.html`.
-
-The base media type serialization format is specified in the `+<serialization format>` appendix.
+The media type for API Blueprint Parsing result is `application/vnd.apiblueprint.parseresult`. The media type serialization format is specified in the `+<serialization format>` appendix.
 
 ### Serialization formats
 
 Two supported, feature-equal serialization formats are JSON and YAML:
 
-+ `application/vnd.apiblueprint.parseresult.raw+json` and `application/vnd.apiblueprint.parseresult.html+json`
-+ `application/vnd.apiblueprint.parseresult.raw+yaml` and `application/vnd.apiblueprint.parseresult.html+yaml`
++ `application/vnd.apiblueprint.parseresult.json`
++ `application/vnd.apiblueprint.parseresult.yaml`
 
 Parser Result Media Types inherit from the respective [AST Serialization Type](README.md):
 
-+ [`application/vnd.apiblueprint.ast.*+json`](#json-serialization)
-+ `application/vnd.apiblueprint.ast.*+yaml`
++ [`application/vnd.apiblueprint.ast.json`](#json-serialization)
++ `application/vnd.apiblueprint.ast.yaml`
 + [`application/vnd.apiblueprint.sourcemap+json`](#json-serialization)
 + `application/vnd.apiblueprint.sourcemap+yaml`
 
@@ -86,9 +84,9 @@ Parser Result Media Types inherit from the respective [AST Serialization Type](R
 
 ```json
 {
-  "_version": "2.1",
+  "_version": "2.2",
   "ast": {
-    "_version": "3.0",
+    "_version": "4.0",
 
     ...
   },
