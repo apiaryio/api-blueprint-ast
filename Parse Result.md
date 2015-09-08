@@ -68,19 +68,19 @@ The media type for API Blueprint Parsing result is `application/vnd.apiblueprint
 
 Two supported, feature-equal serialization formats are JSON and YAML:
 
-+ `application/vnd.apiblueprint.parseresult.json`
-+ `application/vnd.apiblueprint.parseresult.yaml`
++ `application/vnd.apiblueprint.parseresult+json`
++ `application/vnd.apiblueprint.parseresult+yaml`
 
 Parser Result Media Types inherit from the respective [AST Serialization Type](README.md):
 
-+ [`application/vnd.apiblueprint.ast.json`](#json-serialization)
-+ `application/vnd.apiblueprint.ast.yaml`
++ [`application/vnd.apiblueprint.ast+json`](#json-serialization)
++ `application/vnd.apiblueprint.ast+yaml`
 + [`application/vnd.apiblueprint.sourcemap+json`](#json-serialization)
 + `application/vnd.apiblueprint.sourcemap+yaml`
 
 ### JSON Serialization
 
-`application/vnd.apiblueprint.parseresult.*+json; version=2.1`
+`application/vnd.apiblueprint.parseresult+json; version=2.1`
 
 ```json
 {
