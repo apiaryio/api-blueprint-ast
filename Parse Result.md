@@ -80,7 +80,7 @@ Parser Result Media Types inherit from the respective [AST Serialization Type](R
 
 ### JSON Serialization
 
-`application/vnd.apiblueprint.parseresult+json; version=2.1`
+`application/vnd.apiblueprint.parseresult+json; version=2.2`
 
 ```json
 {
