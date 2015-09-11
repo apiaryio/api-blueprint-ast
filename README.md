@@ -14,9 +14,9 @@ Converting API Blueprint to AST and its serialization is the task of API Bluepri
 If you are looking for a way to describe your Web API without using JSON or YAML see [API Blueprint](https://github.com/apiaryio/api-blueprint).
 
 ## Version
-+ **Version**: 3.0
++ **Version**: 4.0
 + **Created**: 2013-08-30
-+ **Updated**: 2015-01-29
++ **Updated**: 2015-09-07
 
 ## Future Development
 As of version 3.0 the API Blueprint AST is in the *interim* transition period
@@ -204,23 +204,17 @@ A reference object which is used whenever there is a reference to a [Resource Mo
 #### Properties
 + `id` (string) - The identifier (name) of the reference
 
-### Data Structure ([Named Type][])
-Definition of an [MSON][] data structure.
-
-#### Properties
-- `element`: `dataStructure` (fixed, required)
-
 ## Media Types
-The `application/vnd.apiblueprint.ast` is the base media type for API Blueprint AST. An API Blueprint AST with raw Markdown descriptions has the `.raw` suffix whereas version with Markdown descriptions rendered into HTML has the `.html` suffix. The base media type serialization format is specified in the `+<serialization format>` appendix.
+The `application/vnd.apiblueprint.ast` is the media type for API Blueprint AST. The media type serialization format is specified in the `+<serialization format>` appendix.
 
 ### Serialization formats
 Two supported, feature-equal serialization formats are JSON and YAML:
 
-+ `application/vnd.apiblueprint.ast.raw+json` and `application/vnd.apiblueprint.ast.html+json`
-+ `application/vnd.apiblueprint.ast.raw+yaml` and `application/vnd.apiblueprint.ast.html+yaml`
++ `application/vnd.apiblueprint.ast.json`
++ `application/vnd.apiblueprint.ast.yaml`
 
 ### Example: JSON Serialization
-`application/vnd.apiblueprint.ast.raw+json; version=3.0`
+`application/vnd.apiblueprint.ast.json; version=4.0`
 
 ```json
 {
@@ -262,13 +256,13 @@ Two supported, feature-equal serialization formats are JSON and YAML:
             "content": [
               {
                 "element": "dataStructure",
-                "name": null,
-                "base": {
-                  "typeSpecification": {
-                    "name": "<sub-type>"
-                  }
-                },
-                "sections": []
+                "content":{
+                  "element": "object",
+                  "meta": {
+                    "ref": "<sub-type>"
+                  },
+                  "content": []
+                }
               },
               {
                 "element": "asset",
@@ -338,13 +332,13 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                       "content": [
                         {
                           "element": "dataStructure",
-                          "name": null,
-                          "base": {
-                            "typeSpecification": {
-                              "name": "<sub-type>"
-                            }
-                          },
-                          "sections": []
+                          "content": {
+                            "element": "object",
+                            "meta": {
+                              "ref": "<sub-type>"
+                            },
+                            "content": []
+                          }
                         },
                         {
                           "element": "asset",
@@ -376,13 +370,13 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                       "content": [
                         {
                           "element": "dataStructure",
-                          "name": null,
-                          "base": {
-                            "typeSpecification": {
-                              "name": "<sub-type>"
-                            }
-                          },
-                          "sections": []
+                          "content": {
+                            "element": "object",
+                            "meta": {
+                              "ref": "<sub-type>"
+                            },
+                            "content": []
+                          }
                         },
                         {
                           "element": "asset",
@@ -406,13 +400,13 @@ Two supported, feature-equal serialization formats are JSON and YAML:
               "content": [
                 {
                   "element": "dataStructure",
-                  "name": null,
-                  "base": {
-                    "typeSpecification": {
-                      "name": "<sub-type>"
-                    }
-                  },
-                  "sections": []
+                  "content": {
+                    "element": "object",
+                    "meta": {
+                      "ref": "<sub-type>"
+                    },
+                    "content": []
+                  }
                 }
               ]
             },
@@ -463,16 +457,14 @@ Two supported, feature-equal serialization formats are JSON and YAML:
           "content": [
             {
               "element": "dataStructure",
-              "name": {
-                "literal": "<resource name>",
-                "variable": false
-              },
-              "base": {
-                "typeSpecification": {
-                  "name": "<sub-type>"
-                }
-              },
-              "sections": []
+              "content": {
+                "element": "object",
+                "meta": {
+                  "id": "<resource-name>",
+                  "ref": "<sub-type>"
+                },
+                "content": []
+              }
             }
           ]
         }
@@ -483,16 +475,14 @@ Two supported, feature-equal serialization formats are JSON and YAML:
       "content": [
         {
           "element": "dataStructure",
-          "name": {
-            "literal": "<data structure name>",
-            "variable": false
-          },
-          "base": {
-            "typeSpecification": {
-              "name": "<sub-type>"
-            }
-          },
-          "sections": []
+          "content": {
+            "element": "object",
+            "meta": {
+              "id": "<data-structure-name>",
+              "ref": "<sub-type>"
+            },
+            "content": []
+          }
         }
       ]
     }
@@ -512,13 +502,6 @@ MIT License. See the [LICENSE](LICENSE) file.
 [Parsing media types]: Parse%20Result.md
 
 [MSON]: https://github.com/apiaryio/mson
-[MSON AST]: https://github.com/apiaryio/mson-ast
-[MSON Named Type]: https://github.com/apiaryio/mson/blob/master/MSON%20Specification.md#22-named-types
-
-[Named Type]: https://github.com/apiaryio/mson-ast#named-type
-[Type Name]: https://github.com/apiaryio/mson-ast#type-name
-[Type Definition]: https://github.com/apiaryio/mson-ast#type-definition
-[Type Section]: https://github.com/apiaryio/mson-ast#type-section
 
 [API Blueprint asset]: https://github.com/apiaryio/api-blueprint/blob/master/Glossary%20of%20Terms.md#asset
 
@@ -537,7 +520,7 @@ MIT License. See the [LICENSE](LICENSE) file.
 [Parameter]: #parameter-object
 [Transaction Example]: #transaction-example-object
 [Attributes]: #attributes-data-structure
-[Data Structure]: #data-structure-object
+[Data Structure]: https://github.com/refractproject/refract-spec/blob/master/namespaces/api-description-namespace.md#data-structure-element
 [Data Structures]: #data-structures-object
 
 [Source Map Definition]: Source%20Map.md
