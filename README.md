@@ -1,6 +1,11 @@
 ![logo](https://raw.github.com/apiaryio/api-blueprint/master/assets/logo_apiblueprint.png)
 
 # API Blueprint AST
+
+## Deprecation Notice
+
+As of 2015-12-02 the API Blueprint AST is deprecated and should not be used for new development. The API Blueprint AST has been superseded by [API Description Refract Namespace](https://github.com/refractproject/refract-spec/blob/master/namespaces/api-description-namespace.md).
+
 ### JSON & YAML face of the API Blueprint
 API Blueprint AST is JSON or YAML, machine-friendly, face of API Blueprint suitable for use in [tools](http://apiblueprint.org/#tooling) consuming (or producing) API Blueprint.
 
