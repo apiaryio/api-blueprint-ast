@@ -200,6 +200,7 @@ An HTTP transaction example with expected HTTP message request and response payl
 #### Properties
 + `name` (string) - Name of the Transaction Example
 + `description` (string) - Description of the Transaction Example (`.raw` or `.html`)
++ parameters (array[Parameter]) - Ordered array of resource's URI parameters descriptions specific to this action
 + `requests` (array[[Payload][]]) - Ordered array of example transaction request payloads
 + `responses` (array[[Payload][]]) - Ordered array of example transaction response payloads
 
