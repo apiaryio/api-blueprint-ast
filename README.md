@@ -68,12 +68,11 @@ A component of an API description.
     + `copy` - Element is a human readable text
     + `resource` - Element is a Resource
     + `dataStructure` - Element is a Data Structure definition
-    + `asset` - Element is an asset of API description
 + `attributes` (object) - Element-specific attributes
     + `name` (string, optional) - Human readable name of the element
 + `content` (enum)
     + (array[[Element][]]) - Ordered array of nested elements (for element `category`)
-    + (string) - Markdown-formatted text (for element `copy` and `asset` type)
+    + (string) - Markdown-formatted text (for element `copy`)
     + ([Resource][]) - Resource definiton (for element `resource`)
     + ([Data Structure][]) - Data structure (for element `dataStructure`)
 
@@ -137,30 +136,15 @@ An [API Blueprint payload](https://github.com/apiaryio/api-blueprint/blob/master
 + `reference` ([Reference][]) - Present if and only if a reference to a [Resource Model](https://github.com/apiaryio/api-blueprint/blob/master/API%20Blueprint%20Specification.md#ResourceModelSection) is present in the payload and it has been resolved correctly
 + `description` (string) - Description of the payload (`.raw` or `.html`)
 + `headers` (array[[Header][]]) - Ordered array of HTTP headers that are expected to be transferred with HTTP message represented by this payload
-+ `body` (string) - **Deprecated**
-
-    An entity body to be transferred with HTTP message represented by this payload
-
-    Note this property is **deprecated** and will be removed in a future.
-    Replaced by `bodyExample` [Asset][] element.
-
-+ `schema` (string) - **Deprecated**
-
-    A validation schema for the entity body as defined in `body`.
-
-    Note this property is **deprecated** and will be removed in a future.
-    Replaced by `bodySchema` `asset` element.
-
++ `body` (string) - An entity body to be transferred with HTTP message represented by this payload
++ `schema` (string) - A validation schema for the entity body as defined in `body`.
 + `content` (array) - Array of Payloads's elements
 
-    In the interim period this may contain only:
-    + At maximum one element of the `dataStructure` type - the definition of the message-body
-    attributes
-    + Up to two asset elements one for body example other for body schema
+    In the interim period this may contain only at maximum one element of
+    the `dataStructure` type - the definition of the message-body attributes
 
     + Items
         + ([Data Structure][])
-        + ([Asset][])
 
 ### Header
 A HTTP header that are expected to be transferred with an HTTP message.
@@ -168,17 +152,6 @@ A HTTP header that are expected to be transferred with an HTTP message.
 #### Properties
 + `name` (string, required) - The name of the header
 + `value` (string, required) - The value of the header
-
-### Asset (Element)
-An [API Blueprint asset][]. The content is an Asset in its textual
-representation as written in the source API Blueprint.
-
-#### Properties
-+ `element`: `asset` (fixed, required)
-+ `attributes`
-    + `role` - Role of the asset
-        + `bodyExample` - Asset is an example of message-body
-        + `bodySchema` - Asset is an schema for message-body
 
 ### Parameter (object)
 Description of one URI template parameter.
@@ -268,20 +241,6 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                   },
                   "content": []
                 }
-              },
-              {
-                "element": "asset",
-                "attributes":  {
-                  "role": "bodyExample"
-                },
-                "content": "<resource model body>"
-              },
-              {
-                "element": "asset",
-                "attributes":  {
-                  "role": "bodySchema"
-                },
-                "content": "<resource model schema>"
               }
             ]
           },
@@ -344,20 +303,6 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                             },
                             "content": []
                           }
-                        },
-                        {
-                          "element": "asset",
-                          "attributes": {
-                            "role": "bodyExample"
-                          },
-                          "content": "<request body>"
-                        },
-                        {
-                          "element": "asset",
-                          "attributes": {
-                            "role": "bodySchema"
-                          },
-                          "content": "<request schema>"
                         }
                       ]
                     }
@@ -382,20 +327,6 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                             },
                             "content": []
                           }
-                        },
-                        {
-                          "element": "asset",
-                          "attributes": {
-                            "role": "bodyExample"
-                          },
-                          "content": "<request body>"
-                        },
-                        {
-                          "element": "asset",
-                          "attributes": {
-                            "role": "bodySchema"
-                          },
-                          "content": "<request schema>"
                         }
                       ]
                     }
@@ -437,22 +368,7 @@ Two supported, feature-equal serialization formats are JSON and YAML:
                           "value": "<HTTP header field value>"
                         }
                       ],
-                      "content": [
-                        {
-                          "element": "asset",
-                          "attributes": {
-                            "role": "bodyExample"
-                          },
-                          "content": "<resource model body>"
-                        },
-                        {
-                          "element": "asset",
-                          "attributes": {
-                            "role": "bodySchema"
-                          },
-                          "content": "<resource model schema>"
-                        }
-                      ]
+                      "content": []
                     }
                   ]
                 }
@@ -521,7 +437,6 @@ MIT License. See the [LICENSE](LICENSE) file.
 [Action]: #action-object
 [Payload]: #payload-object
 [Reference]: #reference-object
-[Asset]: #asset-element
 [Parameter]: #parameter-object
 [Transaction Example]: #transaction-example-object
 [Attributes]: #attributes-data-structure
